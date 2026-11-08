@@ -45,6 +45,11 @@ type Ctx = {
   removeLink: (id: string) => void;
   finderFor?: string;
   findExperts: (space: string) => void;
+  /** Risks whose panel reading you held for a round. */
+  held: Record<string, boolean>;
+  /** Experts flagged for a direct ask next round, by risk. */
+  asks: Record<string, string[]>;
+  toggleAsk: (riskId: string, name: string) => void;
   announce: string;
 };
 
@@ -79,6 +84,8 @@ export function WorkspaceProvider({ data, children }: { data: Workspace; childre
   const [selectedId, setSelectedId] = useState(data.context.focusId);
   const [centreWanted, setCentreWanted] = useState(data.context.focusId);
   const [finderFor, setFinderFor] = useState<string>();
+  const [held, setHeld] = useState<Record<string, boolean>>({});
+  const [asks, setAsks] = useState<Record<string, string[]>>({});
   const [announce, setAnnounce] = useState("");
 
   const byId = useMemo(() => Object.fromEntries(risks.map((r) => [r.id, r])), [risks]);
@@ -152,6 +159,7 @@ export function WorkspaceProvider({ data, children }: { data: Workspace; childre
         note = `Approved. ACAPS now reads it as ${PROBABILITY[d.to - 1]}.`;
         log("probability-move", [d.riskId], `Approved the panel's reading: ${PROBABILITY[d.to - 1]}.`);
       } else {
+        setHeld((h) => ({ ...h, [d.riskId]: true }));
         note = "Held. ACAPS keeps its reading and asks again next round.";
         log("probability-move", [d.riskId], "Held the panel's reading for another round.");
       }
@@ -260,6 +268,22 @@ export function WorkspaceProvider({ data, children }: { data: Workspace; childre
     router.push(`${base}/gaps#finder`);
   }
 
+  /** Flag or unflag an expert for a direct ask: a personal note on next round's question, the same one everyone gets. */
+  function toggleAsk(riskId: string, name: string) {
+    const label = byId[riskId]?.short ?? riskId;
+    const on = !(asks[riskId] ?? []).includes(name);
+    setAsks((a) => {
+      const cur = a[riskId] ?? [];
+      return { ...a, [riskId]: on ? [...cur, name] : cur.filter((n) => n !== name) };
+    });
+    log(
+      "direct-ask",
+      [riskId],
+      on ? `Asked ${name} directly about ${label}, for next round.` : `Dropped the direct ask to ${name} on ${label}.`,
+    );
+    setAnnounce(on ? `${name} gets a direct ask on ${riskId} next round.` : `Direct ask to ${name} on ${riskId} dropped.`);
+  }
+
   const value: Ctx = {
     data,
     base,
@@ -285,6 +309,9 @@ export function WorkspaceProvider({ data, children }: { data: Workspace; childre
     removeLink,
     finderFor,
     findExperts,
+    held,
+    asks,
+    toggleAsk,
     announce,
   };
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>;

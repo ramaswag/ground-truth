@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, ChevronDown, Forward, Mail, RotateCcw, TriangleAlert, WifiOff } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Clock, Forward, Mail, RotateCcw, TriangleAlert, WifiOff } from "lucide-react";
 import type { Question } from "@/lib/questions";
 import { formatDate, formatDeadline } from "@/lib/dates";
 import {
@@ -41,9 +41,11 @@ type Props = {
   initialAnswer?: AnswerValue;
   incomingReferral?: string;
   failFirst?: boolean;
+  /** Answering has closed: show the closed notice instead of live answers, and no Change answer. */
+  closed?: boolean;
 };
 
-export function AnswerForm({ question, initialAnswer, incomingReferral, failFirst }: Props) {
+export function AnswerForm({ question, initialAnswer, incomingReferral, failFirst, closed = false }: Props) {
   const referred = Boolean(incomingReferral);
   const storeKey = `gt:${question.id}:${referred ? "referred" : "panel"}`;
   const origin = useOrigin();
@@ -182,9 +184,12 @@ export function AnswerForm({ question, initialAnswer, incomingReferral, failFirs
         referred={referred}
         onChange={change}
         headingRef={confirmHeading}
+        closed={closed}
       />
     );
   }
+
+  if (closed) return <ClosedNotice question={question} referred={referred} />;
 
   return (
     <form
@@ -419,12 +424,14 @@ function Confirmation({
   referred,
   onChange,
   headingRef,
+  closed,
 }: {
   record: Stored;
   question: Question;
   referred: boolean;
   onChange: () => void;
   headingRef: React.RefObject<HTMLHeadingElement | null>;
+  closed: boolean;
 }) {
   const word = answerLabel(record.answer);
   const label =
@@ -479,7 +486,11 @@ function Confirmation({
         </p>
       )}
 
-      <p className={s.until}>You can change your answer until {formatDeadline(question.answerBy)}.</p>
+      <p className={s.until}>
+        {closed
+          ? `Answering closed ${formatDeadline(question.answerBy)}.`
+          : `You can change your answer until ${formatDeadline(question.answerBy)}.`}
+      </p>
 
       {!referred && question.followUpLinks && question.followUpLinks.length > 0 && (
         <LinkCheck questionId={question.id} riskId={question.riskId} links={question.followUpLinks} />
@@ -498,10 +509,37 @@ function Confirmation({
               : "That’s this week’s questions done. The next set comes next week, or sooner if the situation shifts."}
           </p>
         )}
-        <button type="button" className="btn" onClick={onChange}>
-          <RotateCcw aria-hidden size={18} strokeWidth={2.25} />
-          Change answer
-        </button>
+        {!closed && (
+          <button type="button" className="btn" onClick={onChange}>
+            <RotateCcw aria-hidden size={18} strokeWidth={2.25} />
+            Change answer
+          </button>
+        )}
+      </div>
+    </section>
+  );
+}
+
+/** After the deadline: say so plainly and move the expert on, with no answers to press. */
+function ClosedNotice({ question, referred }: { question: Question; referred: boolean }) {
+  return (
+    <section id="answer" className={s.closed} aria-labelledby="closed-heading">
+      <div className={s.notice}>
+        <Clock aria-hidden size={20} strokeWidth={2.25} className={s.noticeIcon} />
+        <p>
+          <strong id="closed-heading">This question closed {formatDeadline(question.answerBy)}.</strong> ACAPS is
+          working with the answers it has.
+        </p>
+      </div>
+      <div className={s.confirmActions}>
+        {question.next && !referred ? (
+          <Link className="btn btn-primary" href={`/q/${question.next}`}>
+            Next question
+            <ArrowRight aria-hidden size={18} strokeWidth={2.5} />
+          </Link>
+        ) : (
+          <p className={s.done}>The next set of questions comes next week, or sooner if the situation shifts.</p>
+        )}
       </div>
     </section>
   );

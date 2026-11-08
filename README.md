@@ -77,11 +77,9 @@ Each one says what will show up there once a real panel exists.
 | `/q/[id]/opengraph-image` | The 1200x630 share card for the same question. |
 | `/how` | How it works: the weekly loop, the three kinds of question, how answers are combined. |
 
-Extra switches on the question page: `?demo=sparse` shows a risk with the fields most
-risks leave empty, `?demo=fail` makes the first send fail so you can see the retry state,
-and `?r=<token>` opens the page the way a forwarded colleague would see it.
-
-### Moderator side
+Demo switches on the question page: `?demo=sparse` shows a risk with the Radar fields most
+risks leave empty; `?demo=fail` makes the first send fail, to show the retry state; `?demo=closed` shows the page after its deadline;
+`?r=<token>` opens the page as a forwarded colleague would.
 
 `[iso]` is a country code from the export (`SDN`, `AFG`, `TCD`...) or `DEMO` for the Chad demo.
 

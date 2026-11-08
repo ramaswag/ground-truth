@@ -1,0 +1,190 @@
+/* Presenter bar for the demo: shell chrome (ink ground, white type, 3px rule), pinned to the bottom
+   so the audience always sees which step of the story is on screen. */
+
+.bar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 40;
+  background: var(--ink);
+  color: var(--white);
+  border-top: var(--rule) solid var(--accent);
+}
+
+.inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: var(--s3) var(--gutter) var(--s3);
+  display: grid;
+  gap: var(--s2);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: var(--s3) var(--s4);
+  flex-wrap: wrap;
+}
+
+.label {
+  font-size: var(--fs-small);
+  font-weight: 800;
+  color: var(--accent-bright);
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 var(--s2) 0 0;
+  color: var(--white);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.num {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  min-width: 28px;
+  font-weight: 800;
+  border-right: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+/* The step on screen is the reversed plate: white on the ink bar. */
+.step[aria-current="step"] {
+  background: var(--white);
+  color: var(--ink);
+  border-color: var(--white);
+}
+
+.step[aria-current="step"] .num {
+  border-right-color: var(--ink);
+}
+
+@media (hover: hover) {
+  .step:not([aria-current="step"]):hover {
+    border-color: var(--white);
+  }
+}
+
+.actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.next {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 44px;
+  padding: 0 var(--s4);
+  background: var(--white);
+  color: var(--ink);
+  border: var(--border) solid var(--white);
+  font-size: var(--fs-body);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .next:hover {
+    background: var(--accent-soft);
+  }
+}
+
+.quiet,
+.close {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 var(--s2);
+  background: transparent;
+  color: var(--white);
+  border: 0;
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.close {
+  width: 44px;
+  justify-content: center;
+}
+
+@media (hover: hover) {
+  .quiet:hover,
+  .close:hover {
+    color: var(--accent-bright);
+  }
+}
+
+.say {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  max-width: 120ch;
+}
+
+.say strong {
+  font-weight: 800;
+}
+
+.act {
+  color: var(--accent-bright);
+  font-weight: 700;
+}
+
+.inner > * {
+  min-width: 0;
+}
+
+/* Narrow screens: numbers only (the step's name leads the line below), icon buttons, "Next". */
+@media (max-width: 767px) {
+  .short,
+  .wide {
+    display: none;
+  }
+  .step {
+    padding-right: 0;
+  }
+  .num {
+    border-right: 0;
+  }
+  .quiet,
+  .close {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+  .label,
+  .quiet span,
+  .act {
+    display: none;
+  }
+  .inner {
+    padding-block: var(--s2);
+  }
+  .top {
+    flex-wrap: nowrap;
+    gap: var(--s2);
+  }
+  .steps {
+    flex-wrap: nowrap;
+  }
+  .actions {
+    gap: 0;
+  }
+  .next {
+    padding: 0 var(--s3);
+  }
+}

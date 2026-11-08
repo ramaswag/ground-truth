@@ -25,6 +25,7 @@ const KIND: Record<Change["kind"], string> = {
   "split-risk": "Risk split",
   "merged-risk": "Risk merged",
   "rejected-risk": "Risk rejected",
+  "direct-ask": "Direct ask",
 };
 
 const ACTOR: Record<Change["actor"]["kind"], string> = { expert: "expert", analyst: "ACAPS", panel: "panel", you: "you" };

@@ -4,6 +4,7 @@ import type { Change, Expert, GraphLink, GraphRisk } from "@/lib/moderate";
 import { PROBABILITY, coverage, formatWhen } from "@/lib/moderate";
 import { useState } from "react";
 import Link from "next/link";
+import { AskNext } from "./AskNext";
 import s from "./moderate.module.css";
 
 const ORIGIN: Record<GraphRisk["origin"], string> = {
@@ -118,6 +119,8 @@ export function Inspector({
       </div>
 
       {children}
+
+      <AskNext risk={risk} />
 
       <div className={s.block}>
         <div className={s.blockHead}>
