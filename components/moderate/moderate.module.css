@@ -1,0 +1,1414 @@
+/* ACAPS moderator workspace. Same Geneva Grid as the expert page: rules, reversal, three sizes. */
+
+/* ------------------------------------------------------------ context strip */
+
+.strip {
+  background: var(--ink);
+  color: var(--white);
+  border-bottom: var(--rule) solid var(--ink);
+}
+
+.stripInner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: var(--s2) var(--gutter);
+  min-height: 44px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--s2);
+  row-gap: var(--s1);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 500;
+}
+
+.stripInner strong {
+  font-weight: 800;
+}
+
+.sep {
+  color: var(--accent-bright);
+  font-weight: 800;
+}
+
+.stripLink {
+  margin-left: auto;
+  color: var(--white);
+  font-weight: 700;
+  text-decoration-color: var(--accent-bright);
+}
+
+@media (hover: hover) {
+  .stripLink:hover {
+    color: var(--accent-bright);
+  }
+}
+
+/* -------------------------------------------------------------- page frame */
+
+/* A desk tool: the workbench takes a wider frame than the expert page, band and footer included. */
+.frame {
+  --max: 1440px;
+  /* Short pages keep the footer at the bottom of the window. */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.frame > main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.bench > *,
+.lower > *,
+.pairRow > * {
+  min-width: 0;
+}
+
+/* The radar stays in view while the inspector scrolls, when the screen is tall enough to hold it. */
+@media (min-width: 1024px) and (min-height: 880px) {
+  .radarCol[data-sticky="true"] {
+    position: sticky;
+    top: var(--s4);
+  }
+}
+.main {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: var(--s5) var(--gutter) var(--s8);
+}
+
+.bench {
+  display: grid;
+  gap: var(--s6);
+}
+
+@media (min-width: 1024px) {
+  .bench {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--s7);
+    align-items: start;
+  }
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s3);
+  margin-bottom: var(--s3);
+}
+
+/* Tabs: the transposition panel's build, one cell per lens. */
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  border: var(--border) solid var(--ink);
+  background: var(--white);
+}
+
+.tab {
+  min-height: 46px;
+  padding: 0 var(--s4);
+  background: var(--white);
+  border: 0;
+  border-left: var(--border) solid var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.tab:first-child {
+  border-left: 0;
+}
+
+.tab[aria-selected="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: inset 0 -4px 0 var(--ink);
+}
+
+.tab:focus-visible {
+  outline-offset: -5px;
+}
+
+@media (hover: hover) {
+  .tab[aria-selected="false"]:hover {
+    background: var(--accent-soft);
+  }
+}
+
+@media (max-width: 639px) {
+  .tabs {
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+  .tab:nth-child(3) {
+    border-left: 0;
+  }
+  .tab:nth-child(n + 3) {
+    border-top: var(--border) solid var(--ink);
+  }
+}
+
+/* ------------------------------------------------------------------- radar */
+
+.field {
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  container-type: inline-size;
+}
+
+.radar {
+  position: relative;
+  aspect-ratio: 760 / 680;
+}
+
+.radarSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ring {
+  fill: none;
+  stroke: var(--hair-strong);
+  stroke-width: 1;
+}
+
+.ringLabel {
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--ink);
+  font-family: var(--font);
+  /* A white keyline so a link passing behind never cuts through the words. */
+  paint-order: stroke;
+  stroke: var(--white);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+}
+
+.link {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.link[data-status="proposed"] {
+  stroke-dasharray: 5 4;
+}
+
+.link[data-near="true"] {
+  stroke-width: 3;
+}
+
+/* A risk on the radar. Selection wipes the ink plate in from the left, as an answer does. */
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 3px var(--s2);
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  font-size: var(--fs-small);
+  line-height: 1.15;
+  font-weight: 800;
+  white-space: nowrap;
+  color: var(--ink);
+  transition: color 160ms var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.node::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 260ms var(--ease-out);
+}
+
+.node[data-status="proposed"] {
+  border-style: dashed;
+}
+
+.node[data-flag="true"] {
+  background: var(--accent-soft);
+}
+
+.node[aria-pressed="true"] {
+  color: var(--white);
+  border-style: solid;
+}
+
+.node[aria-pressed="true"]::before {
+  transform: scaleX(1);
+}
+
+.node:focus-visible {
+  outline-offset: 3px;
+  z-index: 2;
+}
+
+@media (hover: hover) {
+  .node[aria-pressed="false"]:hover {
+    box-shadow: inset 0 0 0 1px var(--ink);
+    z-index: 1;
+  }
+}
+
+.swatch {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+
+.swatch[data-level="high"] {
+  background: var(--high);
+  box-shadow: none;
+}
+
+.swatch[data-level="medium"] {
+  background: var(--medium);
+  box-shadow: none;
+}
+
+.node[aria-pressed="true"] .swatch[data-level="low"] {
+  box-shadow: inset 0 0 0 1px var(--white);
+}
+
+.nodeName {
+  font-weight: 700;
+}
+
+.val {
+  padding: 0 4px;
+  box-shadow: inset 0 0 0 1px currentColor;
+  font-weight: 800;
+}
+
+.node[aria-pressed="true"] .val {
+  color: var(--accent-bright);
+}
+
+@container (max-width: 660px) {
+  .ringLabel {
+    display: none;
+  }
+}
+
+/* Below 520px of field the rings cannot hold their labels: the risks read as rows by layer. */
+.layers {
+  display: none;
+}
+
+@container (max-width: 520px) {
+  .radar {
+    display: none;
+  }
+  .layers {
+    display: grid;
+  }
+}
+
+.layerRow {
+  padding: var(--s3);
+  border-bottom: 1px solid var(--hair);
+}
+
+.layerName {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  margin-bottom: var(--s2);
+}
+
+.layerItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.layerItems .node {
+  position: relative;
+  transform: none;
+  white-space: normal;
+  text-align: left;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s4);
+  padding: var(--s2) var(--s3) var(--s3);
+  border-top: 1px solid var(--ink);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.legend strong {
+  font-weight: 800;
+}
+
+/* ----------------------------------------------------------------- add risk */
+
+.addPanel {
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  padding: var(--s4);
+  margin-bottom: var(--s3);
+  display: grid;
+  gap: var(--s4);
+}
+
+.addHead {
+  font-size: var(--fs-body);
+  font-weight: 800;
+}
+
+.addNote {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  margin-top: 2px;
+  max-width: 62ch;
+}
+
+.fields {
+  display: grid;
+  gap: var(--s4);
+}
+
+@media (min-width: 640px) {
+  .fields {
+    grid-template-columns: 1fr 1fr;
+  }
+  .wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.field2 {
+  display: grid;
+  gap: var(--s1);
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--fs-small);
+  font-weight: 800;
+  line-height: var(--lh-small);
+}
+
+.label span {
+  font-weight: 500;
+}
+
+.input,
+.select {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--s3);
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  border-radius: 0;
+  font-size: var(--fs-body);
+}
+
+.select {
+  appearance: none;
+  padding-right: var(--s7);
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%),
+    linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position:
+    calc(100% - 22px) 50%,
+    calc(100% - 16px) 50%;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.input[aria-invalid="true"] {
+  border-color: var(--high);
+  outline-color: var(--high);
+}
+
+.error {
+  color: var(--high);
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+  gap: var(--s2);
+}
+
+@media (max-width: 479px) {
+  .pair {
+    grid-template-columns: 1fr;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+/* ---------------------------------------------------------------- inspector */
+
+.inspector {
+  min-width: 0;
+}
+
+.idLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 800;
+}
+
+.idLine .origin {
+  font-weight: 500;
+}
+
+.level {
+  padding: 3px var(--s2);
+  font-weight: 800;
+}
+
+.level[data-level="high"] {
+  background: var(--high);
+}
+
+.level[data-level="medium"] {
+  background: var(--medium);
+  color: var(--ink);
+}
+
+.level[data-level="low"] {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+/* The workbench's display size is the embed headline: the inspector column is narrow. */
+.title {
+  margin-top: var(--s2);
+  font-size: clamp(1.125rem, 0.8rem + 1.6vw, 1.5rem);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  max-width: 36ch;
+}
+
+.title + .idLine {
+  margin-top: var(--s2);
+}
+
+.summary {
+  margin-top: var(--s2);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.summary strong {
+  font-weight: 800;
+}
+
+.coverList {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.coverList strong {
+  font-weight: 700;
+}
+
+.unverified {
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.facts {
+  margin-top: var(--s4);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, auto));
+  justify-content: start;
+  border-top: var(--rule) solid var(--ink);
+}
+
+.facts > div {
+  padding: var(--s2) var(--s3) 0 0;
+  min-width: 0;
+}
+
+/* Inside a block the section rule is the table's top rule; values align along the foot when a label wraps. */
+.inspector > .item {
+  margin-top: var(--s4);
+}
+
+.factsInBlock {
+  margin-top: 0;
+  border-top: 0;
+}
+
+.factsInBlock > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2px;
+}
+
+.facts > div + div {
+  padding-left: var(--s3);
+  border-left: 1px solid var(--ink);
+}
+
+.facts dt {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: var(--lh-small);
+}
+
+.facts dd {
+  font-size: var(--fs-small);
+  font-weight: 800;
+  line-height: var(--lh-small);
+}
+
+@media (max-width: 479px) {
+  .facts {
+    grid-template-columns: 1fr 1fr;
+  }
+  .facts > div:nth-child(3) {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .facts > div:nth-child(n + 3) {
+    margin-top: var(--s2);
+    border-top: 1px solid var(--ink);
+  }
+}
+
+.block {
+  margin-top: var(--s5);
+}
+
+.blockHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s3);
+  border-top: var(--rule) solid var(--ink);
+  padding-top: var(--s2);
+  margin-bottom: var(--s2);
+}
+
+.blockHead h3 {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 800;
+}
+
+.blockHead p {
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.small {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.small strong {
+  font-weight: 800;
+}
+
+/* Trend: ACAPS's reading as a step line, the panel's median as square markers. */
+.chart {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-rows: 140px auto;
+  column-gap: var(--s2);
+}
+
+.yAxis {
+  position: relative;
+  font-size: var(--fs-small);
+  line-height: 1;
+  font-weight: 500;
+}
+
+.yAxis span {
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+  white-space: nowrap;
+}
+
+.plot {
+  position: relative;
+  border-left: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+.plot svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.grid {
+  stroke: var(--hair);
+  stroke-width: 1;
+}
+
+.acaps {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+
+.marker {
+  stroke: var(--ink);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  background: var(--ink);
+  border: 2px solid var(--white);
+  box-sizing: content-box;
+}
+
+.xAxis {
+  grid-column: 2;
+  position: relative;
+  height: 22px;
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.xAxis span {
+  position: absolute;
+  top: 4px;
+  transform: translateX(-50%);
+}
+
+.chartKey {
+  margin-top: var(--s2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s4);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.keyLine,
+.keyDot {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.keyLine {
+  width: 18px;
+  height: 3px;
+  background: var(--ink);
+}
+
+.keyDot {
+  width: 8px;
+  height: 8px;
+  background: var(--ink);
+}
+
+.emptyChart {
+  padding: var(--s4);
+  background: var(--white);
+  border: var(--border) dashed var(--ink);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+/* ------------------------------------------------------------------- lists */
+
+.rows > li {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+  gap: var(--s3);
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--ink);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.rows > li:first-child {
+  padding-top: 0;
+}
+
+.when {
+  font-weight: 500;
+}
+
+.who {
+  font-weight: 800;
+}
+
+.kind {
+  font-weight: 500;
+}
+
+.code {
+  display: inline-block;
+  padding: 0 4px;
+  margin: 0 2px;
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+button.code {
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  button.code:hover {
+    background: var(--accent-soft);
+  }
+}
+
+.code[data-status="proposed"] {
+  border-style: dashed;
+}
+
+.linkList > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s1) var(--s2);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--hair);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.linkList strong {
+  font-weight: 800;
+}
+
+.handles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s2);
+  margin-top: var(--s1);
+}
+
+.handle {
+  font-weight: 800;
+}
+
+.gapNote {
+  margin-top: var(--s2);
+  padding: var(--s3);
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.gapNote strong {
+  font-weight: 800;
+}
+
+.textLink {
+  background: none;
+  border: 0;
+  padding: var(--s1) 0;
+  min-height: 32px;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+@media (hover: hover) {
+  .textLink:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* -------------------------------------------------------- lower sections */
+
+.lower {
+  margin-top: var(--s8);
+  display: grid;
+  gap: var(--s7);
+}
+
+.pairRow {
+  display: grid;
+  gap: var(--s7);
+}
+
+@media (min-width: 1024px) {
+  .pairRow {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
+  }
+}
+
+.section {
+  scroll-margin-top: var(--s5);
+}
+
+.sectionHead {
+  border-top: var(--rule) solid var(--ink);
+  padding-top: var(--s3);
+  margin-bottom: var(--s4);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s2) var(--s4);
+}
+
+.sectionHead h2 {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 800;
+}
+
+.sectionHead p {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  max-width: 62ch;
+}
+
+.count {
+  font-weight: 800;
+}
+
+/* Decision queue: proposals are hollow (dashed) until someone decides. */
+.item {
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  padding: var(--s3) var(--s4) var(--s4);
+}
+
+.item + .item {
+  margin-top: var(--s2);
+}
+
+.item[data-kind="proposal"] {
+  border-style: dashed;
+}
+
+.item[data-done="true"] {
+  border-style: solid;
+}
+
+.itemHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s1) var(--s2);
+}
+
+.itemTitle {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 800;
+}
+
+.meta {
+  margin-top: 2px;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 500;
+}
+
+.meta strong {
+  font-weight: 800;
+}
+
+.itemActions {
+  margin-top: var(--s3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.done {
+  margin-top: var(--s2);
+  font-size: var(--fs-small);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+
+.empty {
+  padding: var(--s4);
+  border: var(--border) solid var(--ink);
+  background: var(--white);
+  font-size: var(--fs-small);
+}
+
+/* Panel table */
+.tableWrap {
+  overflow-x: auto;
+  border: var(--border) solid var(--ink);
+  background: var(--white);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  min-width: 860px;
+}
+
+.table th {
+  text-align: left;
+  font-weight: 800;
+  padding: var(--s2) var(--s3);
+  border-bottom: var(--rule) solid var(--ink);
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.table td {
+  padding: var(--s3);
+  border-bottom: 1px solid var(--ink);
+  vertical-align: top;
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.table .num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.expertName {
+  font-size: var(--fs-body);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.pending {
+  display: inline-block;
+  padding: 1px 6px;
+  border: var(--border) dashed var(--ink);
+  font-weight: 800;
+}
+
+.verified {
+  font-weight: 800;
+}
+
+/* Phones: each expert becomes a stacked row; nothing hides behind a sideways scroll. */
+@media (max-width: 639px) {
+  .tableWrap {
+    overflow: visible;
+  }
+  .table {
+    min-width: 0;
+  }
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+  }
+  .table tr {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--s3);
+    padding: var(--s3);
+    border-bottom: 1px solid var(--ink);
+  }
+  .table tr:last-child {
+    border-bottom: 0;
+  }
+  .table td {
+    padding: 0;
+    border: 0;
+  }
+  .table td:nth-child(1),
+  .table td:nth-child(2),
+  .table td:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+  .table td:nth-child(2) {
+    margin-top: var(--s1);
+  }
+  .table td:nth-child(3) {
+    order: 9;
+    margin-top: var(--s2);
+  }
+  .table .num {
+    text-align: left;
+    white-space: normal;
+    margin-top: var(--s2);
+    padding-top: var(--s2);
+    border-top: 1px solid var(--ink);
+  }
+  .table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: 500;
+  }
+}
+
+.tableNote {
+  margin-top: var(--s2);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+/* Gaps */
+.gapRows > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s2) var(--s4);
+  align-items: center;
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--ink);
+}
+
+.gapRows > li:first-child {
+  padding-top: 0;
+}
+
+.gapName {
+  font-weight: 800;
+}
+
+.gapCount {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.gapCount strong {
+  font-weight: 800;
+}
+
+/* The expert finder is not connected yet: hollow until it is. */
+.finder {
+  margin-top: var(--s4);
+  padding: var(--s4);
+  border: var(--border) dashed var(--ink);
+  background: var(--white);
+  scroll-margin-top: var(--s5);
+}
+
+.finder h3 {
+  font-size: var(--fs-body);
+  font-weight: 800;
+}
+
+.finder p {
+  margin-top: var(--s1);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  max-width: 60ch;
+}
+
+.finder strong {
+  font-weight: 800;
+}
+
+/* Outliers */
+.outlier {
+  padding: var(--s3) 0 var(--s4);
+  border-bottom: 1px solid var(--ink);
+  scroll-margin-top: var(--s5);
+}
+
+.outlier:first-child {
+  padding-top: 0;
+}
+
+.quote {
+  margin-top: var(--s2);
+  padding-left: var(--s3);
+  border-left: 1px solid var(--ink);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.quote + .quote {
+  margin-top: var(--s1);
+}
+
+.read {
+  margin-top: var(--s2);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.read strong {
+  font-weight: 800;
+}
+
+/* --------------------------------------------------------------- footer */
+
+.footer {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-top: var(--rule) solid var(--ink);
+}
+
+.footer :focus-visible {
+  outline-color: var(--accent-ink);
+}
+
+.footInner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: var(--s5) var(--gutter) var(--s6);
+  display: grid;
+  gap: var(--s2);
+}
+
+@media (min-width: 768px) {
+  .footInner {
+    grid-template-columns: 1fr 2fr;
+    gap: var(--s6);
+  }
+}
+
+.footMark strong {
+  font-weight: 800;
+}
+
+.footNote {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  max-width: 70ch;
+}
+
+
+/* ------------------------------------------------------------ navigation */
+
+/* Pages of the workbench: the tabs component as a full-width bar under the strip. */
+.nav {
+  background: var(--white);
+  border-bottom: var(--border) solid var(--ink);
+}
+
+.navInner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: flex;
+}
+
+.navInner li:first-child .navLink {
+  border-left: var(--border) solid var(--ink);
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 0 var(--s4);
+  border-right: var(--border) solid var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 800;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background-color 140ms var(--ease-out);
+}
+
+.navLink[aria-current="page"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: inset 0 -4px 0 var(--ink);
+}
+
+.navLink[aria-current="page"]:focus-visible {
+  outline-offset: -5px;
+  outline-color: var(--accent-ink);
+}
+
+@media (hover: hover) {
+  .navLink:not([aria-current="page"]):hover {
+    background: var(--accent-soft);
+  }
+}
+
+.navCount {
+  padding: 0 5px;
+  box-shadow: inset 0 0 0 1px currentColor;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+@media (max-width: 639px) {
+  .navInner {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 0;
+  }
+  .navLink {
+    display: flex;
+    justify-content: center;
+    padding: 0 var(--s2);
+    border-left: 0;
+    border-bottom: var(--border) solid var(--ink);
+  }
+  .navInner li:first-child .navLink {
+    border-left: 0;
+  }
+  .navInner li:nth-child(3n) .navLink {
+    border-right: 0;
+  }
+  .navInner li:nth-last-child(-n + 3) .navLink {
+    border-bottom: 0;
+  }
+}
+
+/* ----------------------------------------------------------------- pages */
+
+.sectionHead h1 {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 800;
+}
+
+.queue,
+.outliers {
+  max-width: 880px;
+}
+
+.changeRows {
+  max-width: 1000px;
+}
+
+.changeRows > li {
+  grid-template-columns: 140px minmax(0, 1fr);
+}
+
+.kindLabel {
+  display: block;
+  font-weight: 800;
+}
+
+.changeRows .who {
+  font-weight: 700;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin-bottom: var(--s4);
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 var(--s3);
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 140ms var(--ease-out);
+}
+
+.filter[data-on="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.filter:focus-within {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .filter[data-on="false"]:hover {
+    background: var(--accent-soft);
+  }
+}
+
+/* Gaps: the list beside the finder slot. */
+.split {
+  display: grid;
+  gap: var(--s6);
+}
+
+.split > * {
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .split {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--s7);
+    align-items: start;
+  }
+  .split .finder {
+    margin-top: 0;
+    position: sticky;
+    top: var(--s4);
+  }
+}
+
+.finder h2 {
+  font-size: var(--fs-body);
+  font-weight: 800;
+}
+
+.finder:focus-visible {
+  outline-offset: 2px;
+}

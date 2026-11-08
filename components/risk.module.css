@@ -1,0 +1,240 @@
+.risk {
+  border-top: var(--rule) solid var(--ink);
+  padding-top: var(--s3);
+}
+
+.heading {
+  font-size: var(--fs-body);
+  font-weight: 800;
+  line-height: var(--lh-body);
+  margin-bottom: var(--s4);
+}
+
+.idRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s3);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  line-height: var(--lh-small);
+}
+
+.level {
+  flex: none;
+  padding: 3px var(--s2);
+  font-weight: 800;
+  color: var(--white);
+  background: var(--ink);
+}
+
+.level[data-level="high"] {
+  background: var(--high);
+}
+.level[data-level="medium"] {
+  background: var(--medium);
+  color: var(--ink);
+}
+.level[data-level="low"] {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+.title {
+  margin-top: var(--s2);
+  font-weight: 700;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: 60ch;
+}
+
+.ratings {
+  margin-top: var(--s2);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s5) var(--s4);
+}
+
+.rating {
+  border-top: 1px solid var(--ink);
+  padding-top: var(--s2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  min-width: 0;
+}
+
+.rating dt {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: var(--lh-small);
+}
+
+.value {
+  font-weight: 800;
+  font-size: var(--fs-body);
+  line-height: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+
+.scale {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+  max-width: 140px;
+}
+
+.cell {
+  height: 8px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--hair-strong);
+}
+
+.cell[data-on="true"] {
+  background: var(--ink);
+  box-shadow: none;
+}
+
+.tests {
+  margin-top: var(--s5);
+  padding: var(--s3) var(--s4);
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.tests strong {
+  font-weight: 800;
+}
+
+.more {
+  margin-top: var(--s4);
+  border-top: var(--border) solid var(--ink);
+  border-bottom: var(--border) solid var(--ink);
+}
+
+.summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 52px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.chev {
+  flex: none;
+  transition: transform 200ms var(--ease-out);
+}
+
+.more[open] .chev {
+  transform: rotate(180deg);
+}
+
+.moreBody {
+  padding-bottom: var(--s5);
+}
+
+.subhead {
+  font-size: var(--fs-small);
+  font-weight: 800;
+  line-height: var(--lh-small);
+  margin: var(--s5) 0 var(--s2);
+}
+
+.moreBody > .subhead:first-of-type {
+  margin-top: var(--s6);
+}
+
+.triggers {
+  display: grid;
+  gap: var(--s3);
+}
+
+.trigger {
+  border-top: 1px solid var(--hair);
+  padding-top: var(--s2);
+}
+
+.trigger[data-tested="true"] {
+  border-top: var(--border) solid var(--ink);
+}
+
+.triggerHead {
+  display: flex;
+  gap: var(--s2);
+  align-items: center;
+  font-size: var(--fs-small);
+  font-weight: 800;
+}
+
+.triggerId {
+  font-variant-numeric: tabular-nums;
+}
+
+.thisQ {
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 1px 6px;
+}
+
+.triggerTitle {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  margin-top: 2px;
+}
+
+.completion {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-top: var(--s1);
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.track {
+  flex: 0 0 120px;
+  height: 8px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--hair-strong);
+  position: relative;
+}
+
+.fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--ink);
+}
+
+.prose {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: 62ch;
+  display: grid;
+  gap: var(--s3);
+}
+
+.sources {
+  margin-top: var(--s2);
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.date {
+  white-space: nowrap;
+}

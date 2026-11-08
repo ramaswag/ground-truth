@@ -1,0 +1,120 @@
+/* Motion for the futures wheel (the moderator's radar). Kept apart from moderate.module.css so the
+   wheel's look and its motion can change independently.
+
+   unfold  On arrival the wheel grows out of its root: a disc expands from the centre revealing rings
+           and links, and each risk arrives as the disc reaches its layer. Consequences appear in the
+           order they follow from the root. Plays once per visit and never blocks a click.
+   trace   Selecting a risk sends a small ink square along each of its links to the risks it touches.
+   sweep   Switching lens refills highlights and number tags from the root outward, layer by layer.
+
+   Everything is visible by default: the motion only animates from hidden, so a failed script or an
+   unsupported property leaves a static, complete wheel. */
+
+/* ---------------------------------------------------------------- unfold */
+
+.disc {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: unfold 640ms cubic-bezier(0.3, 0, 0.2, 1) both;
+}
+
+@keyframes unfold {
+  from {
+    transform: scale(0);
+  }
+}
+
+/* The disc reaches layer 1, 2 and 3 at roughly 130, 230 and 310ms: each risk arrives just behind it. */
+.wheel[data-unfold="true"] .node {
+  animation: arrive 280ms var(--ease-out) both;
+  animation-delay: calc(var(--layer, 0) * 105ms + 40ms);
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.86);
+  }
+}
+
+/* ----------------------------------------------------------------- trace */
+
+.wheel .link {
+  transition: stroke-width 200ms var(--ease-out);
+}
+
+.tracer {
+  fill: var(--ink);
+  animation: trace 520ms cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+
+/* On arrival the selected risk's links pulse once the wheel has finished unfolding. */
+.wheel[data-unfold="true"] .tracer {
+  animation-delay: 620ms;
+}
+
+@keyframes trace {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy));
+    opacity: 0;
+  }
+}
+
+/* ----------------------------------------------------------------- sweep */
+
+/* Doubled class: outranks the base .node transition without depending on stylesheet order. */
+.node.node {
+  transition:
+    color 160ms var(--ease-out),
+    background-color 220ms var(--ease-out) calc(var(--layer, 0) * 45ms);
+}
+
+.val {
+  animation: tag 220ms var(--ease-out) both;
+  animation-delay: calc(var(--layer, 0) * 45ms);
+}
+
+@keyframes tag {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
+
+/* ------------------------------------------------------- reduced motion */
+
+/* No spatial movement: no unfolding, no travelling squares, no stagger. Highlights and tags still
+   change with a short fade, so a lens switch or a selection is never silent. */
+@media (prefers-reduced-motion: reduce) {
+  .disc,
+  .wheel[data-unfold="true"] .node {
+    animation: none;
+  }
+
+  .tracer {
+    display: none;
+  }
+
+  .node.node {
+    transition:
+      color 160ms var(--ease-out),
+      background-color 160ms var(--ease-out);
+  }
+
+  .val {
+    animation: tag-fade 160ms linear both;
+  }
+}
+
+@keyframes tag-fade {
+  from {
+    opacity: 0;
+  }
+}

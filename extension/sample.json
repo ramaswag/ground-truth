@@ -1,0 +1,85 @@
+{
+  "note": "Snapshot of /api/questions for Chad, used only when the Ground Truth app is not running. Sample data.",
+  "places": [
+    "chad",
+    "tcd"
+  ],
+  "questions": [
+    {
+      "id": "Q-0411",
+      "kind": "verify",
+      "kindLabel": "Fact check",
+      "text": "Is the AdrÃ© crossing open to refugees and aid convoys this week, 2 to 8 November?",
+      "counts": "Yes if people and aid trucks crossed on most days this week. No if it was closed, or open only a day or two.",
+      "panel": "Chad",
+      "position": {
+        "index": 1,
+        "total": 4
+      },
+      "answerBy": "2026-11-08T12:00:00Z",
+      "answerByLabel": "Sun 8 Nov, 12:00 UTC",
+      "closesIn": null,
+      "riskId": "R1043",
+      "url": "http://localhost:3000/q/Q-0411"
+    },
+    {
+      "id": "Q-0412",
+      "kind": "predict",
+      "kindLabel": "Forecast",
+      "text": "Will there be a direct attack on strategic infrastructure in eastern Chad before 7 May 2027?",
+      "counts": "Counts if a strike or armed attack hits an airport such as Amdjarass, a military facility, a border post or a major transport corridor, and causes significant disruption.",
+      "panel": "Chad",
+      "position": {
+        "index": 2,
+        "total": 4
+      },
+      "answerBy": "2026-11-09T12:00:00Z",
+      "answerByLabel": "Mon 9 Nov, 12:00 UTC",
+      "closesIn": null,
+      "riskId": "R1043",
+      "url": "http://localhost:3000/q/Q-0412"
+    },
+    {
+      "id": "Q-0413",
+      "kind": "predict",
+      "kindLabel": "Forecast",
+      "text": "Will Chadian or Sudanese armed groups openly take part in cross-border hostilities in eastern Chad before 7 May 2027?",
+      "counts": "Counts if militias, rebel groups or proxy forces operating across the Chadâ€“Sudan border are reported fighting on Chadian territory, causing sustained violence or retaliatory attacks.",
+      "panel": "Chad",
+      "position": {
+        "index": 3,
+        "total": 4
+      },
+      "answerBy": "2026-11-09T12:00:00Z",
+      "answerByLabel": "Mon 9 Nov, 12:00 UTC",
+      "closesIn": null,
+      "riskId": "R1043",
+      "url": "http://localhost:3000/q/Q-0413"
+    },
+    {
+      "id": "Q-0414",
+      "kind": "map",
+      "kindLabel": "Risk link",
+      "text": "Could escalating insecurity in eastern Chad make the Lake Chad Basin crisis more likely to escalate within 6 months?",
+      "counts": "Yes if insecurity in the east would itself raise the chance of escalation around Lake Chad, directly or through something else.",
+      "panel": "Chad",
+      "position": {
+        "index": 4,
+        "total": 4
+      },
+      "answerBy": "2026-11-09T12:00:00Z",
+      "answerByLabel": "Mon 9 Nov, 12:00 UTC",
+      "closesIn": null,
+      "riskId": "R1043",
+      "url": "http://localhost:3000/q/Q-0414"
+    }
+  ],
+  "risks": [
+    {
+      "id": "R1043",
+      "title": "Escalating cross-border insecurity linked to the Sudan conflict increases protection risks and humanitarian needs in eastern Chad",
+      "country": "Chad",
+      "level": "High"
+    }
+  ]
+}

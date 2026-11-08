@@ -1,0 +1,558 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-07T18:00:00Z",
+  "title": "Design System: Ground Truth by ACAPS",
+  "extensions": {
+    "colorMeta": {
+      "signal-blue": {
+        "role": "primary",
+        "displayName": "Signal Blue",
+        "canonical": "#004b78",
+        "tonalRamp": [
+          "oklch(15% 0.04 240)",
+          "oklch(27% 0.07 240)",
+          "oklch(39% 0.11 240)",
+          "oklch(51% 0.13 240)",
+          "oklch(63% 0.12 240)",
+          "oklch(75% 0.08 240)",
+          "oklch(87% 0.04 240)",
+          "oklch(95% 0.02 240)"
+        ]
+      },
+      "signal-blue-deep": {
+        "role": "primary",
+        "displayName": "Deep Blue",
+        "canonical": "#003a5e",
+        "tonalRamp": [
+          "oklch(15% 0.04 240)",
+          "oklch(27% 0.07 240)",
+          "oklch(39% 0.10 240)",
+          "oklch(51% 0.12 240)",
+          "oklch(63% 0.11 240)",
+          "oklch(75% 0.08 240)",
+          "oklch(87% 0.04 240)",
+          "oklch(95% 0.02 240)"
+        ]
+      },
+      "signal-blue-soft": {
+        "role": "primary",
+        "displayName": "Pale Blue",
+        "canonical": "#dde9f1",
+        "tonalRamp": [
+          "oklch(15% 0.03 240)",
+          "oklch(27% 0.05 240)",
+          "oklch(39% 0.06 240)",
+          "oklch(51% 0.06 240)",
+          "oklch(63% 0.05 240)",
+          "oklch(75% 0.03 240)",
+          "oklch(87% 0.02 240)",
+          "oklch(95% 0.01 240)"
+        ]
+      },
+      "signal-blue-bright": {
+        "role": "primary",
+        "displayName": "Bright Blue",
+        "canonical": "#7fb8de",
+        "tonalRamp": [
+          "oklch(15% 0.03 240)",
+          "oklch(27% 0.05 240)",
+          "oklch(39% 0.08 240)",
+          "oklch(51% 0.10 240)",
+          "oklch(63% 0.09 240)",
+          "oklch(75% 0.08 240)",
+          "oklch(87% 0.04 240)",
+          "oklch(95% 0.02 240)"
+        ]
+      },
+      "vermilion-high": {
+        "role": "secondary",
+        "displayName": "Vermilion",
+        "canonical": "#c8321e",
+        "tonalRamp": [
+          "oklch(15% 0.04 33)",
+          "oklch(27% 0.09 33)",
+          "oklch(39% 0.14 33)",
+          "oklch(51% 0.18 33)",
+          "oklch(63% 0.17 33)",
+          "oklch(75% 0.12 33)",
+          "oklch(85% 0.07 33)",
+          "oklch(95% 0.02 33)"
+        ]
+      },
+      "amber-medium": {
+        "role": "secondary",
+        "displayName": "Amber",
+        "canonical": "#e07a10",
+        "tonalRamp": [
+          "oklch(15% 0.03 58)",
+          "oklch(27% 0.07 58)",
+          "oklch(39% 0.11 58)",
+          "oklch(51% 0.14 58)",
+          "oklch(63% 0.16 58)",
+          "oklch(75% 0.13 58)",
+          "oklch(85% 0.08 58)",
+          "oklch(95% 0.03 58)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#121212",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(27% 0 0)",
+          "oklch(39% 0 0)",
+          "oklch(51% 0 0)",
+          "oklch(63% 0 0)",
+          "oklch(75% 0 0)",
+          "oklch(85% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "#2b2b2b",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(27% 0 0)",
+          "oklch(39% 0 0)",
+          "oklch(51% 0 0)",
+          "oklch(63% 0 0)",
+          "oklch(75% 0 0)",
+          "oklch(85% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#f4f4f1",
+        "tonalRamp": [
+          "oklch(15% 0.003 106)",
+          "oklch(27% 0.004 106)",
+          "oklch(39% 0.005 106)",
+          "oklch(51% 0.006 106)",
+          "oklch(63% 0.006 106)",
+          "oklch(75% 0.006 106)",
+          "oklch(85% 0.005 106)",
+          "oklch(96.4% 0.004 106)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(27% 0 0)",
+          "oklch(39% 0 0)",
+          "oklch(51% 0 0)",
+          "oklch(63% 0 0)",
+          "oklch(75% 0 0)",
+          "oklch(85% 0 0)",
+          "oklch(100% 0 0)"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#c9c9c2",
+        "tonalRamp": [
+          "oklch(15% 0.004 106)",
+          "oklch(27% 0.005 106)",
+          "oklch(39% 0.007 106)",
+          "oklch(51% 0.008 106)",
+          "oklch(63% 0.009 106)",
+          "oklch(75% 0.009 106)",
+          "oklch(83% 0.009 106)",
+          "oklch(95% 0.004 106)"
+        ]
+      },
+      "hairline-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline",
+        "canonical": "#8d8d86",
+        "tonalRamp": [
+          "oklch(15% 0.004 106)",
+          "oklch(27% 0.005 106)",
+          "oklch(39% 0.007 106)",
+          "oklch(51% 0.008 106)",
+          "oklch(63% 0.009 106)",
+          "oklch(75% 0.009 106)",
+          "oklch(85% 0.007 106)",
+          "oklch(95% 0.004 106)"
+        ]
+      },
+      "whatsapp-green": {
+        "role": "tertiary",
+        "displayName": "WhatsApp Green",
+        "canonical": "#1f7a4a",
+        "tonalRamp": [
+          "oklch(15% 0.03 155)",
+          "oklch(27% 0.06 155)",
+          "oklch(39% 0.09 155)",
+          "oklch(51% 0.11 155)",
+          "oklch(63% 0.12 155)",
+          "oklch(75% 0.1 155)",
+          "oklch(85% 0.07 155)",
+          "oklch(95% 0.03 155)"
+        ]
+      },
+      "whatsapp-green-deep": {
+        "role": "tertiary",
+        "displayName": "WhatsApp Green Deep",
+        "canonical": "#17603a",
+        "tonalRamp": [
+          "oklch(15% 0.03 155)",
+          "oklch(27% 0.06 155)",
+          "oklch(39% 0.09 155)",
+          "oklch(43% 0.1 155)",
+          "oklch(63% 0.12 155)",
+          "oklch(75% 0.1 155)",
+          "oklch(85% 0.07 155)",
+          "oklch(95% 0.03 155)"
+        ]
+      },
+      "whatsapp-bubble": {
+        "role": "tertiary",
+        "displayName": "WhatsApp Bubble",
+        "canonical": "#dcf3d0",
+        "tonalRamp": [
+          "oklch(15% 0.02 140)",
+          "oklch(27% 0.04 140)",
+          "oklch(39% 0.06 140)",
+          "oklch(51% 0.07 140)",
+          "oklch(63% 0.07 140)",
+          "oklch(75% 0.06 140)",
+          "oklch(85% 0.05 140)",
+          "oklch(94% 0.04 140)"
+        ]
+      },
+      "whatsapp-ground": {
+        "role": "tertiary",
+        "displayName": "WhatsApp Ground",
+        "canonical": "#ebe5dc",
+        "tonalRamp": [
+          "oklch(15% 0.008 75)",
+          "oklch(27% 0.01 75)",
+          "oklch(39% 0.012 75)",
+          "oklch(51% 0.014 75)",
+          "oklch(63% 0.015 75)",
+          "oklch(75% 0.015 75)",
+          "oklch(85% 0.013 75)",
+          "oklch(92.5% 0.012 75)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The question itself (max 22ch, balanced) and the answer word in the confirmation plate. One per screen."
+      },
+      "headline-embed": {
+        "displayName": "Embed headline",
+        "purpose": "The question inside the partner embed card; reused as the moderator workbench display size for the inspector risk title (max 36ch, balanced)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section headings under 3px rules, answer labels, disclosure summaries, button labels."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Explanatory copy and notes, 58 to 62ch, tabular figures."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels, fact values, tab labels, risk badges. Sentence case, no tracking."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Fact keys, metadata, hints, anonymity strip, footnotes."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "System monospace stack, only for the embed code snippet. Real code, never a technical costume."
+      }
+    },
+    "shadows": [
+      {
+        "name": "rule-inset-1",
+        "value": "inset 0 0 0 1px var(--hair-strong)",
+        "purpose": "Outline of empty rating cells and completion tracks. A rule, not elevation."
+      },
+      {
+        "name": "rule-inset-2",
+        "value": "inset 0 0 0 2px var(--ink)",
+        "purpose": "Outline of the Low risk badge."
+      },
+      {
+        "name": "tab-underline",
+        "value": "inset 0 -4px 0 var(--ink)",
+        "purpose": "Selected tab underline, drawn inside the blue cell."
+      },
+      {
+        "name": "node-hover",
+        "value": "inset 0 0 0 1px var(--ink)",
+        "purpose": "Thickens a hovered radar node's 2px border. A rule, not elevation."
+      },
+      {
+        "name": "value-tag",
+        "value": "inset 0 0 0 1px currentColor",
+        "purpose": "Boxes the lens value inside a radar node; also the 1px outline of a Low level swatch."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The only easing in the system."
+      },
+      {
+        "name": "button-fill",
+        "value": "140ms",
+        "purpose": "Button background and colour on hover."
+      },
+      {
+        "name": "option-text",
+        "value": "160ms",
+        "purpose": "Answer option label colour flip."
+      },
+      {
+        "name": "chevron",
+        "value": "200ms",
+        "purpose": "Disclosure chevron rotation."
+      },
+      {
+        "name": "followup-rise",
+        "value": "240ms, translateY(-6px) + opacity",
+        "purpose": "Note and Send appearing after a selection."
+      },
+      {
+        "name": "plate-wipe",
+        "value": "260ms scaleX from left",
+        "purpose": "Ink plate wiping across the selected answer, and across the selected radar node on the moderator workbench."
+      },
+      {
+        "name": "plate-set",
+        "value": "320ms clip-path inset from right",
+        "purpose": "Sent confirmation plate clipping in."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "All animations and transitions collapse under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "facts-stack",
+        "value": "max-width 479px"
+      },
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "radar-compact",
+        "value": "container max-width 660px (radar field)"
+      }
+    ],
+    "focus": {
+      "value": "outline: 3px solid var(--ink); outline-offset: 2px",
+      "onInk": "outline-color: var(--accent-bright)"
+    },
+    "layout": {
+      "maxWidth": "1240px",
+      "maxWidthModerator": "1440px, set as --max on a wrapper around the whole moderator page so band, context strip, main and footer widen together",
+      "desktopGrid": "minmax(0,7fr) minmax(0,5fr), gap 48px",
+      "stickyAnswering": "top = min(24px, viewportHeight - columnHeight - 24px) at 1024px and up",
+      "moderatorBench": "DOM order radar, inspector, queue; one column gap 32px below 1024px; from 1024px 7:5 with areas \"radar inspector\" / \"queue inspector\", gap 48px"
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one action per state (Send, Next question). Signal blue with a white label and an ink border; never black.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Send answer <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 16px; background: var(--white, #fff); color: var(--ink, #121212); border: 2px solid var(--ink, #121212); border-radius: 0; font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); font-size: 1.0625rem; font-weight: 700; line-height: 1.1; cursor: pointer; transition: background-color 140ms cubic-bezier(0.16,1,0.3,1), color 140ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-primary { min-height: 54px; min-width: 220px; background: var(--accent, #004b78); color: #fff; font-weight: 800; } @media (hover: hover) { .ds-btn-primary:hover { background: var(--accent-deep, #003a5e); } } .ds-btn:active { transform: translateY(1px); } .ds-btn:focus-visible { outline: 3px solid var(--ink, #121212); outline-offset: 2px; } .ds-btn:disabled { opacity: 0.6; cursor: progress; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "White ruled button for secondary actions (Change answer, Copy text). Hover fills pale blue.",
+      "html": "<button class=\"ds-btn2\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/></svg>Change answer</button>",
+      "css": ".ds-btn2 { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 16px; background: var(--white, #fff); color: var(--ink, #121212); border: 2px solid var(--ink, #121212); border-radius: 0; font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); font-size: 1.0625rem; font-weight: 700; line-height: 1.1; cursor: pointer; transition: background-color 140ms cubic-bezier(0.16,1,0.3,1); } @media (hover: hover) { .ds-btn2:hover { background: var(--accent-soft, #dde9f1); } } .ds-btn2:active { transform: translateY(1px); } .ds-btn2:focus-visible { outline: 3px solid var(--ink, #121212); outline-offset: 2px; }"
+    },
+    {
+      "name": "WhatsApp Button",
+      "kind": "button",
+      "refersTo": "button-whatsapp",
+      "description": "Opens WhatsApp with the question prefilled. The only green in the product chrome.",
+      "html": "<button class=\"ds-btn-wa\">Open in WhatsApp</button>",
+      "css": ".ds-btn-wa { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 16px; background: var(--wa-green, #1f7a4a); color: #fff; border: 2px solid var(--wa-green, #1f7a4a); border-radius: 0; font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); font-size: 1.0625rem; font-weight: 700; cursor: pointer; transition: background-color 140ms cubic-bezier(0.16,1,0.3,1); } @media (hover: hover) { .ds-btn-wa:hover { background: #17603a; } } .ds-btn-wa:focus-visible { outline: 3px solid var(--ink, #121212); outline-offset: 2px; }"
+    },
+    {
+      "name": "Answer Options",
+      "kind": "custom",
+      "refersTo": "answer-option",
+      "description": "Signature: three full-width 58px rows; choosing one wipes the screen's only reversed ink plate across it.",
+      "html": "<div class=\"ds-opts\"><label class=\"ds-opt\" data-checked=\"true\"><input type=\"radio\" name=\"a\" checked class=\"ds-vh\"><span class=\"ds-opt-l\">Yes</span><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#7fb8de\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg></label><label class=\"ds-opt\"><input type=\"radio\" name=\"a\" class=\"ds-vh\"><span class=\"ds-opt-l\">No</span></label><label class=\"ds-opt\"><input type=\"radio\" name=\"a\" class=\"ds-vh\"><span class=\"ds-opt-l\">Don’t know</span><span class=\"ds-opt-h\">Pass it on</span></label></div>",
+      "css": ".ds-opts { display: grid; gap: 8px; max-width: 640px; font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); } .ds-vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } .ds-opt { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 58px; padding: 0 16px; background: var(--white, #fff); color: var(--ink, #121212); border: 2px solid var(--ink, #121212); cursor: pointer; transition: color 160ms cubic-bezier(0.16,1,0.3,1); } .ds-opt::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--ink, #121212); transform: scaleX(0); transform-origin: left center; transition: transform 260ms cubic-bezier(0.16,1,0.3,1); } @media (hover: hover) { .ds-opt:hover:not([data-checked='true']) { background: var(--accent-soft, #dde9f1); } } .ds-opt[data-checked='true'] { color: #fff; } .ds-opt[data-checked='true']::before { transform: scaleX(1); } .ds-opt:has(input:focus-visible) { outline: 3px solid var(--ink, #121212); outline-offset: 3px; } .ds-opt-l { font-size: 1.0625rem; font-weight: 800; } .ds-opt-h { font-size: 0.8125rem; font-weight: 500; }"
+    },
+    {
+      "name": "Confirmation Plates",
+      "kind": "custom",
+      "refersTo": "plate-sent",
+      "description": "Sent is a solid ink plate; pending ACAPS review is a dashed hollow plate; queued is a solid-bordered hollow plate.",
+      "html": "<div class=\"ds-plates\"><div class=\"ds-plate\" data-state=\"sent\"><p class=\"ds-plate-l\">Sent 7 Nov 2026 at 18:29</p><p class=\"ds-plate-w\">Yes</p></div><div class=\"ds-plate\" data-state=\"pending\"><p class=\"ds-plate-l\">Received · pending ACAPS review</p><p class=\"ds-plate-w\">No</p></div></div>",
+      "css": ".ds-plates { display: grid; gap: 16px; max-width: 640px; font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); } .ds-plate { padding: 16px 16px 24px; background: var(--ink, #121212); color: #fff; } .ds-plate[data-state='pending'] { background: #fff; color: var(--ink, #121212); border: 2px dashed var(--ink, #121212); } .ds-plate[data-state='queued'] { background: #fff; color: var(--ink, #121212); border: 2px solid var(--ink, #121212); } .ds-plate-l { margin: 0; font-size: 0.8125rem; font-weight: 700; line-height: 1.35; } .ds-plate[data-state='sent'] .ds-plate-l { color: var(--accent-bright, #7fb8de); } .ds-plate-w { margin: 8px 0 0; font-size: clamp(1.75rem, 1rem + 2.4vw, 3.25rem); line-height: 1.1; font-weight: 800; letter-spacing: -0.025em; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "White, square, 2px ink border; vermilion only when invalid.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-l\">Why? <span class=\"ds-opt-m\">(optional)</span></span><textarea class=\"ds-input\" placeholder=\"A reason or a source\"></textarea></label>",
+      "css": ".ds-field { display: grid; gap: 6px; max-width: 640px; font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); color: var(--ink, #121212); } .ds-field-l { font-size: 0.8125rem; font-weight: 800; line-height: 1.35; } .ds-opt-m { font-weight: 500; } .ds-input { width: 100%; min-height: 76px; padding: 12px; background: #fff; border: 2px solid var(--ink, #121212); border-radius: 0; font: inherit; font-size: 1.0625rem; line-height: 1.45; resize: vertical; } .ds-input:focus-visible { outline: 3px solid var(--ink, #121212); outline-offset: 2px; } .ds-input[aria-invalid='true'] { border-color: var(--high, #c8321e); outline-color: var(--high, #c8321e); }"
+    },
+    {
+      "name": "Transposition Tabs",
+      "kind": "nav",
+      "refersTo": "tab",
+      "description": "One ruled box split in three; the selected medium fills signal blue, white label, with an inset ink underline.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">WhatsApp</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\">Email</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\">Embed</button></div>",
+      "css": ".ds-tabs { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--ink, #121212); max-width: 480px; font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); } .ds-tab { min-height: 46px; background: #fff; color: var(--ink, #121212); border: 0; border-left: 2px solid var(--ink, #121212); font: inherit; font-size: 0.8125rem; font-weight: 800; cursor: pointer; } .ds-tab:first-child { border-left: 0; } .ds-tab[aria-selected='true'] { background: var(--accent, #004b78); color: #fff; box-shadow: inset 0 -4px 0 var(--ink, #121212); } .ds-tab:focus-visible { outline: 3px solid var(--ink, #121212); outline-offset: -5px; }"
+    },
+    {
+      "name": "Shell Band and Anonymity Strip",
+      "kind": "nav",
+      "refersTo": "shell-band",
+      "description": "Signal-blue band with white type over a 3px ink rule, then the black anonymity strip (shell chrome, the one non-answer ink ground).",
+      "html": "<header><div class=\"ds-band\"><div class=\"ds-wm\"><span class=\"ds-wm-n\">Ground Truth</span><span class=\"ds-wm-b\">by ACAPS</span></div><div class=\"ds-pos\"><span class=\"ds-pos-p\">Chad panel</span><span>Question 3 of 4</span></div></div><div class=\"ds-strip\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#7fb8de\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49\"/><path d=\"M14.084 14.158a3 3 0 0 1-4.242-4.242\"/><path d=\"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143\"/><path d=\"m2 2 20 20\"/></svg><span><strong>Anonymous</strong> to other experts <span class=\"ds-sep\">·</span> known to ACAPS</span></div></header>",
+      "css": ".ds-band { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; min-height: 60px; padding: 12px 20px; background: var(--accent, #004b78); color: #fff; border-bottom: 3px solid var(--ink, #121212); font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); } .ds-wm { display: flex; flex-direction: column; line-height: 1.05; } .ds-wm-n { font-size: 1.0625rem; font-weight: 800; letter-spacing: -0.02em; } .ds-wm-b { font-size: 0.8125rem; font-weight: 500; margin-top: 2px; } .ds-pos { display: flex; flex-direction: column; align-items: flex-end; font-size: 0.8125rem; line-height: 1.35; font-weight: 500; } .ds-pos-p { font-weight: 800; } .ds-strip { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 20px; background: var(--ink, #121212); color: #fff; border-bottom: 3px solid var(--ink, #121212); font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); font-size: 0.8125rem; font-weight: 500; } .ds-strip strong { font-weight: 800; } .ds-sep { color: var(--accent-bright, #7fb8de); font-weight: 800; }"
+    },
+    {
+      "name": "Risk Badge",
+      "kind": "chip",
+      "refersTo": "risk-level-high",
+      "description": "Square level block: High vermilion, Medium amber, Low white with an inset ink outline.",
+      "html": "<div class=\"ds-badges\"><span class=\"ds-lvl\" data-level=\"high\">High risk</span><span class=\"ds-lvl\" data-level=\"medium\">Medium risk</span><span class=\"ds-lvl\" data-level=\"low\">Low risk</span></div>",
+      "css": ".ds-badges { display: flex; gap: 8px; font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); } .ds-lvl { padding: 3px 8px; font-size: 0.8125rem; font-weight: 800; line-height: 1.35; } .ds-lvl[data-level='high'] { background: var(--high, #c8321e); color: #fff; } .ds-lvl[data-level='medium'] { background: var(--medium, #e07a10); color: var(--ink, #121212); } .ds-lvl[data-level='low'] { background: #fff; color: var(--ink, #121212); box-shadow: inset 0 0 0 2px var(--ink, #121212); }"
+    },
+    {
+      "name": "Embed Card",
+      "kind": "card",
+      "refersTo": "embed-card",
+      "description": "The question unit as a partner embed: blue top bar over a 3px rule, question, three answer links.",
+      "html": "<div class=\"ds-embed\"><div class=\"ds-embed-top\"><span><strong>Ground Truth</strong> by ACAPS</span><span class=\"ds-embed-where\">Eastern Chad · Risk R1043</span></div><div class=\"ds-embed-body\"><p class=\"ds-embed-q\">Will there be a direct attack on strategic infrastructure in eastern Chad before 7 May 2027?</p><div class=\"ds-embed-a\"><a href=\"#\">Yes</a><a href=\"#\">No</a><a href=\"#\">Don’t know</a></div><p class=\"ds-embed-foot\">Answer by 21 Nov 2026</p></div></div>",
+      "css": ".ds-embed { max-width: 480px; background: #fff; color: var(--ink, #121212); border: 2px solid var(--ink, #121212); font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); } .ds-embed-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 12px; background: var(--accent, #004b78); color: #fff; border-bottom: 3px solid var(--ink, #121212); font-size: 0.8125rem; line-height: 1.35; } .ds-embed-top strong { font-weight: 800; } .ds-embed-where { font-weight: 700; text-align: right; } .ds-embed-body { display: flex; flex-direction: column; gap: 12px; padding: 12px 12px 16px; } .ds-embed-q { margin: 0; font-size: clamp(1.125rem, 0.8rem + 1.6vw, 1.5rem); line-height: 1.15; font-weight: 800; letter-spacing: -0.02em; } .ds-embed-a { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; } .ds-embed-a a { display: flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 8px; border: 2px solid var(--ink, #121212); background: #fff; color: inherit; font-weight: 800; font-size: 15px; text-decoration: none; } @media (hover: hover) { .ds-embed-a a:hover { background: var(--accent-soft, #dde9f1); } } .ds-embed-a a:focus-visible { outline: 3px solid var(--ink, #121212); outline-offset: 2px; } .ds-embed-foot { margin: 0; padding-top: 8px; border-top: 1px solid var(--ink, #121212); font-size: 0.8125rem; }"
+    },
+    {
+      "name": "Moderator Context Strip",
+      "kind": "nav",
+      "refersTo": "context-strip",
+      "description": "Ink shell chrome under the band on the moderator workbench: context, panel, round, answers in, and a right-aligned decision link underlined in bright blue.",
+      "html": "<p class=\"ds-cstrip\"><strong>Chad panel</strong><span class=\"ds-csep\">·</span><span>7 experts</span><span class=\"ds-csep\">·</span><span>Week 45 round open until 14 Nov</span><span class=\"ds-csep\">·</span><span>19 of 28 answers in</span><span class=\"ds-csep\">·</span><span>Sample data, not saved</span><a href=\"#\" class=\"ds-clink\">5 need a decision</a></p>",
+      "css": ".ds-cstrip { margin: 0; display: flex; flex-wrap: wrap; align-items: center; column-gap: 8px; row-gap: 4px; min-height: 44px; padding: 8px 20px; background: var(--ink, #121212); color: #fff; border-bottom: 3px solid var(--ink, #121212); font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); font-size: 0.8125rem; line-height: 1.35; font-weight: 500; } .ds-cstrip strong { font-weight: 800; } .ds-csep { color: var(--accent-bright, #7fb8de); font-weight: 800; } .ds-clink { margin-left: auto; color: #fff; font-weight: 700; text-decoration-color: var(--accent-bright, #7fb8de); } .ds-clink:hover { color: var(--accent-bright, #7fb8de); } .ds-clink:focus-visible { outline: 3px solid var(--accent-bright, #7fb8de); outline-offset: 2px; }"
+    },
+    {
+      "name": "Risk Radar Nodes",
+      "kind": "custom",
+      "refersTo": "radar-node",
+      "description": "Signature: square labelled risks on the radar. Proposed is dashed, lens-surfaced is pale blue, selected wipes the screen's one ink plate in from the left.",
+      "html": "<div class=\"ds-nodes\"><button class=\"ds-node\" aria-pressed=\"true\"><span class=\"ds-sw\" data-level=\"high\"></span><span>R1043</span><span class=\"ds-nn\">Infrastructure attack</span><span class=\"ds-val\">+2</span></button><button class=\"ds-node\" aria-pressed=\"false\" data-flag=\"true\"><span class=\"ds-sw\" data-level=\"medium\"></span><span>R1051</span><span class=\"ds-nn\">Fuel shortage</span><span class=\"ds-val\">+1</span></button><button class=\"ds-node\" aria-pressed=\"false\" data-status=\"proposed\"><span>P04</span><span class=\"ds-nn\">Border closure</span></button><button class=\"ds-node\" aria-pressed=\"false\"><span class=\"ds-sw\" data-level=\"low\"></span><span>G12</span><span class=\"ds-nn\">Cholera</span></button></div>",
+      "css": ".ds-nodes { display: flex; flex-wrap: wrap; gap: 12px; padding: 16px; background: #fff; border: 2px solid var(--ink, #121212); font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); } .ds-node { position: relative; isolation: isolate; overflow: hidden; display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 3px 8px; background: #fff; color: var(--ink, #121212); border: 2px solid var(--ink, #121212); border-radius: 0; font: inherit; font-size: 0.8125rem; line-height: 1.15; font-weight: 800; white-space: nowrap; cursor: pointer; transition: color 160ms cubic-bezier(0.16,1,0.3,1); } .ds-node::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--ink, #121212); transform: scaleX(0); transform-origin: left center; transition: transform 260ms cubic-bezier(0.16,1,0.3,1); } .ds-node[data-status='proposed'] { border-style: dashed; } .ds-node[data-flag='true'] { background: var(--accent-soft, #dde9f1); } .ds-node[aria-pressed='true'] { color: #fff; border-style: solid; } .ds-node[aria-pressed='true']::before { transform: scaleX(1); } @media (hover: hover) { .ds-node[aria-pressed='false']:hover { box-shadow: inset 0 0 0 1px var(--ink, #121212); } } .ds-node:focus-visible { outline: 3px solid var(--ink, #121212); outline-offset: 3px; } .ds-sw { flex: none; width: 8px; height: 8px; background: #fff; box-shadow: inset 0 0 0 1px var(--ink, #121212); } .ds-sw[data-level='high'] { background: var(--high, #c8321e); box-shadow: none; } .ds-sw[data-level='medium'] { background: var(--medium, #e07a10); box-shadow: none; } .ds-node[aria-pressed='true'] .ds-sw[data-level='low'] { box-shadow: inset 0 0 0 1px #fff; } .ds-nn { font-weight: 500; } .ds-val { padding: 0 4px; box-shadow: inset 0 0 0 1px currentColor; font-weight: 800; } .ds-node[aria-pressed='true'] .ds-val { color: var(--accent-bright, #7fb8de); }"
+    },
+    {
+      "name": "Decision Queue Item",
+      "kind": "card",
+      "refersTo": "decision-item",
+      "description": "White ruled box; expert proposals dashed until decided, then solid with a result line and check.",
+      "html": "<div class=\"ds-q\"><article class=\"ds-item\" data-kind=\"proposal\"><h3 class=\"ds-it\">New risk proposed: border closure</h3><p class=\"ds-im\">Proposed by <strong>Expert 4</strong> · Layer 2</p><div class=\"ds-ia\"><button class=\"ds-qb\">Approve</button><button class=\"ds-qb\">Decline</button></div></article><article class=\"ds-item\" data-kind=\"proposal\" data-done=\"true\"><h3 class=\"ds-it\">New link proposed: R1043 to G12</h3><p class=\"ds-im\">Proposed by <strong>Expert 2</strong></p><p class=\"ds-done\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg>Approved, now on the radar</p></article></div>",
+      "css": ".ds-q { max-width: 560px; font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); color: var(--ink, #121212); } .ds-item { background: #fff; border: 2px solid var(--ink, #121212); padding: 12px 16px 16px; } .ds-item + .ds-item { margin-top: 8px; } .ds-item[data-kind='proposal'] { border-style: dashed; } .ds-item[data-done='true'] { border-style: solid; } .ds-it { margin: 0; font-size: 1.0625rem; line-height: 1.45; font-weight: 800; } .ds-im { margin: 2px 0 0; font-size: 0.8125rem; line-height: 1.35; font-weight: 500; } .ds-im strong { font-weight: 800; } .ds-ia { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; } .ds-qb { min-height: 48px; padding: 0 16px; background: #fff; color: inherit; border: 2px solid var(--ink, #121212); border-radius: 0; font: inherit; font-size: 1.0625rem; font-weight: 700; cursor: pointer; } @media (hover: hover) { .ds-qb:hover { background: var(--accent-soft, #dde9f1); } } .ds-qb:focus-visible { outline: 3px solid var(--ink, #121212); outline-offset: 2px; } .ds-done { margin: 8px 0 0; display: flex; align-items: center; gap: 4px; font-size: 0.8125rem; font-weight: 800; }"
+    },
+    {
+      "name": "Not-yet-connected Slot",
+      "kind": "card",
+      "refersTo": "expert-finder-slot",
+      "description": "A designed but unwired tool (the expert finder): dashed hollow box that says plainly it is not connected.",
+      "html": "<div class=\"ds-slot\"><h3>Expert finder</h3><p>Not connected yet. Pick Find experts on a gap to start a search here.</p></div>",
+      "css": ".ds-slot { max-width: 560px; padding: 16px; background: #fff; color: var(--ink, #121212); border: 2px dashed var(--ink, #121212); font-family: var(--font, Archivo, 'Helvetica Neue', Arial, sans-serif); } .ds-slot h3 { margin: 0; font-size: 1.0625rem; font-weight: 800; } .ds-slot p { margin: 4px 0 0; max-width: 60ch; font-size: 0.8125rem; line-height: 1.35; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Geneva Grid",
+    "overview": "Ground Truth is set like an International Typographic Style information poster: one objective unit, flush left, on one grid, in one grotesk. A signal-blue band with white type over a heavy black rule announces the asker; a paper ground carries the question at display size; white fields with square 2px ink borders hold the three answers. Nothing is rounded, nothing floats, nothing is tinted for mood. Rank comes from weight, case and reversal, never from extra sizes or colours.\n\nThe system's one theatrical act is reversal. Choosing an answer wipes a solid ink plate across that answer from the left, and the sent confirmation is the same plate at display size. Everything else stays light so that plate is unmistakable. States that are not yet confirmed (pending ACAPS review, queued offline) keep the plate's shape but stay hollow.\n\nThe question is a portable unit. The same structure (asker band, question, Yes / No / Don't know, answer-by date) is set again, cell for cell, as the WhatsApp message, the plain-text email, the partner embed card and the 1200x630 share card. New surfaces inherit that unit rather than inventing a new one.",
+    "keyCharacteristics": [
+      "Signal-blue band with white type, 3px ink rule, paper ground, white fields, ink text.",
+      "One grotesk (Archivo) at three sizes; weight 400/500/700/800 does the ranking.",
+      "Square corners everywhere in the product's own chrome; 2px control borders, 3px section rules, 1px hairlines inside groups.",
+      "The chosen element is the screen's only reversed ink plate: the answer on the expert page, the selected risk on the moderator workbench.",
+      "Flat: no elevation shadows. Depth is rules and reversal.",
+      "One question unit, transposed identically across page, WhatsApp, email, embed and OG card."
+    ],
+    "rules": [
+      {
+        "name": "The One Plate Rule",
+        "body": "A solid ink fill behind white text marks the chosen element, exactly one per screen. On the expert page that is the chosen answer (the option plate, then the sent plate); on the moderator workbench it is the selected radar node, wiped in with the same 260ms scaleX. No other in-content element may be a reversed ink plate. The black anonymity strip and the moderator context strip are shell chrome, not content, and are the only exceptions.",
+        "section": "colors"
+      },
+      {
+        "name": "The Vermilion Means Danger Rule",
+        "body": "Vermilion appears only for High risk and for error marks. It is never decoration, never an accent, never a link colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Grey Words Rule",
+        "body": "Text is ink or soft ink on light grounds, white or bright blue on ink, white on signal blue. Hairline greys are for rules and tracks, never for words.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Sizes Rule",
+        "body": "Display, body (17px) and small (13px) are the only sizes on the page. A new level of hierarchy is made with weight or reversal, never with a fourth size. (The embed headline is the display size of the embed and of the moderator workbench, which sets no display-size question; it is never an extra step on a page that already has one.)",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Case Rule",
+        "body": "No uppercase labels, no letter-spaced captions, no kicker lines above headings. A heading is a weight-800 title at body size, sitting under a rule.",
+        "section": "typography"
+      },
+      {
+        "name": "The Rules Not Shadows Rule",
+        "body": "If something needs to separate from its ground, give it a border or a rule at one of the three weights. Never a drop shadow, never a hard offset shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep exactly one reversed ink plate per screen, on the chosen element: the answer (option plate, then sent plate) on the expert page, the selected radar node on the moderator workbench. The anonymity strip and the moderator context strip are the only other ink grounds, and they are chrome.",
+      "**Do** mark not-yet-counted states as hollow plates: dashed 2px ink for pending ACAPS review, solid 2px ink for queued. Proposed radar risks and links and expert proposals in the queue are dashed for the same reason.",
+      "**Do** make the primary action signal blue with a white label and a 2px ink border.",
+      "**Do** carry any new transport of a question as the same unit: blue band with mark and risk, question, Yes / No / Don't know, answer-by date.",
+      "**Do** gate hover fills behind `(hover: hover)`.",
+      "**Do** head every section with a 3px ink rule and a weight-800 title at body size.",
+      "**Do** keep square corners and the 3px / 2px / 1px border weights for all product chrome.",
+      "**Do** keep text in ink or soft ink; put a source line beside every rating."
+    ],
+    "donts": [
+      "**Don't** fill a button, card or badge with ink; black belongs to the chosen element (the answer, or the selected radar node).",
+      "**Don't** use vermilion for anything but High risk and error marks.",
+      "**Don't** add a fourth type size; rank with weight or reversal.",
+      "**Don't** set uppercase or letter-spaced labels, or kicker lines above headings.",
+      "**Don't** set text in hairline grey.",
+      "**Don't** add rounded corners, drop shadows or hard offset shadows to product chrome (medium-faithful WhatsApp previews keep their own rounding).",
+      "**Don't** introduce a second display face or a second accent colour."
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Workbench sketch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--y:#ffd21f;--ink:#121212;--paper:#f4f4f1;--hair:#c9c9c2;--hi:#c8321e;--md:#e07a10}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;background:var(--paper);color:var(--ink);font:400 17px/1.45 Archivo,Arial,sans-serif;font-variant-numeric:tabular-nums}
+.band{background:var(--y);border-bottom:3px solid var(--ink);height:63px;display:flex;justify-content:space-between;align-items:flex-end;padding:12px 32px}
+.wm b{display:block;font-weight:800;letter-spacing:-.02em}.wm span,.who{font-size:13px;font-weight:500}.who{text-align:right}.who b{display:block;font-weight:800}
+.strip{background:var(--ink);color:#fff;border-bottom:3px solid var(--ink);height:44px;display:flex;align-items:center;gap:8px;padding:0 32px;font-size:13px}
+.strip b{font-weight:800}.strip i{color:var(--y);font-style:normal;font-weight:800}
+.grid{display:grid;grid-template-columns:7fr 5fr;gap:48px;padding:20px 32px 0}
+.tools{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.tabs{display:flex;border:2px solid var(--ink);background:#fff}.tabs span{height:46px;padding:0 18px;display:flex;align-items:center;font-size:13px;font-weight:800;border-left:2px solid var(--ink)}
+.tabs span:first-child{border-left:0}.tabs span.on{background:var(--y);box-shadow:inset 0 -4px 0 var(--ink)}
+.btn{display:inline-flex;align-items:center;height:48px;padding:0 18px;border:2px solid var(--ink);background:var(--y);font-weight:800}
+.radar{background:#fff;border:2px solid var(--ink);height:690px;position:relative}
+.legend{position:absolute;left:12px;bottom:10px;font-size:13px;font-weight:500;display:flex;gap:16px}
+.legend b{font-weight:800}
+.insp h2{font-size:30px;line-height:1.12;font-weight:800;letter-spacing:-.02em;margin:6px 0 10px}
+.k{font-size:13px;font-weight:800}.chip{font-size:13px;font-weight:800;padding:1px 6px;color:#fff;background:var(--hi);margin-right:6px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);border-top:3px solid var(--ink);margin:10px 0 18px}
+.facts div{padding:6px 10px 0 0;font-size:13px}.facts div+div{border-left:1px solid var(--ink);padding-left:10px}.facts b{display:block;font-weight:800}
+.rule{border-top:3px solid var(--ink);padding-top:6px;font-weight:800;margin-bottom:8px;display:flex;justify-content:space-between}
+.rule small{font-size:13px;font-weight:500}
+.chg{display:grid;grid-template-columns:96px 1fr;gap:12px;font-size:13px;padding:6px 0;border-bottom:1px solid var(--hair)}.chg b{font-weight:800}
+.split{display:flex;gap:4px;margin:4px 0 6px}.split span{width:52px;height:24px;border:1px solid #8d8d86}.split span.f{background:var(--ink);border-color:var(--ink)}.split span.a{outline:3px solid var(--y);outline-offset:-3px}
+.cov{font-size:13px}.cov b{font-weight:800}
+</style></head><body>
+<header class="band"><div class="wm"><b>Ground Truth</b><span>by ACAPS</span></div><div class="who"><b>ACAPS moderator</b>Switch role</div></header>
+<div class="strip"><b>Chad panel</b><i>·</i>7 experts<i>·</i>Week 45 round open, closes 21 Nov<i>·</i>19 of 28 answers in<i>·</i>4 items need a decision</div>
+<div class="grid">
+<section>
+<div class="tools"><div class="tabs"><span class="on">Priority</span><span>Changes this week</span><span>Coverage</span><span>Disagreement</span></div><span class="btn">+ Add risk</span></div>
+<div class="radar"><svg viewBox="0 0 760 690" width="100%" height="100%"><g fill="none" stroke="#121212"><circle cx="380" cy="345" r="105"/><circle cx="380" cy="345" r="205"/><circle cx="380" cy="345" r="300" stroke-dasharray="2 5"/></g>
+<g font-family="Archivo" font-size="12" font-weight="500"><text x="388" y="236">Layer 1</text><text x="388" y="136">Layer 2</text><text x="388" y="40">Layer 3</text></g>
+<g stroke="#121212" stroke-width="1.5"><line x1="380" y1="345" x2="380" y2="240"/><line x1="380" y1="345" x2="289" y2="398"/><line x1="380" y1="345" x2="471" y2="398"/>
+<line x1="380" y1="240" x2="248" y2="188"/><line x1="380" y1="240" x2="512" y2="188" stroke-dasharray="5 4"/><line x1="380" y1="240" x2="277" y2="63"/>
+<line x1="471" y1="398" x2="482" y2="522"/><line x1="471" y1="398" x2="278" y2="522"/><line x1="278" y1="522" x2="289" y2="398"/><line x1="482" y1="522" x2="432" y2="640"/><line x1="432" y1="640" x2="610" y2="560" stroke-dasharray="5 4"/><line x1="471" y1="398" x2="680" y2="345" stroke-dasharray="5 4"/></g>
+<g font-family="Archivo" font-size="12" font-weight="800">
+<rect x="330" y="333" width="100" height="26" fill="#fff" stroke="#121212" stroke-width="2"/><text x="338" y="350">R0002 Sudan</text>
+<rect x="300" y="226" width="160" height="28" fill="#121212"/><text x="308" y="244" fill="#fff">1 · R1043 Eastern Chad</text>
+<rect x="196" y="384" width="140" height="26" fill="#fff" stroke="#121212" stroke-width="2"/><text x="204" y="401">G-0011 Proxy groups</text>
+<rect x="404" y="384" width="170" height="26" fill="#ffd21f" stroke="#121212" stroke-width="2"/><text x="412" y="401">3 · G-0012 Refugee surge</text>
+<rect x="168" y="175" width="160" height="26" fill="#fff" stroke="#121212" stroke-width="2"/><text x="176" y="192">R1055 West Darfur</text>
+<rect x="440" y="175" width="150" height="26" fill="#ffd21f" stroke="#121212" stroke-width="2" stroke-dasharray="5 4"/><text x="448" y="192">4 · R1066 Lake Chad</text>
+<rect x="200" y="50" width="182" height="26" fill="#fff" stroke="#121212" stroke-width="2"/><text x="208" y="67">G-0016 Retaliatory strikes</text>
+<rect x="404" y="509" width="178" height="26" fill="#fff" stroke="#121212" stroke-width="2"/><text x="412" y="526">G-0013 Sites overcrowded</text>
+<rect x="200" y="509" width="150" height="26" fill="#fff" stroke="#121212" stroke-width="2"/><text x="208" y="526">G-0015 Host tensions</text>
+<rect x="352" y="627" width="196" height="26" fill="#ffd21f" stroke="#121212" stroke-width="2"/><text x="360" y="644">2 · G-0014 Disease outbreaks</text>
+<rect x="560" y="547" width="150" height="26" fill="#fff" stroke="#121212" stroke-width="2" stroke-dasharray="5 4"/><text x="568" y="564">P-0007 Measles</text>
+<rect x="600" y="332" width="150" height="26" fill="#fff" stroke="#121212" stroke-width="2" stroke-dasharray="5 4"/><text x="608" y="349">P-0008 Price spike</text></g></svg>
+<div class="legend"><span><b>Yellow</b> top 5 priority</span><span><b>Dashed</b> proposed, not yet approved</span><span><b>Black</b> selected</span></div></div>
+</section>
+<aside class="insp">
+<div class="k">Layer 1 · R1043 · Chad <span class="chip">High</span></div>
+<h2>Escalating cross-border insecurity linked to the Sudan conflict, eastern Chad</h2>
+<div class="facts"><div>Probability<b>High</b></div><div>Impact<b>4 of 5</b></div><div>Trend<b>Deteriorated</b></div><div>Panel says<b>Very high</b></div></div>
+<div class="rule">Trend, 12 weeks <small>ACAPS line, panel dots</small></div>
+<svg viewBox="0 0 520 110" width="100%" height="110"><g stroke="#c9c9c2"><line x1="0" y1="20" x2="520" y2="20"/><line x1="0" y1="55" x2="520" y2="55"/><line x1="0" y1="90" x2="520" y2="90"/></g><polyline fill="none" stroke="#121212" stroke-width="3" points="0,90 120,90 160,55 340,55 380,55 520,55"/><g fill="#121212"><circle cx="300" cy="55" r="5"/><circle cx="380" cy="40" r="5"/><circle cx="440" cy="30" r="5"/><circle cx="500" cy="20" r="5"/></g><line x1="160" y1="0" x2="160" y2="110" stroke="#121212" stroke-dasharray="3 3"/></svg>
+<div class="rule" style="margin-top:12px">What changed <small>3 this week</small></div>
+<div class="chg"><span>Today 08:40</span><span><b>Panel 5 of 7</b> moved it to Very high. Waiting for an analyst.</span></div>
+<div class="chg"><span>Fri 6 Nov</span><span><b>Analyst JM</b> approved link to R1055 West Darfur.</span></div>
+<div class="chg"><span>Thu 5 Nov</span><span><b>Analyst JM</b> proposed link to R1066 Lake Chad Basin.</span></div>
+<div class="rule" style="margin-top:14px">Coverage and disagreement</div>
+<div class="cov"><b>4 of 7 experts</b> cover this risk. <b>Sahel-7</b> answered against ACAPS 3 times in 4 weeks.</div>
+</aside></div>
+</body></html>

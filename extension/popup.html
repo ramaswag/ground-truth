@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ground Truth by ACAPS</title>
+    <style>
+      @font-face { font-family: "Archivo"; font-weight: 400; src: url("fonts/archivo-latin-400-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Archivo"; font-weight: 800; src: url("fonts/archivo-latin-800-normal.woff2") format("woff2"); }
+      * { box-sizing: border-box; margin: 0; }
+      body {
+        width: 320px; background: #f4f4f1; color: #121212;
+        font-family: "Archivo", "Helvetica Neue", Arial, sans-serif; font-size: 13px; line-height: 1.45;
+      }
+      header { padding: 10px 14px; background: #004b78; color: #fff; border-bottom: 3px solid #121212; display: grid; line-height: 1.1; }
+      header strong { font-weight: 800; font-size: 17px; }
+      header span { font-size: 13px; }
+      main { padding: 14px; display: grid; gap: 12px; }
+      .status { padding: 10px 12px; background: #fff; border: 2px solid #121212; font-weight: 800; font-size: 13px; }
+      .status[data-state="off"] { border-style: dashed; }
+      label { display: grid; gap: 4px; font-size: 13px; font-weight: 800; }
+      input { padding: 8px 10px; border: 2px solid #121212; border-radius: 0; font: inherit; background: #fff; }
+      button { justify-self: start; min-height: 40px; padding: 0 14px; background: #004b78; color: #fff; border: 2px solid #121212; font: inherit; font-weight: 800; cursor: pointer; }
+      p { font-size: 13px; }
+      :focus-visible { outline: 3px solid #121212; outline-offset: 2px; }
+    </style>
+  </head>
+  <body>
+    <header><strong>Ground Truth</strong><span>by ACAPS · ReliefWeb companion</span></header>
+    <main>
+      <p class="status" id="status" data-state="off">Looking for the Ground Truth app…</p>
+      <p>Open any ReliefWeb report. If ACAPS has a question this week on its country, a tab appears at the bottom right.</p>
+      <form id="form">
+        <label>App address <input id="origin" type="url" placeholder="http://localhost:3000" /></label>
+      </form>
+      <button type="submit" form="form">Save and reconnect</button>
+      <p>Runs only on reliefweb.int reports. Nothing is sent until you press send.</p>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

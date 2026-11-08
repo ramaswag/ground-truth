@@ -1,0 +1,133 @@
+.main {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: var(--s6) var(--gutter) var(--s8);
+}
+
+.grid {
+  display: grid;
+  gap: var(--s7);
+}
+
+.context {
+  display: grid;
+  gap: var(--s7);
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--s7);
+    align-items: start;
+  }
+  .primary[data-sticky="true"] {
+    position: sticky;
+    top: var(--stick-top, var(--s5));
+  }
+}
+
+.question {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.counts {
+  margin-top: var(--s4);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: 58ch;
+}
+
+.facts {
+  margin-top: var(--s5);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, auto));
+  justify-content: start;
+  border-top: var(--rule) solid var(--ink);
+  max-width: 640px;
+}
+
+.facts > div {
+  padding: var(--s2) var(--s4) 0 0;
+  min-width: 0;
+}
+
+.facts > div + div {
+  padding-left: var(--s4);
+  border-left: 1px solid var(--ink);
+}
+
+.facts dt {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: var(--lh-small);
+}
+
+.facts dd {
+  font-size: var(--fs-small);
+  font-weight: 800;
+  line-height: var(--lh-small);
+}
+
+/* Time left until answering closes, under the deadline: the clock that matters to the expert. */
+.left {
+  display: block;
+  font-weight: 500;
+}
+
+@media (max-width: 479px) {
+  .facts {
+    grid-template-columns: 1fr 1fr;
+  }
+  .facts > div:nth-child(3) {
+    grid-column: 1 / -1;
+    border-left: 0;
+    padding-left: 0;
+    margin-top: var(--s2);
+    border-top: 1px solid var(--ink);
+  }
+}
+
+.footer {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-top: var(--rule) solid var(--ink);
+}
+
+.footer :focus-visible {
+  outline-color: var(--accent-ink);
+}
+
+.footInner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: var(--s5) var(--gutter) var(--s6);
+  display: grid;
+  gap: var(--s2);
+}
+
+@media (min-width: 768px) {
+  .footInner {
+    grid-template-columns: 1fr 2fr;
+    gap: var(--s6);
+  }
+}
+
+.footMark {
+  font-size: var(--fs-body);
+}
+
+.footMark strong {
+  font-weight: 800;
+}
+
+.footNote {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  max-width: 70ch;
+}

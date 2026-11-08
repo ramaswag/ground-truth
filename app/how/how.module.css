@@ -1,0 +1,844 @@
+/* How it works: one idea per section, each argued in words on the left and drawn on the right.
+   Same world as the question page: blue shell, paper ground, ink, Archivo, square corners.
+   Solid = confirmed, dashed = not confirmed yet, everywhere on the page. */
+
+.main {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: var(--s7) var(--gutter) 0;
+}
+
+/* ---------------------------------------------------------------- hero */
+
+.hero {
+  display: grid;
+  gap: var(--s4);
+  max-width: 980px;
+}
+
+.h1 {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.lede {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: 62ch;
+}
+
+/* ---------------------------------------------------------------- loop */
+
+.loopFigure {
+  margin: var(--s7) 0 0;
+}
+
+.loop {
+  display: grid;
+  gap: 44px;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  padding: var(--s4) var(--s4) var(--s5);
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+}
+
+.step[data-key="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.stepNo {
+  font-size: var(--fs-display);
+  line-height: 1;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.stepTitle {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 800;
+}
+
+.stepText {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.stepArrow {
+  position: absolute;
+  color: var(--ink);
+  left: 50%;
+  bottom: -34px;
+  transform: translateX(-50%);
+  display: flex;
+}
+
+.loopBack {
+  margin-top: var(--s5);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s2);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 700;
+  max-width: 70ch;
+}
+
+.loopBack svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+/* Arrows point down on narrow screens, right on wide ones. */
+.flowRight {
+  display: none;
+}
+
+/* ------------------------------------------------------------ sections */
+
+.section {
+  margin-top: var(--s8);
+  padding-top: var(--s5);
+  border-top: var(--rule) solid var(--ink);
+  display: grid;
+  gap: var(--s6);
+}
+
+.intro {
+  display: grid;
+  gap: var(--s3);
+  align-content: start;
+}
+
+.intro p,
+.intro li {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: 46ch;
+}
+
+.intro strong {
+  font-weight: 800;
+}
+
+.h2 {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  margin-bottom: var(--s2);
+}
+
+.h3 {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 800;
+}
+
+.figure {
+  margin: 0;
+  min-width: 0;
+}
+
+.caption {
+  margin-top: var(--s3);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  text-align: left;
+}
+
+.ruleList {
+  display: grid;
+  gap: var(--s2);
+}
+
+/* ---------------------------------------------------------- node + flow */
+
+.node {
+  min-width: 0;
+  display: grid;
+  gap: var(--s1);
+  align-content: start;
+  padding: var(--s3);
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+}
+
+.node[data-dashed="true"] {
+  border-style: dashed;
+  background: var(--paper);
+}
+
+.nodeMeta {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.nodeName {
+  font-size: var(--fs-body);
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.chance {
+  justify-self: start;
+  margin-top: var(--s1);
+  padding: 2px var(--s2);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 800;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+
+.chance[data-level="high"] {
+  background: var(--high);
+  color: var(--white);
+  box-shadow: none;
+}
+
+.chance[data-level="medium"] {
+  background: var(--medium);
+  box-shadow: none;
+}
+
+.chance[data-level="done"] {
+  background: var(--ink);
+  color: var(--white);
+  box-shadow: none;
+}
+
+.flow {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  grid-template-areas: "line label";
+  align-items: center;
+  column-gap: var(--s3);
+  padding: var(--s1) 0 var(--s1) var(--s4);
+}
+
+.flowLabel {
+  grid-area: label;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 800;
+}
+
+.flowLine {
+  grid-area: line;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flowLine::before {
+  content: "";
+  height: 30px;
+  border-left: var(--border) solid var(--ink);
+}
+
+.flow[data-dashed="true"] .flowLine::before {
+  border-left-style: dashed;
+}
+
+.flowLine svg {
+  flex: none;
+  margin-top: -7px;
+}
+
+/* ----------------------------------------------------------------- map */
+
+.map {
+  display: grid;
+}
+
+.layerHead {
+  display: none;
+}
+
+.cellStart { order: 1; }
+.cellEdge1 { order: 2; }
+.cellMid { order: 3; }
+.cellEdge2a { order: 4; }
+.cellEnd1 { order: 5; }
+.cellEdge2b { order: 6; }
+.cellEnd2 { order: 7; }
+
+/* --------------------------------------------------------------- kinds */
+
+.kinds {
+  display: grid;
+  gap: var(--s6);
+}
+
+.kind {
+  display: grid;
+  gap: var(--s3);
+  align-content: start;
+  padding-top: var(--s3);
+  border-top: var(--border) solid var(--ink);
+}
+
+.asks {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.mini {
+  display: grid;
+  gap: var(--s3);
+  padding: var(--s3);
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+}
+
+.miniQ {
+  font-size: var(--fs-body);
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.miniAnswers {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s1);
+}
+
+.miniAnswers span {
+  padding: 6px 2px;
+  border: var(--border) solid var(--ink);
+  font-size: var(--fs-small);
+  line-height: 1.15;
+  font-weight: 800;
+  text-align: center;
+}
+
+.kindFacts {
+  display: grid;
+  gap: var(--s2);
+}
+
+.kindFacts dt {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 500;
+}
+
+.kindFacts dd {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 800;
+}
+
+/* --------------------------------------------------------------- tally */
+
+.tally {
+  width: 100%;
+  border-collapse: collapse;
+  caption-side: bottom;
+}
+
+.tally th,
+.tally td {
+  padding: var(--s2) var(--s3) var(--s2) 0;
+  border-bottom: 1px solid var(--ink);
+  text-align: left;
+  vertical-align: middle;
+  font-size: var(--fs-body);
+  line-height: 1.25;
+}
+
+.tally thead th {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  border-bottom: var(--border) solid var(--ink);
+}
+
+.tally tbody th {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tally tr[data-answer="dk"] th,
+.tally tr[data-answer="dk"] td {
+  border-bottom-style: dashed;
+}
+
+.answerChip {
+  display: inline-block;
+  padding: 2px var(--s2);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 800;
+  white-space: nowrap;
+  border: var(--border) solid var(--ink);
+  background: var(--white);
+}
+
+.answerChip[data-answer="yes"] {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.answerChip[data-answer="dk"] {
+  border-style: dashed;
+  background: transparent;
+}
+
+.weightCell {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.track {
+  position: relative;
+  flex: 1;
+  min-width: 64px;
+  max-width: 260px;
+  height: 12px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--hair-strong);
+}
+
+.fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--ink);
+}
+
+/* A Don't know keeps its weight on show but hatched: present, not counted. */
+.tally tr[data-answer="dk"] .fill {
+  background: repeating-linear-gradient(135deg, var(--ink) 0 2px, transparent 2px 6px);
+}
+
+.weightNum {
+  min-width: 2.5em;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.result {
+  margin-top: var(--s5);
+  border-top: var(--rule) solid var(--ink);
+}
+
+.resultRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--s4);
+  align-items: center;
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--ink);
+}
+
+.resultRow[data-main="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding-inline: var(--s3);
+}
+
+.resultRow dt {
+  grid-column: 1;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 800;
+}
+
+.resultRow dd {
+  grid-column: 1;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.resultRow .resultPct {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  font-size: var(--fs-display);
+  line-height: 1;
+  font-weight: 800;
+}
+
+.after {
+  margin-top: var(--s4);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: 62ch;
+}
+
+/* -------------------------------------------------------------- record */
+
+.record {
+  display: grid;
+  gap: var(--s4);
+}
+
+.recordStep {
+  display: grid;
+  gap: var(--s2);
+}
+
+.recordBarWrap {
+  position: relative;
+  display: block;
+  height: 12px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--hair-strong);
+}
+
+.recordBar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--w);
+  background: var(--ink);
+}
+
+/* The panel average, 1.0 on a 1.5 scale, as a dashed reference. */
+.recordBarWrap::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: calc(100% / 1.5);
+  border-left: 1px dashed var(--ink);
+}
+
+.recordText {
+  display: grid;
+  gap: 2px;
+}
+
+.recordWeight {
+  font-size: var(--fs-body);
+  line-height: 1.2;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.recordVerdict {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 800;
+}
+
+.recordStep[data-verdict="right"] .recordVerdict::before {
+  content: "+ ";
+}
+
+.recordStep[data-verdict="wrong"] .recordVerdict::before {
+  content: "− ";
+}
+
+.recordSaid {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+/* -------------------------------------------------------------- spread */
+
+.spread,
+.gapMap {
+  display: grid;
+}
+
+.move {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+  margin-top: var(--s2);
+  font-size: var(--fs-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.move strong {
+  font-weight: 800;
+}
+
+.delta {
+  padding: 1px 6px;
+  font-size: var(--fs-small);
+  font-weight: 800;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.sum {
+  margin-top: var(--s5);
+  padding-top: var(--s3);
+  border-top: var(--border) solid var(--ink);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s2) var(--s3);
+  font-size: var(--fs-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.sum strong {
+  font-weight: 800;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 0 6px;
+}
+
+/* ---------------------------------------------------------------- gaps */
+
+.gapMap {
+  margin: 0;
+}
+
+.pendingTag {
+  justify-self: start;
+  margin-top: var(--s1);
+  padding: 1px 6px;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 800;
+  border: 1px dashed var(--ink);
+}
+
+.signals {
+  margin-top: var(--s6);
+  display: grid;
+  gap: var(--s4);
+}
+
+.signals li,
+.rule {
+  display: grid;
+  gap: var(--s1);
+  padding-top: var(--s2);
+  border-top: var(--border) solid var(--ink);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.signals strong,
+.rule strong {
+  font-weight: 800;
+}
+
+/* --------------------------------------------------------------- rules */
+
+.rules {
+  display: grid;
+  gap: var(--s5);
+}
+
+.rule {
+  border-top-width: var(--rule);
+  padding-top: var(--s3);
+}
+
+/* --------------------------------------------------------------- close */
+
+.close {
+  margin-top: var(--s8);
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-top: var(--rule) solid var(--ink);
+}
+
+.close :focus-visible {
+  outline-color: var(--accent-ink);
+}
+
+.closeInner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: var(--s8) var(--gutter);
+  display: grid;
+  gap: var(--s5);
+  justify-items: start;
+}
+
+.closeH {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.closeNote {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  max-width: 70ch;
+}
+
+/* ------------------------------------------------------------ medium+ */
+
+@media (min-width: 768px) {
+  .kinds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s5);
+  }
+
+  .signals,
+  .rules {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--s6);
+  }
+
+  /* The record turns into five columns, bars standing up from one baseline. */
+  .record {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    column-gap: 0;
+    align-items: end;
+  }
+
+  .recordText {
+    padding-right: var(--s3);
+  }
+
+  .recordBarWrap {
+    height: 160px;
+    background: none;
+    box-shadow: none;
+    border-bottom: var(--border) solid var(--ink);
+  }
+
+  .recordBar {
+    inset: auto auto 0 0;
+    width: 28px;
+    height: var(--w);
+  }
+
+  /* Columns touch, so baseline and average line run unbroken across them. */
+  .recordBarWrap::after {
+    top: auto;
+    bottom: calc(100% / 1.5);
+    left: 0;
+    right: 0;
+    border-left: 0;
+    border-top: 1px dashed var(--ink);
+  }
+
+  .recordText {
+    min-height: 7.5em;
+    align-content: start;
+  }
+}
+
+/* -------------------------------------------------------------- wide */
+
+@media (min-width: 1024px) {
+  .loop {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    column-gap: 44px;
+  }
+
+  .stepArrow {
+    left: auto;
+    bottom: auto;
+    right: -34px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .flowRight {
+    display: block;
+  }
+
+  .flowDown {
+    display: none;
+  }
+
+  .section {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--s7);
+  }
+
+  /* Flows lie down: label above, line with its arrowhead below. */
+  .flow {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "label" "line";
+    row-gap: var(--s1);
+    padding: 0 var(--s2);
+    text-align: center;
+  }
+
+  .flowLine {
+    flex-direction: row;
+  }
+
+  .flowLine::before {
+    flex: 1;
+    height: 0;
+    border-left: 0;
+    border-top: var(--border) solid var(--ink);
+  }
+
+  .flow[data-dashed="true"] .flowLine::before {
+    border-top-style: dashed;
+  }
+
+  .flowLine svg {
+    margin-top: 0;
+    margin-left: -9px;
+  }
+
+  .map {
+    grid-template-columns: minmax(0, 1fr) 104px minmax(0, 1fr) 104px minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    row-gap: var(--s4);
+    align-items: center;
+  }
+
+  .layerHead {
+    display: block;
+    grid-row: 1;
+    align-self: end;
+    padding-bottom: var(--s1);
+    border-bottom: 1px solid var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: 800;
+  }
+
+  .cellStart,
+  .cellEdge1,
+  .cellMid,
+  .cellEdge2a,
+  .cellEdge2b,
+  .cellEnd1,
+  .cellEnd2 {
+    order: 0;
+  }
+
+  .cellStart { grid-column: 1; grid-row: 2 / 4; }
+  .cellEdge1 { grid-column: 2; grid-row: 2 / 4; }
+  .cellMid { grid-column: 3; grid-row: 2 / 4; }
+  .cellEdge2a { grid-column: 4; grid-row: 2; }
+  .cellEdge2b { grid-column: 4; grid-row: 3; }
+  .cellEnd1 { grid-column: 5; grid-row: 2; }
+  .cellEnd2 { grid-column: 5; grid-row: 3; }
+
+  .spread,
+  .gapMap {
+    grid-template-columns: minmax(0, 1fr) 150px minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .gapMap .caption {
+    grid-column: 1 / -1;
+  }
+}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<title>Geneva Grid sketch</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden}
+body{font-family:Archivo,Arial,sans-serif;background:#F4F4F1;color:#121212;font-feature-settings:"tnum"}
+.band{background:#FFD21F;padding:14px 20px 12px;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #121212}
+.mark{font-weight:800;font-size:19px;letter-spacing:-.02em;line-height:1}
+.mark small{display:block;font-weight:500;font-size:12px;letter-spacing:0;margin-top:3px}
+.panel{font-size:13px;font-weight:700;text-align:right;line-height:1.25}
+.anon{background:#121212;color:#fff;font-size:12.5px;font-weight:500;padding:8px 20px;display:flex;gap:8px;align-items:center}
+.anon b{font-weight:700}
+.dot{width:8px;height:8px;border:2px solid #FFD21F;border-radius:50%}
+main{padding:22px 20px 0}
+.meta{display:grid;grid-template-columns:auto 1fr auto;gap:10px;font-size:13px;font-weight:700;border-top:3px solid #121212;padding-top:8px}
+.meta span:nth-child(2){font-weight:500}
+h1{font-size:29px;line-height:1.12;font-weight:800;letter-spacing:-.025em;margin:16px 0 18px}
+.ask{font-size:13px;font-weight:500;margin-bottom:18px}
+.opts{display:grid;gap:8px}
+.opt{height:58px;border:2px solid #121212;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:18px;font-weight:700}
+.opt i{font-style:normal;font-size:13px;font-weight:500}
+.opt.on{background:#121212;color:#fff}
+.note{margin-top:14px;border:2px solid #121212;background:#fff;height:58px;padding:10px 14px;font-size:14px}
+.note span{display:block;font-size:12px;font-weight:700;margin-bottom:4px}
+.send{margin-top:12px;height:54px;background:#121212;color:#FFD21F;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px}
+.why{margin:22px 20px 0;border-top:3px solid #121212;padding-top:10px}
+.why .row{display:flex;justify-content:space-between;font-size:13px;font-weight:700}
+.lvl{background:#C8321E;color:#fff;padding:2px 8px}
+.why p{font-size:15px;font-weight:500;line-height:1.35;margin-top:8px}
+</style></head><body>
+<div class="band">
+  <div class="mark">Ground Truth<small>by ACAPS</small></div>
+  <div class="panel">Chad panel<br><span style="font-weight:500">Question 3 of 4</span></div>
+</div>
+<div class="anon"><span class="dot"></span><span><b>Anonymous</b> to other experts · known to ACAPS</span></div>
+<main>
+  <div class="meta"><span>Forecast</span><span>6-month horizon</span><span>Closes 21 Nov</span></div>
+  <h1>Will more than 20,000 new refugee arrivals from Sudan be recorded in eastern Chad before 7&nbsp;May&nbsp;2027?</h1>
+  <p class="ask">Asked by the ACAPS Chad analysis team · 2 days ago</p>
+  <div class="opts">
+    <div class="opt on">Yes <i>Selected</i></div>
+    <div class="opt">No</div>
+    <div class="opt">Don’t know <i>Forward it</i></div>
+  </div>
+  <div class="note"><span>Why? Optional</span>Arrivals at Adré rose again since October.</div>
+  <div class="send">Send answer</div>
+</main>
+<section class="why">
+  <div class="row"><span>R1043 · Eastern Chad</span><span class="lvl">High risk</span></div>
+  <p>Escalating cross-border insecurity linked to the Sudan conflict increases protection risks and humanitarian needs in eastern Chad.</p>
+</section>
+</body></html>

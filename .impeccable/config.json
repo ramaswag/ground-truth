@@ -1,0 +1,134 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-07T17:19:06.574Z",
+        "reason": "agent decision: decision-round sketch thumbnail, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-07T17:19:06.717Z",
+        "reason": "agent decision: decision-round sketch thumbnail, not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-07T17:34:39.886Z",
+        "reason": "agent decision: decision-round sketch of an unchosen world, its own face by design; not shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-11-07T17:34:40.045Z",
+        "reason": "agent decision: decision-round sketch of the category-standard card, its own face by design; not shipped"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "8px",
+        "files": [
+          "components/carry.module.css"
+        ],
+        "createdAt": "2026-11-07T17:35:00.795Z",
+        "reason": "agent decision: medium-faithful WhatsApp/email preview frame, recorded as an exception in DESIGN.md"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "6px",
+        "files": [
+          "components/carry.module.css"
+        ],
+        "createdAt": "2026-11-07T17:35:00.945Z",
+        "reason": "agent decision: medium-faithful WhatsApp/email preview frame, recorded as an exception in DESIGN.md"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "15px",
+        "files": [
+          "components/carry.module.css"
+        ],
+        "createdAt": "2026-11-07T17:35:01.093Z",
+        "reason": "agent decision: medium-faithful WhatsApp/email preview frame, recorded as an exception in DESIGN.md"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#3d4a43",
+        "files": [
+          "components/carry.module.css"
+        ],
+        "createdAt": "2026-11-07T17:35:01.242Z",
+        "reason": "agent decision: medium-faithful WhatsApp/email preview frame, recorded as an exception in DESIGN.md"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#0b5f8a",
+        "files": [
+          "components/carry.module.css"
+        ],
+        "createdAt": "2026-11-07T17:35:01.412Z",
+        "reason": "agent decision: medium-faithful WhatsApp/email preview frame, recorded as an exception in DESIGN.md"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#5c5c56",
+        "files": [
+          "components/answer.module.css"
+        ],
+        "createdAt": "2026-11-07T17:35:01.571Z",
+        "reason": "agent decision, accepted by finish reviewer: placeholder must read as distinct from entered text (6.7:1 on white)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/moderate-workbench.html"
+        ],
+        "createdAt": "2026-11-07T20:35:54.177Z",
+        "reason": "agent decision: decision-round sketch of a page structure, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/moderate-register.html"
+        ],
+        "createdAt": "2026-11-07T20:35:54.266Z",
+        "reason": "agent decision: decision-round sketch of a page structure, not shipped UI"
+      },
+      {
+        "rule": "monotonous-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/moderate-register.html"
+        ],
+        "createdAt": "2026-11-07T20:35:54.353Z",
+        "reason": "agent decision: decision-round sketch of a page structure, not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#5c5c56",
+        "files": [
+          "extension/content.js"
+        ],
+        "createdAt": "2026-11-08T08:26:09.409Z",
+        "reason": "agent decision: input placeholder grey, same sanctioned exception as answer.module.css (6.7:1 on white)"
+      }
+    ]
+  }
+}

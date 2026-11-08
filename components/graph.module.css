@@ -1,0 +1,256 @@
+/* ---------- LinkContext: one edge of the risk graph ---------- */
+
+.lead {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: 58ch;
+  margin-bottom: var(--s5);
+}
+
+.chain {
+  display: grid;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  column-gap: var(--s3);
+}
+
+/* A risk is a solid square on the rail. */
+.nodeRail {
+  display: flex;
+  justify-content: center;
+}
+
+.nodeRail::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  margin-top: 4px;
+  background: var(--ink);
+}
+
+.node {
+  min-width: 0;
+}
+
+.role {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: var(--lh-small);
+  margin-bottom: var(--s1);
+}
+
+/* A link is a rule on the rail: dashed while proposed, solid once mapped. */
+.edgeRail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: var(--s2);
+}
+
+.edgeLine {
+  flex: 1;
+  min-height: 36px;
+  border-left: var(--border) dashed var(--ink);
+}
+
+.edgeRail[data-status="mapped"] .edgeLine {
+  border-left-style: solid;
+}
+
+.edgeArrow {
+  flex: none;
+  margin-top: -6px;
+}
+
+.edgeLabel {
+  align-self: center;
+  padding: var(--s4) 0;
+  font-size: var(--fs-small);
+  font-weight: 800;
+  line-height: var(--lh-small);
+}
+
+/* ---------- LinkCheck: the follow-up after a forecast ---------- */
+
+.check {
+  margin-top: var(--s6);
+  border-top: var(--rule) solid var(--ink);
+  padding-top: var(--s3);
+  display: grid;
+  gap: var(--s3);
+}
+
+.checkHeading {
+  font-size: var(--fs-body);
+  font-weight: 800;
+  line-height: var(--lh-body);
+}
+
+.checkLead {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: 58ch;
+}
+
+.items,
+.addedList {
+  display: grid;
+  gap: var(--s4);
+  margin-top: var(--s2);
+}
+
+.item,
+.added {
+  border-top: 1px solid var(--ink);
+  padding-top: var(--s2);
+  display: grid;
+  gap: var(--s2);
+}
+
+.added {
+  border-top-style: dashed;
+}
+
+.itemMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s3);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  line-height: var(--lh-small);
+}
+
+.saved {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 800;
+}
+
+.pending {
+  flex: none;
+  font-weight: 800;
+  padding: 1px 6px;
+  border: 1px dashed var(--ink);
+}
+
+.itemTitle {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: 60ch;
+}
+
+/* Three joined squares. The pick gets a heavy frame and a tick, never the black plate:
+   that stays reserved for the expert's own answer. */
+.seg {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 420px;
+}
+
+.segOption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 var(--s2);
+  border: var(--border) solid var(--ink);
+  background: var(--white);
+  font-size: var(--fs-small);
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.segOption + .segOption {
+  margin-left: calc(var(--border) * -1);
+}
+
+.segOption[data-checked="true"] {
+  background: var(--white);
+  box-shadow: inset 0 0 0 3px var(--ink);
+}
+
+.segOption:has(input:focus-visible) {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+  position: relative;
+}
+
+@media (hover: hover) {
+  .segOption[data-checked="false"]:hover {
+    background: var(--accent-soft);
+  }
+}
+
+.addButton {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.addForm {
+  margin-top: var(--s2);
+  padding: var(--s4);
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  display: grid;
+  gap: var(--s4);
+}
+
+.relation {
+  display: grid;
+  gap: var(--s2);
+}
+
+.relationOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s5);
+}
+
+.relationOption {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 44px;
+  font-size: var(--fs-body);
+  cursor: pointer;
+}
+
+.relationOption input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--ink);
+}
+
+.pair {
+  display: grid;
+  gap: var(--s4);
+}
+
+@media (min-width: 560px) {
+  .pair {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.addNote {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.addActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s4);
+}

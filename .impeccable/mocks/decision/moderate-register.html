@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Register sketch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--y:#ffd21f;--ink:#121212;--paper:#f4f4f1;--hair:#c9c9c2;--hs:#8d8d86;--hi:#c8321e;--md:#e07a10}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;background:var(--paper);color:var(--ink);font:400 17px/1.45 Archivo,Arial,sans-serif;font-variant-numeric:tabular-nums}
+.band{background:var(--y);border-bottom:3px solid var(--ink);height:63px;display:flex;justify-content:space-between;align-items:flex-end;padding:12px 32px}
+.wm b{display:block;font-weight:800;letter-spacing:-.02em}.wm span,.who{font-size:13px;font-weight:500}.who{text-align:right}.who b{display:block;font-weight:800}
+.strip{background:var(--ink);color:#fff;border-bottom:3px solid var(--ink);height:44px;display:flex;align-items:center;gap:8px;padding:0 32px;font-size:13px}
+.strip b{font-weight:800}.strip i{color:var(--y);font-style:normal;font-weight:800}
+.head{display:flex;justify-content:space-between;align-items:flex-end;padding:22px 32px 16px}
+h1{font-size:40px;line-height:1.1;font-weight:800;letter-spacing:-.025em}
+.right{display:flex;gap:8px;align-items:center}
+.seg{display:flex;border:2px solid var(--ink);background:#fff}.seg span{height:46px;padding:0 18px;display:flex;align-items:center;font-size:13px;font-weight:800}.seg span+span{border-left:2px solid var(--ink)}.seg .on{background:var(--y);box-shadow:inset 0 -4px 0 var(--ink)}
+.btn{display:inline-flex;align-items:center;height:48px;padding:0 18px;border:2px solid var(--ink);background:var(--y);font-weight:800}
+.sel{height:48px;padding:0 14px;border:2px solid var(--ink);background:#fff;display:inline-flex;align-items:center;font-weight:700}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;padding:0 32px}
+.t{white-space:nowrap}td:nth-child(3){white-space:nowrap}
+.filters{display:flex;gap:8px;margin-bottom:10px}.filters span{height:36px;padding:0 12px;border:2px solid var(--ink);background:#fff;font-size:13px;font-weight:700;display:flex;align-items:center}.filters .on{background:var(--y)}
+table{width:100%;border-collapse:collapse;background:#fff;border:2px solid var(--ink);font-size:13px}
+th{text-align:left;font-weight:800;padding:8px;border-bottom:3px solid var(--ink);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid var(--ink);vertical-align:middle}
+td b{font-weight:800}.t{font-size:15px;font-weight:700}
+.code{font-weight:800;border:2px solid var(--ink);padding:0 4px}.dash{border-style:dashed}
+.lv{font-weight:800;padding:1px 6px;color:#fff;background:var(--hi)}.lv.m{background:var(--md);color:var(--ink)}.lv.l{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.gap{font-weight:800;color:var(--hi)}
+tr.pick td{background:var(--y)}
+.q .rule{border-top:3px solid var(--ink);padding-top:6px;font-weight:800;margin-bottom:6px;display:flex;justify-content:space-between}
+.item{border:2px solid var(--ink);background:#fff;padding:10px;margin-bottom:8px;font-size:13px}
+.item b{font-weight:800;display:block;font-size:15px}.item .acts{display:flex;gap:6px;margin-top:8px}
+.item .acts span{height:36px;padding:0 10px;border:2px solid var(--ink);display:flex;align-items:center;font-weight:700}.item .acts .p{background:var(--y);font-weight:800}
+.item.dashed{border-style:dashed}
+</style></head><body>
+<header class="band"><div class="wm"><b>Ground Truth</b><span>by ACAPS</span></div><div class="who"><b>ACAPS moderator</b>Switch role</div></header>
+<div class="strip"><b>Chad panel</b><i>·</i>7 experts<i>·</i>Week 45 round open, closes 21 Nov<i>·</i>19 of 28 answers in</div>
+<div class="head"><h1>Chad risk register</h1><div class="right"><span class="sel">Chad ▾</span><div class="seg"><span class="on">Table</span><span>Radar</span></div><span class="btn">+ Add risk</span></div></div>
+<div class="grid"><section>
+<div class="filters"><span class="on">All 12</span><span>Changed this week 6</span><span>Panel disagrees 3</span><span>Coverage gap 2</span><span>Proposed 2</span></div>
+<table><thead><tr><th>#</th><th>Layer</th><th>Risk</th><th>Level</th><th>Trend, 12 wk</th><th>ACAPS vs panel</th><th>Changes</th><th>Experts</th><th>Against</th></tr></thead><tbody>
+<tr class="pick"><td><b>1</b></td><td>L1</td><td><span class="code">R1043</span> <span class="t">Cross-border insecurity, eastern Chad</span></td><td><span class="lv">High</span></td><td><svg width="110" height="22"><polyline fill="none" stroke="#121212" stroke-width="2" points="0,18 40,18 50,10 90,10 110,3"/></svg></td><td>High → <b>Very high</b></td><td>3</td><td>4 of 7</td><td>1</td></tr>
+<tr><td><b>2</b></td><td>L3</td><td><span class="code">G-0014</span> <span class="t">Disease outbreaks in camps</span></td><td><span class="lv m">Medium</span></td><td><svg width="110" height="22"><polyline fill="none" stroke="#121212" stroke-width="2" points="0,18 70,18 80,10 110,10"/></svg></td><td>Medium → <b>High</b></td><td>2</td><td class="gap">1 of 7</td><td>0</td></tr>
+<tr><td><b>3</b></td><td>L1</td><td><span class="code">G-0012</span> <span class="t">Refugee surge into Ouaddaï</span></td><td><span class="lv">High</span></td><td><svg width="110" height="22"><polyline fill="none" stroke="#121212" stroke-width="2" points="0,10 110,10"/></svg></td><td><b>Split 3–4</b></td><td>1</td><td>5 of 7</td><td>3</td></tr>
+<tr><td><b>4</b></td><td>L2</td><td><span class="code dash">R1066</span> <span class="t">Lake Chad Basin insecurity</span></td><td><span class="lv">High</span></td><td><svg width="110" height="22"><polyline fill="none" stroke="#121212" stroke-width="2" points="0,10 110,3"/></svg></td><td>Link asked</td><td>1</td><td class="gap">0 of 7</td><td>–</td></tr>
+<tr><td><b>5</b></td><td>L2</td><td><span class="code">R1055</span> <span class="t">Mass returns to West Darfur</span></td><td><span class="lv m">Medium</span></td><td><svg width="110" height="22"><polyline fill="none" stroke="#121212" stroke-width="2" points="0,10 110,10"/></svg></td><td>Agree</td><td>1</td><td>3 of 7</td><td>0</td></tr>
+<tr><td><b>6</b></td><td>L0</td><td><span class="code">R0002</span> <span class="t">Conflict spreading across Sudan</span></td><td><span class="lv">High</span></td><td><svg width="110" height="22"><polyline fill="none" stroke="#121212" stroke-width="2" points="0,3 110,3"/></svg></td><td>Agree</td><td>0</td><td>6 of 7</td><td>0</td></tr>
+<tr><td><b>7</b></td><td>L1</td><td><span class="code">G-0011</span> <span class="t">Proxy mobilisation of armed groups</span></td><td><span class="lv m">Medium</span></td><td><svg width="110" height="22"><polyline fill="none" stroke="#121212" stroke-width="2" points="0,10 110,10"/></svg></td><td>Agree</td><td>0</td><td>4 of 7</td><td>0</td></tr>
+<tr><td><b>8</b></td><td>L2</td><td><span class="code">G-0013</span> <span class="t">Reception sites overcrowded</span></td><td><span class="lv l">Low</span></td><td><svg width="110" height="22"><polyline fill="none" stroke="#121212" stroke-width="2" points="0,18 110,10"/></svg></td><td>Agree</td><td>0</td><td>3 of 7</td><td>0</td></tr>
+</tbody></table></section>
+<aside class="q"><div class="rule">Needs a decision <span>4</span></div>
+<div class="item dashed"><b>Measles outbreak in Farchana camp</b>Proposed by Kite · follows Disease outbreaks · no duplicate found<div class="acts"><span class="p">Add to graph</span><span>Merge</span><span>Reject</span></div></div>
+<div class="item dashed"><b>Fuel and food price spike in Abéché</b>Proposed by Sahel-7 · follows Refugee surge<div class="acts"><span class="p">Add to graph</span><span>Merge</span><span>Reject</span></div></div>
+<div class="item"><b>R1043 to Very high</b>Panel 5 of 7, since Monday<div class="acts"><span class="p">Approve</span><span>Hold</span></div></div>
+<div class="item"><b>Two newcomers answer alike</b>tk-7e19 and tk-e6d1, forwarded by the same expert<div class="acts"><span class="p">Review</span></div></div>
+</aside></div>
+</body></html>

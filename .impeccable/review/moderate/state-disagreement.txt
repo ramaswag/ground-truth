@@ -1,0 +1,347 @@
+Skip to the radar
+Ground Truth
+by ACAPS
+
+ACAPS moderator
+Switch role
+
+Chad panel
+·
+7 experts
+·
+Week 45 round open until 21 Nov 2026
+·
+22 of 28 answers in
+·
+Sample data, not saved
+4 need a decision
+
+Chad panel, week 45: moderator workspace
+
+Priority
+Changes this week
+Coverage
+Disagreement
+Add risk
+Layer 1
+Layer 2
+Layer 3
+R0002
+Sudan conflict
+R1043
+Eastern Chad insecurity
+4–3
+G-0012
+Refugee surge
+3–4
+G-0011
+Proxy mobilisation
+R1066
+Lake Chad Basin
+G-0016
+Retaliatory strikes
+G-0013
+Sites overcrowded
+G-0015
+Host tensions
+G-0014
+Disease outbreaks
+1–0
+R1055
+West Darfur returns
+2–0
+P-0008
+Abéché price spike
+P-0007
+Measles, Farchana
+
+Yellow: the panel is split or answers against ACAPS. Numbers are Yes and No this week.
+Dashed: proposed, not yet approved.
+Black: selected.
+
+Escalating cross-border insecurity linked to the Sudan conflict increases protection risks and humanitarian needs in eastern Chad
+
+R1043
+·
+Layer 1
+High
+Chad
+·
+ACAPS Risk Radar
+
+ACAPS probability
+High
+Impact
+4 of 5
+Trend
+Deteriorated
+Panel this week
+4 Yes, 3 No
+
+Covered by 5 of 7 experts, 2 unverified. 3 answered against ACAPS this week.
+
+Waiting for your decision
+
+The panel reads it one step above ACAPS (High): 4 of 5 verified experts, Sat 7 Nov, 08:40.
+
+Approve
+Hold a round
+Trend, weeks 34 to 45
+Very high
+High
+Medium
+Low
+Very low
+W34
+W37
+W40
+W43
+W45
+ACAPS reading
+Panel median
+Dashed line: week 38, ACAPS raised it to High after strikes reached Chadian territory.
+What changed
+
+5 this week
+
+Sat 7 Nov, 08:40
+Panel, 4 of 5 verified Read it as Very high, one step above ACAPS; two newcomers held out. Waiting for an analyst.
+Fri 6 Nov, 17:05
+Analyst JM Approved the link to West Darfur returns: 6 months, strength 0.5.
+Fri 6 Nov, 11:30
+Sahel-7 Answered No against ACAPS on Q-0412: “Convoys still crossing at Adré every day.”
+Thu 5 Nov, 10:02
+Analyst JM Proposed a link to the Lake Chad Basin crisis; asked to the panel this week as Q-0414.
+Wed 4 Nov, 15:00
+Analyst AH Moved the refugee surge onto its own ring so the panel can be asked about it separately.
+Links
+
+4 on the radar
+
+Driven by
+R0002
+Sudan conflict
+6 months, strength 0.8
+Leads to
+R1055
+West Darfur returns
+6 months, strength 0.5
+Leads to
+G-0016
+Retaliatory strikes
+6 months, strength 0.6
+Leads to
+R1066
+Lake Chad Basin
+proposed link, 6 months
+Who covers it
+
+5 of 7 experts
+
+Baobab, Harmattan, Sahel-7, tk-7e19 (unverified), tk-e6d1 (unverified)
+
+Against ACAPS this week: Sahel-7, tk-7e19, tk-e6d1. See outlier profiles
+
+Needs a decision
+
+4 open. Risks experts flag land here first.
+
+Measles outbreak in Farchana camp
+Show on radar
+
+Proposed by Kite, Sat 7 Nov, 09:12. Source: MSF situation report, 5 Nov. Close to G-0014 Disease outbreaks: merging may fit better.
+
+Add to radar
+Merge into G-0014
+Reject
+R1043 to Very high
+Show on radar
+
+The panel reads it one step above ACAPS (High): 4 of 5 verified experts, Sat 7 Nov, 08:40.
+
+Approve
+Hold a round
+Fuel and food prices spike in Abéché markets
+Show on radar
+
+Proposed by Sahel-7, Thu 5 Nov, 16:20. Source: Market price survey, Abéché. No close match among existing risks.
+
+Add to radar
+Reject
+Two forwarded newcomers answer alike
+
+Both forwarded by Sahel-7 on 2 Nov, same answers on 4 of 4 questions, sent within 10 minutes.
+
+Mark reviewed
+Open profiles
+Changes this week
+
+7, newest first
+
+Sat 7 Nov, 09:12
+Kite (expert) Proposed a new risk, Measles outbreak in Farchana camp, following from overcrowded sites. P-0007G-0013
+Sat 7 Nov, 08:40
+Panel, 4 of 5 verified (panel) Read it as Very high, one step above ACAPS; two newcomers held out. Waiting for an analyst. R1043
+Fri 6 Nov, 17:05
+Analyst JM (ACAPS) Approved the link to West Darfur returns: 6 months, strength 0.5. R1043R1055
+Fri 6 Nov, 11:30
+Sahel-7 (expert) Answered No against ACAPS on Q-0412: “Convoys still crossing at Adré every day.” R1043
+Thu 5 Nov, 16:20
+Sahel-7 (expert) Proposed a new risk, Fuel and food price spike in Abéché, following from the refugee surge. P-0008G-0012
+Thu 5 Nov, 10:02
+Analyst JM (ACAPS) Proposed a link to the Lake Chad Basin crisis; asked to the panel this week as Q-0414. R1043R1066
+Wed 4 Nov, 15:00
+Analyst AH (ACAPS) Moved the refugee surge onto its own ring so the panel can be asked about it separately. G-0012R1043
+Panel
+
+7 experts. Only ACAPS sees who they are and how they score.
+
+Expert	Identity	Covers	This week	Reliability	Against ACAPS, 8 weeks
+
+
+Baobab
+
+Conflict analyst, N'Djamena
+
+	Verified by ACAPS	R0002R1043G-0011G-0016G-0015	4 of 4	0.11
+
+14 resolved
+
+	0
+
+
+Harmattan
+
+NGO field coordinator, Abéché
+
+	Verified by ACAPS	R1043G-0012G-0013R1055G-0015	2 of 4	0.16
+
+14 resolved
+
+	1
+
+
+Kite
+
+Camp health worker, Farchana
+
+	Verified by ACAPS	G-0012G-0013G-0014P-0007	3 of 4	0.17
+
+12 resolved
+
+	0
+
+
+Sahel-7
+
+Cross-border trade network, Adré
+
+	Verified by ACAPS	R0002R1043G-0012P-0008	4 of 4	0.25
+
+14 resolved
+
+	3
+
+
+Dune
+
+Researcher, Sudan conflict, Remote
+
+	Verified by ACAPS	R0002R1055G-0011G-0016	1 of 4	0.32
+
+14 resolved
+
+	1
+
+
+tk-7e19
+
+Forwarded newcomer, Unknown
+
+	Check pending
+
+Forwarded by Sahel-7
+
+	R1043G-0012	4 of 4	Too early
+
+3 resolved
+
+	2
+
+
+tk-e6d1
+
+Forwarded newcomer, Unknown
+
+	Check pending
+
+Forwarded by Sahel-7
+
+	R1043G-0012	4 of 4	Too early
+
+3 resolved
+
+	2
+
+Reliability is a Brier score on resolved questions in this context: lower is better, and Don’t know is never penalised. It needs 10 resolved answers before it means much. Against ACAPS counts the last 8 weeks.
+
+Expertise gaps
+
+Problem spaces where answers rest on one verified expert or none.
+
+Lake Chad Basin spillover R1066
+
+0 verified experts. The link from eastern Chad is asked this week, but nobody on the panel knows the basin.
+
+Find experts
+
+Health in the camps G-0014P-0007
+
+1 verified expert (Kite). 4 of 5 answers on disease questions this week were Don't know.
+
+Find experts
+
+Markets and prices in Abéché P-0008
+
+1 verified expert (Sahel-7). Only the expert who proposed the risk covers it.
+
+Find experts
+
+Armed groups and cross-border security R1043G-0011G-0016
+
+4 verified experts (Baobab, Harmattan, Sahel-7, Dune). Well covered, though most of it runs through the Adré crossing.
+
+Covered
+Expert finder
+
+Not connected yet. Pick Find experts on a gap to start a search here.
+
+ACAPS’s expert search plugs in here: it suggests people for a gap, and ACAPS checks each one before anyone is invited.
+
+Against the current
+
+Disagreement is signal. Ask before you weigh it down.
+
+Sahel-7 answers against ACAPS on 3 of the last 4 forecasts, all on R1043
+
+Against ACAPS. Reliability 0.25, mid-panel; covers the Adré crossing directly.
+
+Q-0412, No: “Convoys still crossing at Adré every day; no strikes near the airport.”
+
+Q-0413, No: “Armed groups pulled back from the border after the October talks.”
+
+Reading: Specific and first-hand: treat it as signal. Ask what they are seeing before the round closes.
+
+Ask what they are seeing
+Mark reviewed
+tk-7e19 and tk-e6d1, two forwarded newcomers, answer alike
+
+Pattern to review. Same answers on 4 of 4 questions, within 10 minutes, both forwarded by Sahel-7.
+
+Reading: Held out of the panel view until an analyst reviews them. If it is coordination, removal is open, never silent.
+
+Mark reviewed
+
+Ground Truth by ACAPS
+
+Interface draft. Risks R0002, R1043, R1055 and R1066 come from the ACAPS Risk Radar export. G and P risks, links, the panel, scores, trends and changes are sample data, and decisions made here are not saved. Demo: switch role.

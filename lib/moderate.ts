@@ -1,0 +1,580 @@
+/**
+ * The ACAPS moderator's view of one context: its risk graph, panel, the week's changes and
+ * what needs a decision. Draft data. Risks with an R ID are real Risk Radar records (read
+ * through radar-source.ts); G risks are graph-only risks ACAPS added, P risks are proposals
+ * from experts. Everything else here (links, panel, trends, changes, scores) is synthetic,
+ * written for this UI draft. Expert and analyst names are invented: no real people.
+ */
+
+import { getRisk } from "./radar-source";
+import type { Probability, RiskLevel, Trend } from "./radar";
+
+/* ------------------------------------------------------------------ types */
+
+export type Lens = "priority" | "changes" | "coverage" | "disagreement";
+
+/** Very low = 1 … Very high = 5, the Radar's probability scale. */
+export const PROBABILITY: Probability[] = ["Very low", "Low", "Medium", "High", "Very high"];
+
+export type ActorKind = "expert" | "analyst" | "panel" | "you";
+export type Actor = { name: string; kind: ActorKind };
+
+export type GraphRisk = {
+  id: string;
+  title: string;
+  /** Two or three words for the radar label. */
+  short: string;
+  place: string;
+  /** 0 is the context's root; 1 is what the root causes, 2 what those cause, and so on. */
+  layer: 0 | 1 | 2 | 3;
+  /** Position on its ring, degrees clockwise from three o'clock. */
+  angle: number;
+  origin: "radar" | "acaps" | "expert";
+  status: "mapped" | "proposed";
+  proposedBy?: string;
+  level?: RiskLevel;
+  /** 1–5, see PROBABILITY. */
+  probability?: number;
+  impact?: number;
+  trend?: Trend;
+  /** 0–100: how bad it would be times how unsure we are. */
+  priority: number;
+  /** Panel answers on this risk's questions this week. */
+  panel?: { yes: number; no: number; dontKnow: number; againstAcaps: string[]; median?: number };
+  /** Weeks 34–45. ACAPS probability (1–5) and panel median where the panel was asked. */
+  history: { week: number; acaps?: number; panel?: number }[];
+  /** The week ACAPS last moved its reading, with what moved it. */
+  lastMove?: { week: number; note: string };
+};
+
+export type GraphLink = {
+  id: string;
+  from: string;
+  to: string;
+  status: "mapped" | "proposed";
+  window: string;
+  strength?: number;
+};
+
+export type ChangeKind =
+  | "proposed-risk"
+  | "proposed-link"
+  | "approved-link"
+  | "probability-move"
+  | "answer-against"
+  | "added-risk"
+  | "split-risk"
+  | "merged-risk"
+  | "rejected-risk";
+
+export type Change = {
+  id: string;
+  /** ISO date-time. */
+  at: string;
+  actor: Actor;
+  kind: ChangeKind;
+  riskIds: string[];
+  text: string;
+};
+
+export type Expert = {
+  /** Full name. ACAPS knows who every expert is; names here are invented for the draft. */
+  name: string;
+  role: string;
+  base: string;
+  identity: "verified" | "pending";
+  forwardedBy?: string;
+  covers: string[];
+  answered: number;
+  /** Brier score on resolved questions in this context: lower is better. */
+  brier?: number;
+  resolved: number;
+  /** Answers against ACAPS's reading over the last 8 weeks. */
+  against: number;
+};
+
+export type Decision =
+  | { id: string; kind: "proposal"; riskId: string; source: string; duplicateOf?: string; at: string }
+  | { id: string; kind: "move"; riskId: string; from: number; to: number; votes: string; at: string }
+  | { id: string; kind: "pattern"; people: string[]; summary: string; at: string };
+
+export type Outlier = {
+  id: string;
+  people: string[];
+  kind: "against" | "pattern";
+  headline: string;
+  detail: string;
+  reasons: { question: string; answer: string; text: string }[];
+  read: string;
+};
+
+/** A problem space: the risks one kind of expertise answers for. */
+export type Space = { name: string; riskIds: string[]; note: string };
+
+export type Workspace = {
+  context: { name: string; week: number; closes: string; questions: number; rootId: string };
+  spaces: Space[];
+  risks: GraphRisk[];
+  links: GraphLink[];
+  changes: Change[];
+  panel: Expert[];
+  decisions: Decision[];
+  outliers: Outlier[];
+};
+
+/* ------------------------------------------------------------------- data */
+
+const WEEKS = [34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45];
+
+/** ACAPS's reading per week, panel medians for the weeks it was asked. */
+function history(acaps: (number | undefined)[], panel: Record<number, number> = {}): GraphRisk["history"] {
+  return WEEKS.map((week, i) => ({ week, acaps: acaps[i], panel: panel[week] }));
+}
+
+const flat = (v: number) => WEEKS.map(() => v);
+
+type Seed = Omit<GraphRisk, "title" | "place" | "level" | "probability" | "impact" | "trend"> &
+  Partial<Pick<GraphRisk, "title" | "place" | "level" | "probability" | "impact" | "trend">>;
+
+const RISKS: Seed[] = [
+  {
+    id: "R0002",
+    short: "Sudan conflict",
+    layer: 0,
+    angle: 0,
+    origin: "radar",
+    status: "mapped",
+    priority: 38,
+    history: history(flat(4)),
+  },
+  {
+    id: "R1043",
+    short: "Eastern Chad insecurity",
+    layer: 1,
+    angle: -90,
+    origin: "radar",
+    status: "mapped",
+    priority: 92,
+    panel: { yes: 4, no: 3, dontKnow: 0, againstAcaps: ["Adam Yacoub", "Ibrahim Nour", "Saleh Abdelkerim"], median: 5 },
+    history: history([3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4], { 41: 4, 42: 4, 43: 4, 44: 5, 45: 5 }),
+    lastMove: { week: 38, note: "ACAPS raised it to High after strikes reached Chadian territory" },
+  },
+  {
+    id: "G-0011",
+    title: "Chadian armed groups mobilise as proxies in the Sudan conflict",
+    short: "Proxy mobilisation",
+    place: "Eastern Chad",
+    layer: 1,
+    angle: 160,
+    origin: "acaps",
+    status: "mapped",
+    level: "Medium",
+    probability: 3,
+    impact: 4,
+    trend: "Stable",
+    priority: 34,
+    history: history(flat(3), { 43: 3 }),
+  },
+  {
+    id: "G-0012",
+    title: "Refugee arrivals in Ouaddaï outpace reception capacity",
+    short: "Refugee surge",
+    place: "Ouaddaï, Chad",
+    layer: 1,
+    angle: 20,
+    origin: "acaps",
+    status: "mapped",
+    level: "High",
+    probability: 4,
+    impact: 4,
+    trend: "Deteriorated",
+    priority: 71,
+    panel: { yes: 3, no: 4, dontKnow: 0, againstAcaps: ["Moussa Djibrine", "Clara Lindqvist", "Ibrahim Nour", "Saleh Abdelkerim"], median: 3 },
+    history: history([undefined, undefined, undefined, undefined, 3, 3, 3, 4, 4, 4, 4, 4], { 44: 3, 45: 3 }),
+    lastMove: { week: 41, note: "Split out of R1043 and rated High" },
+  },
+  {
+    id: "R1055",
+    short: "West Darfur returns",
+    layer: 2,
+    angle: -165,
+    origin: "radar",
+    status: "mapped",
+    priority: 30,
+    panel: { yes: 2, no: 0, dontKnow: 1, againstAcaps: [] },
+    history: history(flat(3)),
+  },
+  {
+    id: "G-0016",
+    title: "Sudanese forces carry out retaliatory strikes on Chadian territory",
+    short: "Retaliatory strikes",
+    place: "Eastern Chad",
+    layer: 2,
+    angle: -90,
+    origin: "acaps",
+    status: "mapped",
+    level: "High",
+    probability: 3,
+    impact: 5,
+    trend: "Deteriorated",
+    priority: 55,
+    history: history([2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3], { 42: 3 }),
+    lastMove: { week: 38, note: "Raised with R1043" },
+  },
+  {
+    id: "R1066",
+    short: "Lake Chad Basin",
+    layer: 2,
+    angle: -15,
+    origin: "radar",
+    status: "mapped",
+    priority: 60,
+    history: history(flat(5)),
+  },
+  {
+    id: "P-0008",
+    title: "Fuel and food prices spike in Abéché markets",
+    short: "Abéché price spike",
+    place: "Abéché, Chad",
+    layer: 2,
+    angle: 0,
+    origin: "expert",
+    status: "proposed",
+    proposedBy: "Adam Yacoub",
+    priority: 26,
+    history: history([]),
+  },
+  {
+    id: "G-0013",
+    title: "Reception sites in eastern Chad are overcrowded",
+    short: "Sites overcrowded",
+    place: "Eastern Chad",
+    layer: 2,
+    angle: 65,
+    origin: "acaps",
+    status: "mapped",
+    level: "Medium",
+    probability: 4,
+    impact: 3,
+    trend: "Deteriorated",
+    priority: 44,
+    history: history([3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4], { 43: 4 }),
+    lastMove: { week: 40, note: "Raised after UNHCR site counts" },
+  },
+  {
+    id: "G-0015",
+    title: "Tensions rise between host communities and refugees over water and land",
+    short: "Host tensions",
+    place: "Ouaddaï, Chad",
+    layer: 2,
+    angle: 125,
+    origin: "acaps",
+    status: "mapped",
+    level: "Medium",
+    probability: 3,
+    impact: 3,
+    trend: "Stable",
+    priority: 33,
+    history: history(flat(3)),
+  },
+  {
+    id: "P-0007",
+    title: "Measles outbreak in Farchana camp",
+    short: "Measles, Farchana",
+    place: "Farchana camp, Chad",
+    layer: 3,
+    angle: 30,
+    origin: "expert",
+    status: "proposed",
+    proposedBy: "Fatimé Ousmane",
+    priority: 40,
+    history: history([]),
+  },
+  {
+    id: "G-0014",
+    title: "Disease outbreaks spread in overcrowded camps",
+    short: "Disease outbreaks",
+    place: "Eastern Chad",
+    layer: 3,
+    angle: 70,
+    origin: "acaps",
+    status: "mapped",
+    level: "Medium",
+    probability: 3,
+    impact: 4,
+    trend: "Deteriorated",
+    priority: 80,
+    panel: { yes: 1, no: 0, dontKnow: 4, againstAcaps: [] },
+    history: history(flat(3), { 44: 4, 45: 4 }),
+  },
+];
+
+const LINKS: GraphLink[] = [
+  { id: "L-0021", from: "R0002", to: "R1043", status: "mapped", window: "6 months", strength: 0.8 },
+  { id: "L-0022", from: "R0002", to: "G-0011", status: "mapped", window: "6 months", strength: 0.6 },
+  { id: "L-0023", from: "R0002", to: "G-0012", status: "mapped", window: "3 months", strength: 0.9 },
+  { id: "L-0034", from: "R1043", to: "R1055", status: "mapped", window: "6 months", strength: 0.5 },
+  { id: "L-0040", from: "R1043", to: "G-0016", status: "mapped", window: "6 months", strength: 0.6 },
+  { id: "L-0058", from: "R1043", to: "R1066", status: "proposed", window: "6 months" },
+  { id: "L-0041", from: "G-0012", to: "G-0013", status: "mapped", window: "3 months", strength: 0.9 },
+  { id: "L-0042", from: "G-0012", to: "G-0015", status: "mapped", window: "6 months", strength: 0.5 },
+  { id: "L-0043", from: "G-0015", to: "G-0011", status: "mapped", window: "6 months", strength: 0.3 },
+  { id: "L-0044", from: "G-0013", to: "G-0014", status: "mapped", window: "3 months", strength: 0.7 },
+  { id: "L-0061", from: "G-0012", to: "P-0008", status: "proposed", window: "3 months" },
+  { id: "L-0062", from: "G-0013", to: "P-0007", status: "proposed", window: "3 months" },
+];
+
+const CHANGES: Change[] = [
+  {
+    id: "C-118",
+    at: "2026-11-07T09:12",
+    actor: { name: "Fatimé Ousmane", kind: "expert" },
+    kind: "proposed-risk",
+    riskIds: ["P-0007", "G-0013"],
+    text: "Proposed a new risk, Measles outbreak in Farchana camp, following from overcrowded sites.",
+  },
+  {
+    id: "C-117",
+    at: "2026-11-07T08:40",
+    actor: { name: "Panel, 4 of 5 verified", kind: "panel" },
+    kind: "probability-move",
+    riskIds: ["R1043"],
+    text: "Read it as Very high, one step above ACAPS; two newcomers held out. Waiting for an analyst.",
+  },
+  {
+    id: "C-116",
+    at: "2026-11-06T17:05",
+    actor: { name: "Julie Mercier", kind: "analyst" },
+    kind: "approved-link",
+    riskIds: ["R1043", "R1055"],
+    text: "Approved the link to West Darfur returns: 6 months, strength 0.5.",
+  },
+  {
+    id: "C-115",
+    at: "2026-11-06T11:30",
+    actor: { name: "Adam Yacoub", kind: "expert" },
+    kind: "answer-against",
+    riskIds: ["R1043"],
+    text: "Answered No against ACAPS on Q-0412: “Convoys still crossing at Adré every day.”",
+  },
+  {
+    id: "C-114",
+    at: "2026-11-05T16:20",
+    actor: { name: "Adam Yacoub", kind: "expert" },
+    kind: "proposed-risk",
+    riskIds: ["P-0008", "G-0012"],
+    text: "Proposed a new risk, Fuel and food price spike in Abéché, following from the refugee surge.",
+  },
+  {
+    id: "C-113",
+    at: "2026-11-05T10:02",
+    actor: { name: "Julie Mercier", kind: "analyst" },
+    kind: "proposed-link",
+    riskIds: ["R1043", "R1066"],
+    text: "Proposed a link to the Lake Chad Basin crisis; asked to the panel this week as Q-0414.",
+  },
+  {
+    id: "C-112",
+    at: "2026-11-04T15:00",
+    actor: { name: "Amir Hassan", kind: "analyst" },
+    kind: "split-risk",
+    riskIds: ["G-0012", "R1043"],
+    text: "Moved the refugee surge onto its own ring so the panel can be asked about it separately.",
+  },
+];
+
+const PANEL: Expert[] = [
+  {
+    name: "Halima Abakar",
+    role: "Conflict analyst",
+    base: "N'Djamena",
+    identity: "verified",
+    covers: ["R0002", "R1043", "G-0011", "G-0016", "G-0015"],
+    answered: 4,
+    brier: 0.11,
+    resolved: 14,
+    against: 0,
+  },
+  {
+    name: "Moussa Djibrine",
+    role: "NGO field coordinator",
+    base: "Abéché",
+    identity: "verified",
+    covers: ["R1043", "G-0012", "G-0013", "R1055", "G-0015"],
+    answered: 2,
+    brier: 0.16,
+    resolved: 14,
+    against: 1,
+  },
+  {
+    name: "Adam Yacoub",
+    role: "Cross-border trade network",
+    base: "Adré",
+    identity: "verified",
+    covers: ["R0002", "R1043", "G-0012", "P-0008"],
+    answered: 4,
+    brier: 0.25,
+    resolved: 14,
+    against: 3,
+  },
+  {
+    name: "Fatimé Ousmane",
+    role: "Camp health worker",
+    base: "Farchana",
+    identity: "verified",
+    covers: ["G-0012", "G-0013", "G-0014", "P-0007"],
+    answered: 3,
+    brier: 0.17,
+    resolved: 12,
+    against: 0,
+  },
+  {
+    name: "Clara Lindqvist",
+    role: "Researcher, Sudan conflict",
+    base: "Remote",
+    identity: "verified",
+    covers: ["R0002", "R1055", "G-0011", "G-0016"],
+    answered: 1,
+    brier: 0.32,
+    resolved: 14,
+    against: 1,
+  },
+  {
+    name: "Ibrahim Nour",
+    role: "Forwarded newcomer",
+    base: "Unknown",
+    identity: "pending",
+    forwardedBy: "Adam Yacoub",
+    covers: ["R1043", "G-0012"],
+    answered: 4,
+    resolved: 3,
+    against: 2,
+  },
+  {
+    name: "Saleh Abdelkerim",
+    role: "Forwarded newcomer",
+    base: "Unknown",
+    identity: "pending",
+    forwardedBy: "Adam Yacoub",
+    covers: ["R1043", "G-0012"],
+    answered: 4,
+    resolved: 3,
+    against: 2,
+  },
+];
+
+const DECISIONS: Decision[] = [
+  {
+    id: "D-31",
+    kind: "proposal",
+    riskId: "P-0007",
+    source: "MSF situation report, 5 Nov",
+    duplicateOf: "G-0014",
+    at: "2026-11-07T09:12",
+  },
+  { id: "D-30", kind: "move", riskId: "R1043", from: 4, to: 5, votes: "4 of 5 verified experts", at: "2026-11-07T08:40" },
+  { id: "D-29", kind: "proposal", riskId: "P-0008", source: "Market price survey, Abéché", at: "2026-11-05T16:20" },
+  {
+    id: "D-28",
+    kind: "pattern",
+    people: ["Ibrahim Nour", "Saleh Abdelkerim"],
+    summary: "Both forwarded by Adam Yacoub on 2 Nov, same answers on 4 of 4 questions, sent within 10 minutes.",
+    at: "2026-11-06T12:00",
+  },
+];
+
+const OUTLIERS: Outlier[] = [
+  {
+    id: "O-12",
+    people: ["Adam Yacoub"],
+    kind: "against",
+    headline: "Adam Yacoub answers against ACAPS on 3 of the last 4 forecasts, all on R1043",
+    detail: "Against ACAPS. Reliability 0.25, mid-panel; covers the Adré crossing directly.",
+    reasons: [
+      { question: "Q-0412", answer: "No", text: "Convoys still crossing at Adré every day; no strikes near the airport." },
+      { question: "Q-0413", answer: "No", text: "Armed groups pulled back from the border after the October talks." },
+    ],
+    read: "Specific and first-hand: treat it as signal. Ask what they are seeing before the round closes.",
+  },
+  {
+    id: "O-11",
+    people: ["Ibrahim Nour", "Saleh Abdelkerim"],
+    kind: "pattern",
+    headline: "Ibrahim Nour and Saleh Abdelkerim, two forwarded newcomers, answer alike",
+    detail: "Pattern to review. Same answers on 4 of 4 questions, within 10 minutes, both forwarded by Adam Yacoub.",
+    reasons: [],
+    read: "Held out of the panel view until an analyst reviews them. If it is coordination, removal is open, never silent.",
+  },
+];
+
+const SPACES: Space[] = [
+  {
+    name: "Lake Chad Basin spillover",
+    riskIds: ["R1066"],
+    note: "The link from eastern Chad is asked this week, but nobody on the panel knows the basin.",
+  },
+  {
+    name: "Health in the camps",
+    riskIds: ["G-0014", "P-0007"],
+    note: "4 of 5 answers on disease questions this week were Don't know.",
+  },
+  {
+    name: "Markets and prices in Abéché",
+    riskIds: ["P-0008"],
+    note: "Only the expert who proposed the risk covers it.",
+  },
+  {
+    name: "Armed groups and cross-border security",
+    riskIds: ["R1043", "G-0011", "G-0016"],
+    note: "Well covered, though most of it runs through the Adré crossing.",
+  },
+];
+
+/* ---------------------------------------------------------------- loading */
+
+const PROB_INDEX: Record<Probability, number> = { "Very low": 1, Low: 2, Medium: 3, High: 4, "Very high": 5 };
+
+export async function getWorkspace(): Promise<Workspace> {
+  const risks = await Promise.all(
+    RISKS.map(async (seed): Promise<GraphRisk> => {
+      if (seed.origin !== "radar") return seed as GraphRisk;
+      const r = await getRisk(seed.id);
+      return {
+        ...seed,
+        title: r?.title ?? seed.id,
+        place: r?.country ?? "",
+        ...(r?.level && { level: r.level }),
+        ...(r?.probability && { probability: PROB_INDEX[r.probability] }),
+        ...(r?.impact && { impact: r.impact }),
+        ...(r?.trend && { trend: r.trend }),
+      };
+    }),
+  );
+  return {
+    context: { name: "Chad", week: 45, closes: "2026-11-21", questions: 4, rootId: "R0002" },
+    spaces: SPACES,
+    risks,
+    links: LINKS,
+    changes: CHANGES,
+    panel: PANEL,
+    decisions: DECISIONS,
+    outliers: OUTLIERS,
+  };
+}
+
+/* ---------------------------------------------------------------- helpers */
+
+export function coverage(panel: Expert[], riskId: string): Expert[] {
+  return panel.filter((e) => e.covers.includes(riskId));
+}
+
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/** "2026-11-07T09:12" -> "Sat 7 Nov, 09:12". Parsed by hand so server and client agree. */
+export function formatWhen(at: string): string {
+  const [date, time] = at.split("T");
+  const [y, m, d] = date.split("-").map(Number);
+  const day = DAYS[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
+  return `${day} ${d} ${MONTHS[m - 1]}${time ? `, ${time}` : ""}`;
+}

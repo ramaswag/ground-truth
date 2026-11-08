@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Ledger sketch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--y:#ffd21f;--ink:#121212;--paper:#f4f4f1;--w:#fff;--hair:#c9c9c2;--hi:#c8321e;--md:#e07a10}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;background:var(--paper);color:var(--ink);font:400 17px/1.45 Archivo,Arial,sans-serif;font-variant-numeric:tabular-nums}
+.band{background:var(--y);border-bottom:3px solid var(--ink);height:63px;display:flex;justify-content:space-between;align-items:flex-end;padding:12px 32px}
+.wm b{display:block;font-weight:800;letter-spacing:-.02em}.wm span,.who{font-size:13px;font-weight:500}.who{text-align:right}.who b{display:block;font-weight:800}
+.strip{background:var(--ink);color:#fff;border-bottom:3px solid var(--ink);height:44px;display:flex;align-items:center;gap:8px;padding:0 32px;font-size:13px}
+.strip b{font-weight:800}.strip i{color:var(--y);font-style:normal;font-weight:800}
+.head{display:flex;justify-content:space-between;align-items:flex-end;padding:24px 32px 20px}
+h1{font-size:44px;line-height:1.1;font-weight:800;letter-spacing:-.025em}
+.btn{display:inline-flex;align-items:center;height:54px;padding:0 20px;border:2px solid var(--ink);background:var(--y);font-weight:800}
+.sel{height:48px;padding:0 14px;border:2px solid var(--ink);background:#fff;display:inline-flex;align-items:center;font-weight:700;margin-right:8px}
+.cols{display:grid;grid-template-columns:240px 1fr 420px;gap:32px;padding:0 32px}
+.rule{border-top:3px solid var(--ink);padding-top:8px;font-weight:800;margin-bottom:8px}
+.rail a{display:flex;justify-content:space-between;height:44px;align-items:center;border-bottom:1px solid var(--ink);font-size:15px;font-weight:700}
+.rail a.on{background:var(--y);padding:0 8px;box-shadow:inset 4px 0 0 var(--ink)}
+.rail small{font-size:13px;font-weight:500;display:block;margin-top:16px}
+.row{display:grid;grid-template-columns:96px 1fr auto;gap:16px;padding:12px 0;border-bottom:1px solid var(--ink)}
+.t{font-size:13px;font-weight:500}.who2{font-size:13px;font-weight:800}
+.what{font-size:15px;line-height:1.35}.what b{font-weight:800}
+.code{font-size:13px;font-weight:800;border:2px solid var(--ink);padding:0 4px;margin-right:4px;background:#fff}
+.code.dash{border-style:dashed}
+.act{display:flex;gap:8px;align-items:center}.act span{height:40px;padding:0 12px;border:2px solid var(--ink);background:#fff;font-size:13px;font-weight:700;display:inline-flex;align-items:center}
+.act span.p{background:var(--y);font-weight:800}
+.badge{font-size:13px;font-weight:800;padding:1px 6px;color:#fff;background:var(--hi)}.badge.m{background:var(--md);color:var(--ink)}
+.side .box{background:#fff;border:2px solid var(--ink);padding:8px;margin-bottom:16px}
+.pr{display:grid;grid-template-columns:20px 1fr 72px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.pr b{font-weight:800}
+</style></head><body>
+<header class="band"><div class="wm"><b>Ground Truth</b><span>by ACAPS</span></div><div class="who"><b>ACAPS moderator</b>Switch role</div></header>
+<div class="strip"><b>Chad panel</b><i>·</i>7 experts<i>·</i>Week 45 round open, closes 21 Nov<i>·</i>4 questions sent, 19 of 28 answers in</div>
+<div class="head"><div><h1>This week in the Chad panel</h1></div><div><span class="sel">Chad ▾</span><span class="btn">+ Add risk</span></div></div>
+<div class="cols">
+<nav class="rail"><div class="rule">Changes this week</div>
+<a class="on">All changes<span>23</span></a><a>Needs a decision<span>4</span></a><a>Proposed risks<span>2</span></a><a>New links<span>3</span></a><a>Probability moves<span>4</span></a><a>Against ACAPS<span>5</span></a><a>Coverage gaps<span>2</span></a>
+<small>Sample data. Pseudonyms are how ACAPS refers to panel experts in this draft.</small></nav>
+<main><div class="rule">Ledger · newest first</div>
+<div class="row"><div class="t">Today 09:12</div><div><div class="who2">Kite · expert</div><div class="what">Proposed a risk <span class="code dash">P-0007</span><b>Measles outbreak in Farchana camp</b>, follows from Disease outbreaks in camps. Duplicate check: no match.</div></div><div class="act"><span class="p">Review</span></div></div>
+<div class="row"><div class="t">Today 08:40</div><div><div class="who2">Panel · 5 of 7</div><div class="what">Moved <span class="code">R1043</span><b>Cross-border insecurity, eastern Chad</b> from High to Very high. Waiting for an analyst.</div></div><div class="act"><span class="p">Approve</span><span>Hold</span></div></div>
+<div class="row"><div class="t">Fri 6 Nov 17:05</div><div><div class="who2">Analyst JM · ACAPS</div><div class="what">Approved link <span class="code">R1043</span>→<span class="code">R1055</span> Returns to West Darfur, 6 months, strength 0.5.</div></div><div class="act"></div></div>
+<div class="row"><div class="t">Fri 6 Nov 11:30</div><div><div class="who2">Sahel-7 · expert</div><div class="what">Answered <b>No</b> against ACAPS on Q-0412: “Convoys still crossing at Adré every day; no strikes near the airport.”</div></div><div class="act"><span>Profile</span></div></div>
+<div class="row"><div class="t">Thu 5 Nov 16:20</div><div><div class="who2">Sahel-7 · expert</div><div class="what">Proposed a risk <span class="code dash">P-0008</span><b>Fuel and food price spike in Abéché</b>, follows from Refugee surge.</div></div><div class="act"><span class="p">Review</span></div></div>
+<div class="row"><div class="t">Thu 5 Nov 10:02</div><div><div class="who2">Analyst JM · ACAPS</div><div class="what">Proposed link <span class="code">R1043</span>→<span class="code dash">R1066</span> Lake Chad Basin, asked to the panel this week.</div></div><div class="act"></div></div>
+<div class="row"><div class="t">Wed 4 Nov</div><div><div class="who2">Coverage</div><div class="what"><span class="code">R1066</span><b>Lake Chad Basin</b>: no expert on the panel covers it.</div></div><div class="act"><span>Find experts</span></div></div>
+</main>
+<aside class="side"><div class="rule">Risk radar</div>
+<div class="box"><svg viewBox="0 0 400 300" width="400" height="300"><g fill="none" stroke="#121212"><circle cx="200" cy="150" r="48"/><circle cx="200" cy="150" r="96"/><circle cx="200" cy="150" r="140" stroke-dasharray="2 4"/></g>
+<g stroke="#121212" stroke-width="1.5"><line x1="200" y1="150" x2="200" y2="102"/><line x1="200" y1="150" x2="158" y2="174"/><line x1="200" y1="150" x2="242" y2="174"/><line x1="200" y1="102" x2="138" y2="78"/><line x1="200" y1="102" x2="262" y2="78" stroke-dasharray="4 3"/><line x1="242" y1="174" x2="248" y2="240"/><line x1="248" y1="240" x2="290" y2="268" stroke-dasharray="4 3"/></g>
+<g font-family="Archivo" font-size="11" font-weight="800"><rect x="178" y="140" width="44" height="20" fill="#fff" stroke="#121212" stroke-width="2"/><text x="185" y="154">R0002</text>
+<rect x="176" y="92" width="48" height="20" fill="#121212"/><text x="183" y="106" fill="#fff">R1043</text>
+<rect x="114" y="68" width="48" height="20" fill="#fff" stroke="#121212" stroke-width="2"/><text x="121" y="82">R1055</text>
+<rect x="238" y="68" width="48" height="20" fill="#fff" stroke="#121212" stroke-width="2" stroke-dasharray="4 3"/><text x="245" y="82">R1066</text>
+<rect x="134" y="164" width="48" height="20" fill="#fff" stroke="#121212" stroke-width="2"/><text x="139" y="178">G-0011</text>
+<rect x="218" y="164" width="48" height="20" fill="#ffd21f" stroke="#121212" stroke-width="2"/><text x="223" y="178">G-0012</text>
+<rect x="224" y="230" width="48" height="20" fill="#ffd21f" stroke="#121212" stroke-width="2"/><text x="229" y="244">G-0014</text>
+<rect x="266" y="258" width="48" height="20" fill="#fff" stroke="#121212" stroke-width="2" stroke-dasharray="4 3"/><text x="271" y="272">P-0007</text></g></svg></div>
+<div class="rule">Priority risks</div>
+<div class="pr"><b>1</b><span><b>R1043</b> Cross-border insecurity <span class="badge">High</span></span><span>↗ moving</span></div>
+<div class="pr"><b>2</b><span><b>G-0014</b> Disease outbreaks in camps</span><span>1 expert</span></div>
+<div class="pr"><b>3</b><span><b>G-0012</b> Refugee surge into Ouaddaï</span><span>split 3–4</span></div>
+<div class="pr"><b>4</b><span><b>R1066</b> Lake Chad Basin <span class="badge">High</span></span><span>no cover</span></div>
+<div class="pr"><b>5</b><span><b>R1055</b> Returns to West Darfur <span class="badge m">Medium</span></span><span>stable</span></div>
+</aside></div>
+</body></html>

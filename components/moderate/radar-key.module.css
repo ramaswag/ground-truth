@@ -1,0 +1,135 @@
+/* The radar's key: each entry is a small copy of the mark it explains, with two to four words.
+   Specimens use the radar's own materials: 2px ink boxes, pale blue highlight, boxed number tag,
+   level squares, dashed for proposed, the ink plate for the selection. */
+
+.key {
+  border-top: 1px solid var(--ink);
+  padding: var(--s3);
+}
+
+/* A grid with a fixed specimen column, so the words line up and read as one table. */
+.items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--s3) var(--s4);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--s2);
+  min-height: 32px;
+}
+
+.item > :first-child {
+  justify-self: start;
+}
+
+.text {
+  display: grid;
+  font-size: var(--fs-small);
+  line-height: 1.2;
+}
+
+.text b {
+  font-weight: 800;
+}
+
+.text span {
+  font-weight: 500;
+}
+
+/* Rings: three circles round the root square, an arrow pointing out. */
+.rings {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  overflow: visible;
+}
+
+.rings circle {
+  fill: none;
+  stroke: var(--hair-strong);
+  stroke-width: 1.5;
+}
+
+.rings rect {
+  fill: var(--ink);
+}
+
+.rings .out {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  stroke-linecap: square;
+}
+
+/* A miniature risk node. */
+.chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 24px;
+  padding: 2px 6px;
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.flag {
+  background: var(--accent-soft);
+}
+
+.tag {
+  padding: 1px 3px;
+  box-shadow: inset 0 0 0 1px currentColor;
+  font-weight: 800;
+}
+
+.selected {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.dashed {
+  border-style: dashed;
+}
+
+/* Dashed link running into a dashed risk. */
+.proposed {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.dash {
+  width: 18px;
+  border-top: var(--border) dashed var(--ink);
+}
+
+.levels {
+  flex: none;
+  display: inline-flex;
+  gap: 3px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+
+.dot[data-level="high"] {
+  background: var(--high);
+  box-shadow: none;
+}
+
+.dot[data-level="medium"] {
+  background: var(--medium);
+  box-shadow: none;
+}
