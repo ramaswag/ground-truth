@@ -46,6 +46,9 @@ export default function LoginPage() {
             </li>
           ))}
         </ul>
+        <Link className={`btn ${s.how}`} href="/how">
+          How it works
+        </Link>
       </main>
     </>
   );

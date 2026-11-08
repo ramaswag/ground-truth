@@ -67,3 +67,7 @@
 .roleArrow {
   flex: none;
 }
+
+.how {
+  margin-top: var(--s4);
+}
