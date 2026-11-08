@@ -100,8 +100,9 @@
   max-width: 100%;
 }
 
-/* Risk tabs: which risk sits in the centre of the wheel. One row that scrolls sideways
-   inside itself, so a country with many risks never widens the page. */
+/* Risk tabs: which risk sits in the centre of the wheel. They wrap onto more lines, so every
+   risk stays in view and the page never scrolls sideways. Each tab draws its own frame and
+   pulls in over its neighbour's, so shared edges stay one rule thick. */
 .riskTabsWrap {
   margin-bottom: var(--s3);
   min-width: 0;
@@ -115,31 +116,74 @@
 
 .riskTabs {
   display: flex;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scrollbar-width: thin;
-  border: var(--border) solid var(--ink);
-  background: var(--white);
+  flex-wrap: wrap;
+  padding: 0 var(--border) var(--border) 0;
 }
 
 .riskTab {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  max-width: 100%;
   display: inline-flex;
   align-items: center;
   gap: var(--s2);
   min-height: 40px;
+  margin: 0 calc(-1 * var(--border)) calc(-1 * var(--border)) 0;
   padding: 0 var(--s3);
   background: var(--white);
-  border: 0;
-  border-left: var(--border) solid var(--ink);
+  border: var(--border) solid var(--ink);
   font-size: var(--fs-small);
   font-weight: 800;
   white-space: nowrap;
   cursor: pointer;
 }
 
-.riskTab:first-child {
-  border-left: 0;
+/* Phones: one dropdown instead of a wall of tabs. */
+.riskSelect {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .riskTabsOnly {
+    display: none;
+  }
+
+  .riskSelect {
+    display: grid;
+  }
+
+  .riskSelect select {
+    appearance: none;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 36px 0 var(--s3);
+    border: var(--border) solid var(--ink);
+    border-radius: 0;
+    background-color: var(--white);
+    background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%),
+      linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+    background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-small);
+    font-weight: 800;
+  }
+}
+
+.riskTabName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.riskTabLinks {
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+.riskTab[aria-selected="true"] {
+  position: relative;
+  z-index: 1;
 }
 
 .riskTab[data-status="proposed"] {

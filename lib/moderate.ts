@@ -620,14 +620,46 @@ export function formatWhen(at: string): string {
 
 /* ------------------------------------------------------------------ wheel */
 
-/** What each ring of the wheel means, from the centre out. */
+/** The wheel is drawn in a 760 x 680 box; Radar.tsx places risks in % of it so it can scale. */
+export const WHEEL_W = 760;
+export const WHEEL_H = 680;
+/** Ring radii in that box, centre first. Ring 1 leaves room for a long centre label. */
+export const WHEEL_RADII = [0, 150, 235, 312] as const;
+
+/** What each ring means, from the centre out (inspector, screen readers, phone list). */
 export const WHEEL_RINGS = ["Centre", "Directly linked", "Two steps away", "Three steps away"] as const;
+/** The short marks drawn on the rings themselves. */
+export const WHEEL_RING_MARKS = ["", "1 step", "2 steps", "3 steps"] as const;
+
+export function wheelPoint(layer: number, angle: number): { x: number; y: number } {
+  const rad = (angle * Math.PI) / 180;
+  const r = WHEEL_RADII[layer] ?? 0;
+  return { x: WHEEL_W / 2 + r * Math.cos(rad), y: WHEEL_H / 2 + r * Math.sin(rad) };
+}
+
+type Box = { x: number; y: number; w: number; h: number };
+
+/** A risk label's size on the wheel, estimated: 13px bold text, level square, padding, number tag. */
+function labelBox(short: string, layer: number, angle: number): Box {
+  const w = Math.round(short.length * 7.6 + 52);
+  const h = 32;
+  const p = wheelPoint(layer, angle);
+  return { x: p.x - w / 2, y: p.y - h / 2, w, h };
+}
+
+const GAP = 6;
+const overlaps = (a: Box, b: Box) =>
+  a.x < b.x + b.w + GAP && b.x < a.x + a.w + GAP && a.y < b.y + b.h + GAP && b.y < a.y + a.h + GAP;
+const inside = (b: Box) => b.x >= 4 && b.y >= 4 && b.x + b.w <= WHEEL_W - 4 && b.y + b.h <= WHEEL_H - 4;
 
 /**
  * One risk per wheel: the chosen risk sits in the centre, the risks linked to it (either
  * direction) on the first ring, the risks linked to those on the second, and so on to the
- * third. Risks with no path to the centre are left off this wheel. Returns copies with
- * layer and angle set for this wheel; the stored risks are not changed.
+ * third. Risks with no path to the centre are left off this wheel.
+ *
+ * Each label is placed at the nearest angle where it fits inside the box without touching
+ * another label or a ring mark, so long titles never pile up. Returns copies with layer and
+ * angle set for this wheel; the stored risks are not changed.
  */
 export function wheelAround(centreId: string, risks: GraphRisk[], links: GraphLink[]): GraphRisk[] {
   const byId = new Map(risks.map((r) => [r.id, r]));
@@ -661,15 +693,39 @@ export function wheelAround(centreId: string, risks: GraphRisk[], links: GraphLi
       .map(([id]) => byId.get(id)!)
       .sort((a, b) => b.priority - a.priority);
 
+  // The ring marks sit just left of each ring; labels keep clear of them too.
+  const taken: Box[] = [1, 2, 3].map((layer) => ({
+    x: WHEEL_W / 2 - WHEEL_RADII[layer] - 64,
+    y: WHEEL_H / 2 - 12,
+    w: 60,
+    h: 20,
+  }));
+  taken.push(labelBox(centre.short, 0, 0));
+
+  /** The nearest angle to `want` where this label fits; `want` itself if nothing does. */
+  function settle(r: GraphRisk, layer: number, want: number): number {
+    for (let step = 0; step <= 180; step += 3) {
+      for (const a of step ? [want + step, want - step] : [want]) {
+        const box = labelBox(r.short, layer, a);
+        if (inside(box) && !taken.some((t) => overlaps(box, t))) {
+          taken.push(box);
+          return a;
+        }
+      }
+    }
+    taken.push(labelBox(r.short, layer, want));
+    return want;
+  }
+
   const out: GraphRisk[] = [{ ...centre, layer: 0, angle: 0 }];
-  // First ring: spread evenly, highest priority at twelve o'clock.
+  // First ring: aim for an even spread, highest priority at twelve o'clock.
   const first = ringOf(1);
-  first.forEach((r, i) => out.push({ ...r, layer: 1, angle: Math.round(-90 + (i * 360) / first.length) }));
-  // Outer rings: each risk as close as there is room to the risk that links it in.
+  first.forEach((r, i) => out.push({ ...r, layer: 1, angle: settle(r, 1, -90 + (i * 360) / first.length) }));
+  // Outer rings: as close as there is room to the risk that links them in.
   for (const d of [2, 3] as const) {
     for (const r of ringOf(d)) {
       const from = out.find((x) => x.id === parent.get(r.id));
-      out.push({ ...r, layer: d, angle: freeAngle(out, d, from?.angle ?? -90) });
+      out.push({ ...r, layer: d, angle: settle(r, d, from?.angle ?? -90) });
     }
   }
   return out;

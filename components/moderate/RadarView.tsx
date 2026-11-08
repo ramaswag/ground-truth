@@ -3,7 +3,7 @@
 import { useMemo, useRef, useState } from "react";
 import { Plus } from "lucide-react";
 import type { Lens } from "@/lib/moderate";
-import { WHEEL_RINGS, coverage, wheelAround } from "@/lib/moderate";
+import { WHEEL_RINGS, WHEEL_RING_MARKS, coverage, wheelAround } from "@/lib/moderate";
 import { Radar, type LensMark } from "./Radar";
 import { RadarKey } from "./RadarKey";
 import { Inspector } from "./Inspector";
@@ -157,10 +157,24 @@ export function RadarView() {
         </div>
 
         <div className={s.riskTabsWrap}>
-          <p className={s.riskTabsLabel} id="risk-tabs-label">
+          {/* Phones get a dropdown: a dozen tabs would push the wheel off the screen. */}
+          <label className={s.riskSelect}>
+            <span className={s.riskTabsLabel}>Risk in the centre</span>
+            <select value={centreId} onChange={(e) => centreOn(e.target.value)}>
+              {tabs.map((r) => {
+                const n = linkCount(r.id);
+                return (
+                  <option key={r.id} value={r.id}>
+                    {`${r.short} (${n === 0 ? "no links" : `${n} link${n === 1 ? "" : "s"}`})`}
+                  </option>
+                );
+              })}
+            </select>
+          </label>
+          <p className={`${s.riskTabsLabel} ${s.riskTabsOnly}`} id="risk-tabs-label">
             Risk in the centre
           </p>
-          <div role="tablist" aria-labelledby="risk-tabs-label" className={s.riskTabs}>
+          <div role="tablist" aria-labelledby="risk-tabs-label" className={`${s.riskTabs} ${s.riskTabsOnly}`}>
             {tabs.map((r) => {
               const n = linkCount(r.id);
               return (
@@ -180,9 +194,10 @@ export function RadarView() {
                   onKeyDown={onRiskTabKey}
                 >
                   {r.level && <span className={s.swatch} data-level={r.level.toLowerCase()} aria-hidden />}
-                  <span>{r.short}</span>
-                  <span className={s.navCount} aria-hidden>
-                    {n}
+                  <span className={s.riskTabName}>{r.short}</span>
+                  {/* Written out, so it never reads as the priority rank shown on the wheel. */}
+                  <span className={s.riskTabLinks} aria-hidden>
+                    {n === 0 ? "no links" : `${n} link${n === 1 ? "" : "s"}`}
                   </span>
                 </button>
               );
@@ -216,6 +231,7 @@ export function RadarView() {
             selected={selected?.id ?? ""}
             onSelect={select}
             rings={WHEEL_RINGS}
+            ringMarks={WHEEL_RING_MARKS}
           />
           {centre && wheel.length === 1 && (
             <p className={s.wheelHint}>
