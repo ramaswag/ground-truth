@@ -629,7 +629,7 @@ export const WHEEL_RADII = [0, 150, 235, 312] as const;
 /** What each ring means, from the centre out (inspector, screen readers, phone list). */
 export const WHEEL_RINGS = ["Centre", "Directly linked", "Two steps away", "Three steps away"] as const;
 /** The short marks drawn on the rings themselves. */
-export const WHEEL_RING_MARKS = ["", "1 step", "2 steps", "3 steps"] as const;
+export const WHEEL_RING_MARKS = ["", "L1", "L2", "L3"] as const;
 
 export function wheelPoint(layer: number, angle: number): { x: number; y: number } {
   const rad = (angle * Math.PI) / 180;

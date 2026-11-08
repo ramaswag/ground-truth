@@ -44,9 +44,9 @@ npm run build       # production build
 The radar shows one risk at a time. Pick a risk in the row of tabs above the wheel and it
 moves to the centre. Around it:
 
-- **first ring:** risks directly linked to it, whether it drives them or they drive it
-- **second ring:** risks linked to those
-- **third ring:** one step further out
+- **L1:** risks directly linked to it, whether it drives them or they drive it
+- **L2:** risks linked to those
+- **L3:** one link further out
 
 Risks with no path to the centre don't show on that wheel. Pick them in the tabs instead.
 Each tab shows how many links the risk has, so you can spot the ones nobody has connected yet.
