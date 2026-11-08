@@ -5,6 +5,7 @@ import { Check } from "lucide-react";
 import type { Decision } from "@/lib/moderate";
 import { PROBABILITY, formatWhen } from "@/lib/moderate";
 import { PageHead } from "./Chrome";
+import { AskNext } from "./AskNext";
 import { useWorkspace } from "./state";
 import s from "./moderate.module.css";
 
@@ -27,7 +28,7 @@ export function DecisionsView() {
 
 /** One decision. `compact` is the version that sits inside the radar's inspector. */
 export function DecisionItem({ d, compact }: { d: Decision; compact?: boolean }) {
-  const { original, byId, outcomes, decide, showOnRadar } = useWorkspace();
+  const { original, byId, outcomes, held, decide, showOnRadar } = useWorkspace();
   const outcome = outcomes[d.id];
   let title: string;
   let meta: React.ReactNode;
@@ -116,6 +117,9 @@ export function DecisionItem({ d, compact }: { d: Decision; compact?: boolean })
         </p>
       ) : (
         <div className={s.itemActions}>{actions}</div>
+      )}
+      {d.kind === "move" && held[d.riskId] && !compact && byId[d.riskId] && (
+        <AskNext risk={byId[d.riskId]} inline />
       )}
     </article>
   );
