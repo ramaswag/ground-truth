@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Change } from "@/lib/moderate";
 import { formatWhen } from "@/lib/moderate";
-import { PageHead } from "./Chrome";
+import { NotYet, PageHead } from "./Chrome";
 import { useWorkspace } from "./state";
 import s from "./moderate.module.css";
 
@@ -31,7 +31,7 @@ const KIND: Record<Change["kind"], string> = {
 const ACTOR: Record<Change["actor"]["kind"], string> = { expert: "expert", analyst: "ACAPS", panel: "panel", you: "you" };
 
 export function ChangesView() {
-  const { changes, byId, showOnRadar } = useWorkspace();
+  const { data, changes, byId, showOnRadar } = useWorkspace();
   const [who, setWho] = useState<(typeof WHO)[number]["id"]>("all");
   const rows = changes.filter((c) => who === "all" || c.actor.kind === who);
 
@@ -41,6 +41,12 @@ export function ChangesView() {
         Every new risk, link and reading in the {changes.length} changes since the round opened, newest first, with who
         made it.
       </PageHead>
+      {!data.context.hasPanel && changes.length === 0 && (
+        <NotYet>
+          Nothing has changed on the {data.context.name} radar yet. Risks you add, links you draw, and readings the
+          panel moves will all be logged here, with who made each change.
+        </NotYet>
+      )}
       <fieldset className={s.filters}>
         <legend className="visually-hidden">Show changes by</legend>
         {WHO.map((w) => {

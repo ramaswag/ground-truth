@@ -2,22 +2,19 @@
 
 import { useEffect, useId, useState } from "react";
 import type { GraphLink, GraphRisk, Lens } from "@/lib/moderate";
+import { WHEEL_H as H, WHEEL_RADII as RADII, WHEEL_W as W, wheelPoint } from "@/lib/moderate";
 import s from "./moderate.module.css";
 import m from "./radar-motion.module.css";
 
 /** Long enough for the unfold to finish; after it, nodes moving in the DOM never replay it. */
 const UNFOLD_MS = 1200;
 
-/** The radar is drawn in a 760 x 680 box; risks are placed in % of it so the field can scale. */
-const W = 760;
-const H = 680;
+/** Risks are placed in % of the wheel's box (lib/moderate.ts) so the field can scale. */
 const CX = W / 2;
 const CY = H / 2;
-const RADII = [0, 125, 225, 305];
 
 export function place(r: Pick<GraphRisk, "layer" | "angle">): { x: number; y: number } {
-  const rad = (r.angle * Math.PI) / 180;
-  return { x: CX + RADII[r.layer] * Math.cos(rad), y: CY + RADII[r.layer] * Math.sin(rad) };
+  return wheelPoint(r.layer, r.angle);
 }
 
 export type LensMark = { flag: boolean; value?: string; spoken?: string };
@@ -29,6 +26,8 @@ export function Radar({
   marks,
   selected,
   onSelect,
+  rings,
+  ringMarks = rings,
 }: {
   risks: GraphRisk[];
   links: GraphLink[];
@@ -36,6 +35,10 @@ export function Radar({
   marks: Record<string, LensMark>;
   selected: string;
   onSelect: (id: string) => void;
+  /** What each ring means, index 0 to 3: read out, and shown in the phone list. */
+  rings: readonly string[];
+  /** Short words drawn on the rings themselves, so they fit between them. */
+  ringMarks?: readonly string[];
 }) {
   const pos = Object.fromEntries(risks.map((r) => [r.id, place(r)]));
   // The wheel unfolds from its root once per visit (radar-motion.module.css).
@@ -51,7 +54,7 @@ export function Radar({
     (a, b) => Number(marks[b.id]?.flag) - Number(marks[a.id]?.flag) || a.layer - b.layer || b.priority - a.priority,
   );
 
-  const rings = (
+  const wheel = (
     <div className={`${s.radar} ${m.wheel}`} data-unfold={unfolding}>
       <svg className={s.radarSvg} viewBox={`0 0 ${W} ${H}`} aria-hidden focusable="false">
         {unfolding && (
@@ -66,7 +69,7 @@ export function Radar({
             <g key={r}>
               <circle className={s.ring} cx={CX} cy={CY} r={r} />
               <text className={s.ringLabel} x={CX - r - 8} y={CY + 5} textAnchor="end">
-                {`Layer ${i + 1}`}
+                {ringMarks[i + 1]}
               </text>
             </g>
           ))}
@@ -118,7 +121,7 @@ export function Radar({
         // The ID stays out of the radar; the inspector discloses it once a risk is selected.
         const label = [
           r.short,
-          r.layer === 0 ? "root of this context" : `layer ${r.layer}`,
+          rings[r.layer].toLowerCase(),
           r.level ? `${r.level} risk` : "not rated yet",
           r.status === "proposed" ? "proposed, not approved" : undefined,
           mark?.spoken,
@@ -159,7 +162,7 @@ export function Radar({
     <div className={s.layers}>
       {layers.map(({ layer, items }) => (
         <div key={layer} className={s.layerRow}>
-          <p className={s.layerName}>{layer === 0 ? "Root" : `Layer ${layer}`}</p>
+          <p className={s.layerName}>{rings[layer] || `Ring ${layer}`}</p>
           <div className={s.layerItems}>
             {items.map((r) => {
               const mark = marks[r.id];
@@ -195,7 +198,7 @@ export function Radar({
 
   return (
     <>
-      {rings}
+      {wheel}
       {asList}
     </>
   );

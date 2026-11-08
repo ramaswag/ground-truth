@@ -16,6 +16,20 @@
   max-width: 58ch;
 }
 
+/* Under the roles: a way in for someone who wants the idea before picking a side. */
+.how {
+  margin-top: var(--s5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+  font-weight: 500;
+}
+
+.how :global(.btn) {
+  text-decoration: none;
+}
+
 .roles {
   margin-top: var(--s6);
   max-width: 640px;

@@ -9,7 +9,7 @@ export function Shell({ question, referred }: { question: Question; referred: bo
         Skip to answer
       </a>
       <Band home="/">
-        <strong>{question.panel.name} panel</strong>
+        <strong>{question.panel.name} demo panel</strong>
         <span>
           {referred
             ? "Forwarded question"

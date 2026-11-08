@@ -6,7 +6,7 @@
  * written for this UI draft. Expert and analyst names are invented: no real people.
  */
 
-import { getRisk } from "./radar-source";
+// Pure data and helpers: imported by browser components too, so no server-only imports here.
 import type { Probability, RiskLevel, Trend } from "./radar";
 
 /* ------------------------------------------------------------------ types */
@@ -49,6 +49,8 @@ export type GraphRisk = {
 
 export type GraphLink = {
   id: string;
+  /** Row id in the database, for links a moderator drew and saved. */
+  dbId?: number;
   from: string;
   to: string;
   status: "mapped" | "proposed";
@@ -112,8 +114,29 @@ export type Outlier = {
 /** A problem space: the risks one kind of expertise answers for. */
 export type Space = { name: string; riskIds: string[]; note: string };
 
+export type Context = {
+  /** ISO 3166 alpha-3 code, as in the Risk Radar's ISO column. */
+  iso: string;
+  name: string;
+  week: number;
+  closes: string;
+  questions: number;
+  /** The root risk, when the context has a mapped graph of links. */
+  rootId?: string;
+  /** True when ACAPS has mapped how this context's risks lead to each other (Chad, for now). */
+  mapped: boolean;
+  /** True when the context has an expert panel. */
+  hasPanel: boolean;
+  /** True for the demo workspace: sample data, nothing saved. Real countries save links to the database. */
+  demo: boolean;
+  /** What each ring means, index 0 to 3. Rings are distance from the root when mapped, status otherwise. */
+  rings: [string, string, string, string];
+  /** The risk selected when the radar opens. */
+  focusId: string;
+};
+
 export type Workspace = {
-  context: { name: string; week: number; closes: string; questions: number; rootId: string };
+  context: Context;
   spaces: Space[];
   risks: GraphRisk[];
   links: GraphLink[];
@@ -134,7 +157,7 @@ function history(acaps: (number | undefined)[], panel: Record<number, number> = 
 
 const flat = (v: number) => WEEKS.map(() => v);
 
-type Seed = Omit<GraphRisk, "title" | "place" | "level" | "probability" | "impact" | "trend"> &
+export type Seed = Omit<GraphRisk, "title" | "place" | "level" | "probability" | "impact" | "trend"> &
   Partial<Pick<GraphRisk, "title" | "place" | "level" | "probability" | "impact" | "trend">>;
 
 const RISKS: Seed[] = [
@@ -531,36 +554,52 @@ const SPACES: Space[] = [
   },
 ];
 
-/* ---------------------------------------------------------------- loading */
+/** The Chad sample: everything except the Radar fields of R risks, which are read at load. */
+export const CHAD_SAMPLE = {
+  risks: RISKS,
+  links: LINKS,
+  changes: CHANGES,
+  panel: PANEL,
+  decisions: DECISIONS,
+  outliers: OUTLIERS,
+  spaces: SPACES,
+};
 
-const PROB_INDEX: Record<Probability, number> = { "Very low": 1, Low: 2, Medium: 3, High: 4, "Very high": 5 };
+export { WEEKS };
 
-export async function getWorkspace(): Promise<Workspace> {
-  const risks = await Promise.all(
-    RISKS.map(async (seed): Promise<GraphRisk> => {
-      if (seed.origin !== "radar") return seed as GraphRisk;
-      const r = await getRisk(seed.id);
-      return {
-        ...seed,
-        title: r?.title ?? seed.id,
-        place: r?.country ?? "",
-        ...(r?.level && { level: r.level }),
-        ...(r?.probability && { probability: PROB_INDEX[r.probability] }),
-        ...(r?.impact && { impact: r.impact }),
-        ...(r?.trend && { trend: r.trend }),
-      };
-    }),
-  );
-  return {
-    context: { name: "Chad", week: 45, closes: "2026-11-21", questions: 4, rootId: "R0002" },
-    spaces: SPACES,
-    risks,
-    links: LINKS,
-    changes: CHANGES,
-    panel: PANEL,
-    decisions: DECISIONS,
-    outliers: OUTLIERS,
-  };
+/** The demo workspace: Chad with a made-up panel, links and decisions. Every real country starts from the Risk Radar alone. */
+export const DEMO_ISO = "DEMO";
+
+const STOP = new Set(
+  "in on of the and to by for from with a an at as between across into over linked leads lead leading due after amid during around near among".split(
+    " ",
+  ),
+);
+
+/** Two to four words for the radar label: the title up to its first small word after the second. */
+export function shortLabel(title: string): string {
+  const words = title.replace(/[.,:;()]/g, " ").split(/\s+/).filter(Boolean);
+  const out: string[] = [];
+  for (const w of words) {
+    if (out.length >= 2 && STOP.has(w.toLowerCase())) break;
+    out.push(w);
+    if (out.length === 4) break;
+  }
+  while (out.length > 1 && STOP.has(out[out.length - 1].toLowerCase())) out.pop();
+  return out.join(" ");
+}
+
+/** A free spot on a ring near an angle, keeping labels apart. Used on the server and in the browser. */
+export function freeAngle(risks: Pick<GraphRisk, "layer" | "angle">[], layer: number, near: number): number {
+  const gap = layer === 1 ? 50 : layer === 2 ? 30 : 24;
+  const taken = risks.filter((r) => r.layer === layer).map((r) => r.angle);
+  const dist = (a: number, b: number) => Math.abs((((a - b) % 360) + 540) % 360 - 180);
+  for (let step = 0; step <= 180; step += 10) {
+    for (const a of step ? [near + step, near - step] : [near]) {
+      if (taken.every((t) => dist(a, t) >= gap)) return a;
+    }
+  }
+  return near + 180;
 }
 
 /* ---------------------------------------------------------------- helpers */
@@ -659,4 +698,117 @@ export function formatWhen(at: string): string {
   const [y, m, d] = date.split("-").map(Number);
   const day = DAYS[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
   return `${day} ${d} ${MONTHS[m - 1]}${time ? `, ${time}` : ""}`;
+}
+
+/* ------------------------------------------------------------------ wheel */
+
+/** The wheel is drawn in a 760 x 680 box; Radar.tsx places risks in % of it so it can scale. */
+export const WHEEL_W = 760;
+export const WHEEL_H = 680;
+/** Ring radii in that box, centre first. Ring 1 leaves room for a long centre label. */
+export const WHEEL_RADII = [0, 150, 235, 312] as const;
+
+/** What each ring means, from the centre out (inspector, screen readers, phone list). */
+export const WHEEL_RINGS = ["Centre", "Directly linked", "Two steps away", "Three steps away"] as const;
+/** The short marks drawn on the rings themselves. */
+export const WHEEL_RING_MARKS = ["", "L1", "L2", "L3"] as const;
+
+export function wheelPoint(layer: number, angle: number): { x: number; y: number } {
+  const rad = (angle * Math.PI) / 180;
+  const r = WHEEL_RADII[layer] ?? 0;
+  return { x: WHEEL_W / 2 + r * Math.cos(rad), y: WHEEL_H / 2 + r * Math.sin(rad) };
+}
+
+type Box = { x: number; y: number; w: number; h: number };
+
+/** A risk label's size on the wheel, estimated: 13px bold text, level square, padding, number tag. */
+function labelBox(short: string, layer: number, angle: number): Box {
+  const w = Math.round(short.length * 7.6 + 52);
+  const h = 32;
+  const p = wheelPoint(layer, angle);
+  return { x: p.x - w / 2, y: p.y - h / 2, w, h };
+}
+
+const GAP = 6;
+const overlaps = (a: Box, b: Box) =>
+  a.x < b.x + b.w + GAP && b.x < a.x + a.w + GAP && a.y < b.y + b.h + GAP && b.y < a.y + a.h + GAP;
+const inside = (b: Box) => b.x >= 4 && b.y >= 4 && b.x + b.w <= WHEEL_W - 4 && b.y + b.h <= WHEEL_H - 4;
+
+/**
+ * One risk per wheel: the chosen risk sits in the centre, the risks linked to it (either
+ * direction) on the first ring, the risks linked to those on the second, and so on to the
+ * third. Risks with no path to the centre are left off this wheel.
+ *
+ * Each label is placed at the nearest angle where it fits inside the box without touching
+ * another label or a ring mark, so long titles never pile up. Returns copies with layer and
+ * angle set for this wheel; the stored risks are not changed.
+ */
+export function wheelAround(centreId: string, risks: GraphRisk[], links: GraphLink[]): GraphRisk[] {
+  const byId = new Map(risks.map((r) => [r.id, r]));
+  const centre = byId.get(centreId);
+  if (!centre) return [];
+
+  const neighbours = (id: string) =>
+    links
+      .flatMap((l) => (l.from === id ? [l.to] : l.to === id ? [l.from] : []))
+      .filter((n) => byId.has(n));
+
+  const depth = new Map<string, number>([[centreId, 0]]);
+  const parent = new Map<string, string>();
+  let frontier = [centreId];
+  for (let d = 1; d <= 3 && frontier.length; d++) {
+    const next: string[] = [];
+    for (const id of frontier) {
+      for (const n of neighbours(id)) {
+        if (depth.has(n)) continue;
+        depth.set(n, d);
+        parent.set(n, id);
+        next.push(n);
+      }
+    }
+    frontier = next;
+  }
+
+  const ringOf = (d: number) =>
+    [...depth]
+      .filter(([, x]) => x === d)
+      .map(([id]) => byId.get(id)!)
+      .sort((a, b) => b.priority - a.priority);
+
+  // The ring marks sit just left of each ring; labels keep clear of them too.
+  const taken: Box[] = [1, 2, 3].map((layer) => ({
+    x: WHEEL_W / 2 - WHEEL_RADII[layer] - 64,
+    y: WHEEL_H / 2 - 12,
+    w: 60,
+    h: 20,
+  }));
+  taken.push(labelBox(centre.short, 0, 0));
+
+  /** The nearest angle to `want` where this label fits; `want` itself if nothing does. */
+  function settle(r: GraphRisk, layer: number, want: number): number {
+    for (let step = 0; step <= 180; step += 3) {
+      for (const a of step ? [want + step, want - step] : [want]) {
+        const box = labelBox(r.short, layer, a);
+        if (inside(box) && !taken.some((t) => overlaps(box, t))) {
+          taken.push(box);
+          return a;
+        }
+      }
+    }
+    taken.push(labelBox(r.short, layer, want));
+    return want;
+  }
+
+  const out: GraphRisk[] = [{ ...centre, layer: 0, angle: 0 }];
+  // First ring: aim for an even spread, highest priority at twelve o'clock.
+  const first = ringOf(1);
+  first.forEach((r, i) => out.push({ ...r, layer: 1, angle: settle(r, 1, -90 + (i * 360) / first.length) }));
+  // Outer rings: as close as there is room to the risk that links them in.
+  for (const d of [2, 3] as const) {
+    for (const r of ringOf(d)) {
+      const from = out.find((x) => x.id === parent.get(r.id));
+      out.push({ ...r, layer: d, angle: settle(r, d, from?.angle ?? -90) });
+    }
+  }
+  return out;
 }

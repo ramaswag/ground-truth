@@ -116,7 +116,7 @@ export default async function QuestionPage({ params, searchParams }: { params: P
             <strong>Ground Truth</strong> by ACAPS
           </p>
           <p className={s.footNote}>
-            Interface draft.{" "}
+            Demo. You were put on the Chad demo panel automatically, and nothing you send is saved.{" "}
             {question.link
               ? `Risks ${question.link.from.id} and ${question.link.to.id} come`
               : `Risk ${question.riskId} data comes`}{" "}

@@ -11,12 +11,12 @@ export const metadata: Metadata = { title: "Sign in · Ground Truth by ACAPS" };
 const ROLES = [
   {
     name: "Expert",
-    hint: "Chad panel. Answer a question from ACAPS.",
+    hint: "Demo: you join the Chad demo panel automatically and answer this week's sample questions.",
     href: `/q/${FIRST_QUESTION_ID}`,
   },
   {
     name: "ACAPS moderator",
-    hint: "Chad analysis team. Write questions and review answers.",
+    hint: "Opens the Chad demo. Switch to any real country from the Risk Radar in the top strip.",
     href: "/moderate",
   },
 ];

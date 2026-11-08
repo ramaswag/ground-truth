@@ -3,7 +3,7 @@
 import { useMemo, useRef, useState } from "react";
 import { Plus } from "lucide-react";
 import type { Lens } from "@/lib/moderate";
-import { coverage } from "@/lib/moderate";
+import { WHEEL_RINGS, WHEEL_RING_MARKS, coverage, wheelAround } from "@/lib/moderate";
 import { Radar, type LensMark } from "./Radar";
 import { RadarKey } from "./RadarKey";
 import { Inspector } from "./Inspector";
@@ -32,20 +32,45 @@ const LENSES: { id: Lens; label: string; legend: string }[] = [
 ];
 
 export function RadarView() {
-  const { data, risks, links, changes, lens, setLens, selected, select, open, addRisk, findExperts } = useWorkspace();
+  const {
+    data,
+    base,
+    risks,
+    links,
+    changes,
+    lens,
+    setLens,
+    selected,
+    select,
+    centreId,
+    centreOn,
+    open,
+    addRisk,
+    findExperts,
+    addLink,
+    removeLink,
+  } = useWorkspace();
   const [adding, setAdding] = useState(false);
   const addButtonRef = useRef<HTMLButtonElement>(null);
   const panel = data.panel;
 
+  // One risk per wheel: the chosen risk in the centre, the risks linked to it around it.
+  const wheel = useMemo(() => wheelAround(centreId, risks, links), [centreId, risks, links]);
+  const centre = wheel[0];
+  // The risk tabs keep a steady order: by the risk's ring in the data, then by priority.
+  const tabs = useMemo(() => [...risks].sort((a, b) => a.layer - b.layer || b.priority - a.priority), [risks]);
+  const linkCount = (id: string) => links.filter((l) => l.from === id || l.to === id).length;
+  const onWheel = wheel.find((r) => r.id === selected?.id);
+
   const marks = useMemo<Record<string, LensMark>>(() => {
     const out: Record<string, LensMark> = {};
     if (lens === "priority") {
-      [...risks]
+      [...wheel]
         .sort((a, b) => b.priority - a.priority)
         .slice(0, 5)
-        .forEach((r, i) => (out[r.id] = { flag: true, value: String(i + 1), spoken: `priority ${i + 1} of 5` }));
+        .forEach((r, i) => (out[r.id] = { flag: true, value: String(i + 1), spoken: `priority ${i + 1} on this wheel` }));
     }
-    for (const r of risks) {
+    for (const r of wheel) {
       if (lens === "changes") {
         const n = changes.filter((c) => c.riskIds.includes(r.id)).length;
         if (n) out[r.id] = { flag: true, value: String(n), spoken: `${n} change${n === 1 ? "" : "s"} this week` };
@@ -67,7 +92,7 @@ export function RadarView() {
       }
     }
     return out;
-  }, [lens, risks, changes, panel]);
+  }, [lens, wheel, changes, panel]);
 
   function onTabKey(e: React.KeyboardEvent<HTMLButtonElement>) {
     const i = LENSES.findIndex((l) => l.id === lens);
@@ -80,12 +105,25 @@ export function RadarView() {
     document.getElementById(`lens-${LENSES[next].id}`)?.focus();
   }
 
-  const pending = open.find((d) => d.kind !== "pattern" && d.riskId === selected.id);
+  function onRiskTabKey(e: React.KeyboardEvent<HTMLButtonElement>) {
+    const i = tabs.findIndex((r) => r.id === centreId);
+    let next = i;
+    if (e.key === "ArrowRight") next = (i + 1) % tabs.length;
+    else if (e.key === "ArrowLeft") next = (i - 1 + tabs.length) % tabs.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = tabs.length - 1;
+    else return;
+    e.preventDefault();
+    centreOn(tabs[next].id);
+    document.getElementById(`centre-${tabs[next].id}`)?.focus();
+  }
+
+  const pending = open.find((d) => d.kind !== "pattern" && d.riskId === selected?.id);
   const lensInfo = LENSES.find((l) => l.id === lens)!;
 
   return (
     <div className={s.bench}>
-      <h1 className="visually-hidden">Risk radar, {data.context.name} panel</h1>
+      <h1 className="visually-hidden">Risk radar, {data.context.name}</h1>
       <section aria-label="Risk radar" className={s.radarCol}>
         <div className={s.toolbar}>
           <div role="tablist" aria-label="What the radar shows" className={s.tabs}>
@@ -117,10 +155,60 @@ export function RadarView() {
             Add risk
           </button>
         </div>
+
+        <div className={s.riskTabsWrap}>
+          {/* Phones get a dropdown: a dozen tabs would push the wheel off the screen. */}
+          <label className={s.riskSelect}>
+            <span className={s.riskTabsLabel}>Risk in the centre</span>
+            <select value={centreId} onChange={(e) => centreOn(e.target.value)}>
+              {tabs.map((r) => {
+                const n = linkCount(r.id);
+                return (
+                  <option key={r.id} value={r.id}>
+                    {`${r.short} (${n === 0 ? "no links" : `${n} link${n === 1 ? "" : "s"}`})`}
+                  </option>
+                );
+              })}
+            </select>
+          </label>
+          <p className={`${s.riskTabsLabel} ${s.riskTabsOnly}`} id="risk-tabs-label">
+            Risk in the centre
+          </p>
+          <div role="tablist" aria-labelledby="risk-tabs-label" className={`${s.riskTabs} ${s.riskTabsOnly}`}>
+            {tabs.map((r) => {
+              const n = linkCount(r.id);
+              return (
+                <button
+                  key={r.id}
+                  id={`centre-${r.id}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={r.id === centreId}
+                  aria-controls="radar-panel"
+                  aria-label={`${r.short}, ${n} link${n === 1 ? "" : "s"}`}
+                  title={r.title}
+                  tabIndex={r.id === centreId ? 0 : -1}
+                  className={s.riskTab}
+                  data-status={r.status}
+                  onClick={() => centreOn(r.id)}
+                  onKeyDown={onRiskTabKey}
+                >
+                  {r.level && <span className={s.swatch} data-level={r.level.toLowerCase()} aria-hidden />}
+                  <span className={s.riskTabName}>{r.short}</span>
+                  {/* Written out, so it never reads as the priority rank shown on the wheel. */}
+                  <span className={s.riskTabLinks} aria-hidden>
+                    {n === 0 ? "no links" : `${n} link${n === 1 ? "" : "s"}`}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {adding && (
           <AddRiskForm
             risks={risks}
-            defaultTarget={selected.status === "mapped" ? selected.id : "R1043"}
+            defaultTarget={selected?.status === "mapped" ? selected.id : data.context.focusId}
             onAdd={(n) => {
               addRisk(n);
               setAdding(false);
@@ -132,9 +220,29 @@ export function RadarView() {
             }}
           />
         )}
-        <div id="radar-panel" role="tabpanel" aria-labelledby={`lens-${lens}`} className={s.field}>
-          <Radar risks={risks} links={links} lens={lens} marks={marks} selected={selected.id} onSelect={select} />
-          <RadarKey lens={lens} sentence={lensInfo.legend} />
+        <div id="radar-panel" role="tabpanel" aria-labelledby={`centre-${centreId}`} className={s.field}>
+          {/* Keyed by the centre so the wheel unfolds again around each new choice. */}
+          <Radar
+            key={centreId}
+            risks={wheel}
+            links={links}
+            lens={lens}
+            marks={marks}
+            selected={selected?.id ?? ""}
+            onSelect={select}
+            rings={WHEEL_RINGS}
+            ringMarks={WHEEL_RING_MARKS}
+          />
+          {centre && wheel.length === 1 && (
+            <p className={s.wheelHint}>
+              Nothing is linked to <strong>{centre.short}</strong> yet. Draw a link in the panel on the right and the
+              other risk shows up on the first ring.
+            </p>
+          )}
+          <RadarKey
+            lens={lens}
+            sentence={`${lensInfo.legend} The wheel shows one risk at a time: the one in the centre, the risks linked to it on the first ring, and the risks linked to those further out. Pick another risk in the tabs above.${data.context.hasPanel ? "" : " No panel here yet, so coverage and disagreement stay empty."}`}
+          />
         </div>
       </section>
 
@@ -144,6 +252,14 @@ export function RadarView() {
         links={links}
         changes={changes}
         panel={panel}
+        ringLabel={
+          selected?.id === centreId ? "Centre of the wheel" : onWheel ? WHEEL_RINGS[onWheel.layer] : "Not on this wheel"
+        }
+        onCentre={selected && selected.id !== centreId ? () => centreOn(selected.id) : undefined}
+        outliersHref={`${base}/outliers`}
+        demo={data.context.demo}
+        onAddLink={addLink}
+        onRemoveLink={removeLink}
         onSelect={select}
         onFindExperts={(id) =>
           findExperts(data.spaces.find((sp) => sp.riskIds.includes(id))?.name ?? selected.short)

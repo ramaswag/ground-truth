@@ -2,6 +2,7 @@
 
 import type { Change, Expert, GraphLink, GraphRisk } from "@/lib/moderate";
 import { PROBABILITY, coverage, formatWhen } from "@/lib/moderate";
+import { useState } from "react";
 import Link from "next/link";
 import { AskNext } from "./AskNext";
 import s from "./moderate.module.css";
@@ -18,6 +19,12 @@ export function Inspector({
   links,
   changes,
   panel,
+  ringLabel,
+  onCentre,
+  outliersHref,
+  demo,
+  onAddLink,
+  onRemoveLink,
   onSelect,
   onFindExperts,
   children,
@@ -27,6 +34,15 @@ export function Inspector({
   links: GraphLink[];
   changes: Change[];
   panel: Expert[];
+  /** Where this risk sits on the current wheel: "Centre of the wheel", "Directly linked"... */
+  ringLabel: string;
+  /** Put this risk in the centre of the wheel. Absent when it already is. */
+  onCentre?: () => void;
+  outliersHref: string;
+  /** True for the demo, where drawn links are not saved. */
+  demo: boolean;
+  onAddLink: (from: string, to: string, window: string) => void;
+  onRemoveLink: (id: string) => void;
   onSelect: (id: string) => void;
   onFindExperts: (riskId: string) => void;
   /** Decision actions, when this risk is waiting on one. */
@@ -48,7 +64,7 @@ export function Inspector({
       <p className={s.idLine}>
         <span>{risk.id}</span>
         <span aria-hidden>·</span>
-        <span>{risk.layer === 0 ? "Root of this context" : `Layer ${risk.layer}`}</span>
+        <span>{ringLabel}</span>
         {risk.level && (
           <span className={s.level} data-level={risk.level.toLowerCase()}>
             {risk.level}
@@ -60,6 +76,11 @@ export function Inspector({
           {risk.origin === "expert" && risk.proposedBy ? `Proposed by ${risk.proposedBy}` : ORIGIN[risk.origin]}
         </span>
       </p>
+      {onCentre && (
+        <button type="button" className={`btn ${s.centreBtn}`} onClick={onCentre}>
+          Put this risk in the centre
+        </button>
+      )}
 
       <div className={s.block}>
         <div className={s.blockHead}>
@@ -84,13 +105,17 @@ export function Inspector({
             <dd>{p ? panelLine(p) : "Not asked yet"}</dd>
           </div>
         </dl>
-        <p className={s.summary}>
-          Covered by{" "}
-          <strong>
-            {experts.length} of {panel.length} experts
-          </strong>
-          {unverified ? `, ${unverified} not yet verified` : ""}.
-        </p>
+        {panel.length ? (
+          <p className={s.summary}>
+            Covered by{" "}
+            <strong>
+              {experts.length} of {panel.length} experts
+            </strong>
+            {unverified ? `, ${unverified} not yet verified` : ""}.
+          </p>
+        ) : (
+          <p className={s.summary}>No panel for this country yet, so nobody has been asked about it.</p>
+        )}
       </div>
 
       {children}
@@ -128,14 +153,34 @@ export function Inspector({
           <h3>Links</h3>
           <p>{drivenBy.length + leadsTo.length} on the radar</p>
         </div>
+        {drivenBy.length + leadsTo.length === 0 && (
+          <p className={s.small}>
+            No links yet. If this risk drives another one, or follows from one, draw it below.
+          </p>
+        )}
         <ul className={s.linkList}>
           {drivenBy.map((l) => (
-            <LinkRow key={l.id} link={l} other={byId[l.from]} direction="Driven by" onSelect={onSelect} />
+            <LinkRow
+              key={l.id}
+              link={l}
+              other={byId[l.from]}
+              direction="Driven by"
+              onSelect={onSelect}
+              onRemove={onRemoveLink}
+            />
           ))}
           {leadsTo.map((l) => (
-            <LinkRow key={l.id} link={l} other={byId[l.to]} direction="Leads to" onSelect={onSelect} />
+            <LinkRow
+              key={l.id}
+              link={l}
+              other={byId[l.to]}
+              direction="Leads to"
+              onSelect={onSelect}
+              onRemove={onRemoveLink}
+            />
           ))}
         </ul>
+        {risks.length > 1 && <LinkForm key={risk.id} risk={risk} risks={risks} demo={demo} onAdd={onAddLink} />}
       </div>
 
       <div className={s.block}>
@@ -145,7 +190,9 @@ export function Inspector({
             {experts.length} of {panel.length} experts
           </p>
         </div>
-        {experts.length > 0 ? (
+        {panel.length === 0 ? (
+          <p className={s.small}>No panel yet. Once experts join for this country, the people covering it show here.</p>
+        ) : experts.length > 0 ? (
           <p className={s.coverList}>
             {experts.map((e, i) => (
               <span key={e.name}>
@@ -171,7 +218,7 @@ export function Inspector({
         {p && p.againstAcaps.length > 0 && (
           <p className={s.small} style={{ marginTop: "var(--s3)" }}>
             <strong>Against ACAPS this week:</strong> {p.againstAcaps.join(", ")}.{" "}
-            <Link href="/moderate/outliers">See outlier profiles</Link>
+            <Link href={outliersHref}>See outlier profiles</Link>
           </p>
         )}
       </div>
@@ -193,12 +240,16 @@ function LinkRow({
   other,
   direction,
   onSelect,
+  onRemove,
 }: {
   link: GraphLink;
   other: GraphRisk;
   direction: string;
   onSelect: (id: string) => void;
+  onRemove: (id: string) => void;
 }) {
+  // Links someone drew by hand can be taken back; the sample's links stay as they are.
+  const drawn = link.dbId !== undefined || link.id.startsWith("L-you-");
   return (
     <li>
       <span>{direction}</span>
@@ -211,7 +262,77 @@ function LinkRow({
           ? `proposed link, ${link.window}`
           : `${link.window}${link.strength !== undefined ? `, strength ${link.strength}` : ""}`}
       </span>
+      {drawn && (
+        <button
+          type="button"
+          className={`${s.textLink} ${s.unlink}`}
+          onClick={() => onRemove(link.id)}
+          aria-label={`Remove the link with ${other.short}`}
+        >
+          Remove
+        </button>
+      )}
     </li>
+  );
+}
+
+const WINDOWS = ["3 months", "6 months", "12 months"];
+
+/** Draw a link from the selected risk to another one on the same radar. */
+function LinkForm({
+  risk,
+  risks,
+  demo,
+  onAdd,
+}: {
+  risk: GraphRisk;
+  risks: GraphRisk[];
+  demo: boolean;
+  onAdd: (from: string, to: string, window: string) => void;
+}) {
+  const others = risks.filter((r) => r.id !== risk.id).sort((a, b) => a.short.localeCompare(b.short));
+  const [direction, setDirection] = useState<"leads" | "follows">("leads");
+  const [other, setOther] = useState(others[0]?.id ?? "");
+  const [window, setWindow] = useState("6 months");
+
+  function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!other) return;
+    if (direction === "leads") onAdd(risk.id, other, window);
+    else onAdd(other, risk.id, window);
+  }
+
+  return (
+    <form className={s.linkForm} onSubmit={submit} aria-label={`Draw a link from ${risk.short}`}>
+      <label>
+        This risk
+        <select value={direction} onChange={(e) => setDirection(e.target.value as "leads" | "follows")}>
+          <option value="leads">leads to</option>
+          <option value="follows">is driven by</option>
+        </select>
+      </label>
+      <label className={s.linkTarget}>
+        Risk
+        <select value={other} onChange={(e) => setOther(e.target.value)}>
+          {others.map((r) => (
+            <option key={r.id} value={r.id}>
+              {`${r.short} (${r.id})`}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Within
+        <select value={window} onChange={(e) => setWindow(e.target.value)}>
+          {WINDOWS.map((w) => (
+            <option key={w}>{w}</option>
+          ))}
+        </select>
+      </label>
+      <button type="submit" className="btn">
+        {demo ? "Draw link" : "Save link"}
+      </button>
+    </form>
   );
 }
 
@@ -231,6 +352,16 @@ function Trend({ risk }: { risk: GraphRisk }) {
       <p className={s.emptyChart}>
         No readings yet. {risk.status === "proposed" ? "This risk was proposed this week" : "It has not been rated"}; its
         trend starts once ACAPS rates it or the panel is asked.
+      </p>
+    );
+  }
+
+  // One ACAPS reading and nothing else: a line needs two points, so say it in words.
+  if (readings.length === 1 && readings[0].panel === undefined) {
+    return (
+      <p className={s.emptyChart}>
+        One reading so far: ACAPS rates it {PROBABILITY[readings[0].acaps! - 1]} in week {readings[0].week}. The
+        Risk Radar export holds no earlier readings, so the trend builds from here week by week.
       </p>
     );
   }

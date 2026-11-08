@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHead } from "./Chrome";
+import { NotYet, PageHead } from "./Chrome";
 import { useWorkspace } from "./state";
 import s from "./moderate.module.css";
 
@@ -15,6 +15,12 @@ export function PanelView() {
         <span className={s.count}>{panel.length}</span> experts on the {context.name} panel. Other experts never see
         these names or scores; only ACAPS does.
       </PageHead>
+      {panel.length === 0 && (
+        <NotYet>
+          No experts for {context.name} yet. When ACAPS invites people, each one shows here with their role, whether
+          ACAPS has verified who they are, the risks they cover, and how reliable their past answers were.
+        </NotYet>
+      )}
       <div className={s.tableWrap}>
         <table className={s.table}>
           <thead>
