@@ -30,6 +30,32 @@
   max-width: 62ch;
 }
 
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3) var(--s4);
+  margin-top: var(--s2);
+}
+
+.heroNote {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  max-width: 40ch;
+}
+
+/* A way from each explanation into the live page that shows it. */
+.tryIt {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  margin-top: var(--s2);
+  font-size: var(--fs-body);
+  font-weight: 800;
+  text-underline-offset: 0.2em;
+}
+
 /* ---------------------------------------------------------------- loop */
 
 .loopFigure {

@@ -308,6 +308,15 @@
   padding-top: var(--s1);
 }
 
+/* The closed notice shares the error box's build; its icon stays ink, because closing is not a fault. */
+.closed {
+  margin-top: var(--s6);
+  display: grid;
+  gap: var(--s4);
+  max-width: 640px;
+}
+
+.notice,
 .error {
   display: flex;
   gap: var(--s3);
@@ -319,8 +328,14 @@
   line-height: var(--lh-body);
 }
 
+.notice strong,
 .error strong {
   font-weight: 800;
+}
+
+.noticeIcon {
+  flex: none;
+  margin-top: 2px;
 }
 
 .errorIcon {

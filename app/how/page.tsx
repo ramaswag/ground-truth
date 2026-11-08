@@ -87,6 +87,7 @@ const KINDS = [
     example: "Humanitarian access is disrupted around Adré and Tiné. Is this true now?",
     changes: "The facts the map stands on",
     settles: "In days, checked against UNHCR and OCHA reports",
+    href: "/q/Q-0411",
   },
   {
     name: "Forecast",
@@ -94,6 +95,7 @@ const KINDS = [
     example: "Will there be a direct attack on strategic infrastructure in eastern Chad before 7 May 2027?",
     changes: "The chance of one risk",
     settles: "On the date in the question",
+    href: "/q/Q-0412",
   },
   {
     name: "Risk link",
@@ -102,6 +104,7 @@ const KINDS = [
       "Could escalating insecurity in eastern Chad make the Lake Chad Basin crisis more likely to escalate within 6 months?",
     changes: "The strength of one arrow, or a new arrow",
     settles: "When an ACAPS analyst approves",
+    href: "/q/Q-0414",
   },
 ];
 
@@ -178,6 +181,13 @@ export default function HowPage() {
           <p className={s.lede}>
             ACAPS asks a small panel of experts a few questions each week. Their answers, weighed by how often each
             expert has been right, update a map of risks and of how one risk leads to another.
+          </p>
+          <p className={s.heroActions}>
+            <Link className="btn btn-primary" href={`/q/${FIRST_QUESTION_ID}?tour=1`}>
+              Start the demo
+              <ArrowRight aria-hidden size={18} strokeWidth={2.5} />
+            </Link>
+            <span className={s.heroNote}>Five steps on the real pages: facts, predictions, gaps, links, and what ACAPS sees.</span>
           </p>
         </header>
 
@@ -285,6 +295,10 @@ export default function HowPage() {
                       <dd>{k.settles}</dd>
                     </div>
                   </dl>
+                  <Link className={s.tryIt} href={`${k.href}?tour=go`}>
+                    Try a {k.name.toLowerCase()}
+                    <ArrowRight aria-hidden size={16} strokeWidth={2.5} />
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -500,6 +514,10 @@ export default function HowPage() {
                 </li>
               ))}
             </ol>
+            <Link className={s.tryIt} href="/q/Q-0413?tour=go">
+              Try Don’t know on a live question
+              <ArrowRight aria-hidden size={16} strokeWidth={2.5} />
+            </Link>
           </div>
         </section>
 
@@ -526,8 +544,8 @@ export default function HowPage() {
           <h2 id="close-h" className={s.closeH}>
             One question at a time, the map gets closer to the ground truth.
           </h2>
-          <Link className="btn" href={`/q/${FIRST_QUESTION_ID}`}>
-            Try this week’s questions
+          <Link className="btn" href={`/q/${FIRST_QUESTION_ID}?tour=1`}>
+            Start the demo
             <ArrowRight aria-hidden size={18} strokeWidth={2.5} />
           </Link>
           <p className={s.closeNote}>

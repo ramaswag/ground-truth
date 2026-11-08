@@ -67,7 +67,8 @@ export type ChangeKind =
   | "added-risk"
   | "split-risk"
   | "merged-risk"
-  | "rejected-risk";
+  | "rejected-risk"
+  | "direct-ask";
 
 export type Change = {
   id: string;
@@ -605,6 +606,87 @@ export function freeAngle(risks: Pick<GraphRisk, "layer" | "angle">[], layer: nu
 
 export function coverage(panel: Expert[], riskId: string): Expert[] {
   return panel.filter((e) => e.covers.includes(riskId));
+}
+
+/** A reliability score worth weighing: a Brier score over at least 10 resolved answers. */
+export function reliability(e: Expert): number | undefined {
+  return e.brier !== undefined && e.resolved >= 10 ? e.brier : undefined;
+}
+
+/** One suggestion for a direct ask: who, and how they know the risk. */
+export type AskPick = {
+  expert: Expert;
+  /** Set when they cover a risk linked to this one rather than this one. */
+  via?: { risk: GraphRisk; drives: boolean; proposed: boolean };
+  /** Based where the risk is. */
+  local: boolean;
+};
+
+const fold = (t: string) =>
+  t
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase();
+
+/**
+ * Who on the panel to ask directly about a risk next round, best placed first. Verified experts
+ * who cover the risk come first, then those who cover a risk linked to it (mapped links before
+ * proposed ones); within each, people based where it happens, then the better reliability.
+ * Unverified experts stay out until their identity check clears.
+ */
+export function whoToAsk(risk: GraphRisk, risks: GraphRisk[], links: GraphLink[], panel: Expert[], max = 3): AskPick[] {
+  const byId = new Map(risks.map((r) => [r.id, r]));
+  const place = fold(risk.place ?? "");
+  const near = links
+    .filter((l) => (l.to === risk.id && byId.has(l.from)) || (l.from === risk.id && byId.has(l.to)))
+    .sort((a, b) => Number(a.status === "proposed") - Number(b.status === "proposed"));
+
+  const picks: AskPick[] = [];
+  for (const e of panel) {
+    if (e.identity !== "verified") continue;
+    const base = fold(e.base);
+    const local = Boolean(place && base && place.includes(base));
+    if (e.covers.includes(risk.id)) {
+      picks.push({ expert: e, local });
+      continue;
+    }
+    const link = near.find((l) => e.covers.includes(l.to === risk.id ? l.from : l.to));
+    if (link) {
+      const drives = link.to === risk.id;
+      const other = byId.get(drives ? link.from : link.to)!;
+      picks.push({ expert: e, local, via: { risk: other, drives, proposed: link.status === "proposed" } });
+    }
+  }
+
+  const score = (e: Expert) => reliability(e) ?? 1;
+  return picks
+    .sort(
+      (a, b) =>
+        Number(Boolean(a.via)) - Number(Boolean(b.via)) ||
+        Number(b.local) - Number(a.local) ||
+        score(a.expert) - score(b.expert),
+    )
+    .slice(0, max);
+}
+
+/**
+ * Why a risk is worth a direct ask next round, most pressing first. Empty when it is not:
+ * proposals are not asked until an analyst approves them.
+ */
+export function askReasons(risk: GraphRisk, panel: Expert[], held: boolean): string[] {
+  if (risk.status === "proposed") return [];
+  const out: string[] = [];
+  const p = risk.panel;
+  if (p) {
+    const total = p.yes + p.no + p.dontKnow;
+    if (p.dontKnow > 0 && p.dontKnow >= p.yes + p.no) out.push(`${p.dontKnow} of ${total} answered Don’t know this week`);
+    else if (p.againstAcaps.length >= 2) out.push(`${p.againstAcaps.length} answered against ACAPS this week`);
+    else if (total >= 4 && Math.abs(p.yes - p.no) <= 1) out.push(`the panel split ${p.yes} to ${p.no}`);
+  }
+  if (held) out.push("you held its reading for a round");
+  const verified = coverage(panel, risk.id).filter((e) => e.identity === "verified").length;
+  if (verified <= 1) out.push(verified ? "answers rest on one verified expert" : "no verified expert covers it");
+  return out;
 }
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

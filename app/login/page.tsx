@@ -46,13 +46,9 @@ export default function LoginPage() {
             </li>
           ))}
         </ul>
-        <p className={s.how}>
-          New to Ground Truth?{" "}
-          <Link className="btn" href="/how">
-            How it works
-            <ArrowRight aria-hidden size={18} strokeWidth={2.5} />
-          </Link>
-        </p>
+        <Link className={`btn ${s.how}`} href="/how">
+          How it works
+        </Link>
       </main>
     </>
   );

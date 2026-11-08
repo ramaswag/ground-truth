@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { ChevronDown, EyeOff } from "lucide-react";
 import s from "./shell.module.css";
 
@@ -22,9 +22,24 @@ const WHO = [
 export function AnonymityStrip({ referred }: { referred: boolean }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // The sheet lies over the page: Escape closes it and hands focus back to its button.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      buttonRef.current?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
   return (
-    <div className={s.stripWrap}>
+    <div className={s.stripWrap} data-open={open}>
+      {/* Dims the page under the sheet; a click anywhere on it closes the sheet. */}
+      <div className={s.scrim} hidden={!open} aria-hidden onClick={() => setOpen(false)} />
       <div className={`${s.strip} on-ink`}>
         <div className={s.stripInner}>
           <EyeOff className={s.stripIcon} aria-hidden size={18} strokeWidth={2.25} />
@@ -44,6 +59,7 @@ export function AnonymityStrip({ referred }: { referred: boolean }) {
             </p>
           )}
           <button
+            ref={buttonRef}
             type="button"
             className={s.whoButton}
             aria-expanded={open}

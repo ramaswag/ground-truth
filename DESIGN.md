@@ -280,16 +280,16 @@ A poster palette: one loud blue, one ink, one paper, and risk colours that only 
 
 An 8px-cell rhythm (4, 8, 12, 16, 24, 32, 48, 64). The content container is 1240px max with a 20px gutter on phones and 32px from 768px. The moderator workbench is a desk tool and widens the container to 1440px by setting the max on a wrapper around the whole page, so band, context strip, main and footer widen together; the expert page stays at 1240px.
 
-- **Phone (default):** one column. Shell band, anonymity strip, question owning the top of the viewport, facts row, three full-width 58px answer options; note and Send appear on selection with a short rise. Context sections (risk, carry panel) follow below, each under a 3px rule. Primary and confirmation actions go full width.
+- **Phone (default):** one column. Shell band, anonymity strip, question owning the top of the viewport, one clock line and the "What counts as Yes" disclosure, three full-width 58px answer options; note and Send appear on selection with a short rise. Context sections (risk, carry panel) follow below, each under a 3px rule. Primary and confirmation actions go full width.
 - **640px:** the follow-up actions sit side by side; the primary Send keeps a 220px minimum instead of full width; identity fields split into two columns.
 - **768px:** gutter widens to 32px; the "who sees what" disclosure lays out three cells; the footer splits 1:2.
 - **1024px and up:** a 7:5 two-column grid with a 48px gap. Left: question and answering. Right: risk context, then the transposition panel. The answering column is sticky; when it grows taller than the viewport (note and Send revealed), its sticky top goes negative (viewport height minus column height minus 24px) so it scrolls until Send is reachable and then holds.
-- **Under 480px:** the three-cell facts row breaks into two plus one, the third cell dropping under a 1px rule (the inspector's four-cell row breaks two plus two the same way).
+- **Under 480px:** the inspector's four-cell facts row breaks two plus two, the lower pair under a 1px rule.
 - **Moderator pages:** the workbench is six pages under one navigation bar (Radar, Decisions, Changes, Panel, Gaps, Outliers) that share one working state, so a decision on one page shows on the others. The frame is a full-height column so the footer sits at the window's foot on short pages. Each page but the radar opens with a section head: a 3px rule, the page title as an h1 at body size 800, and one small line of purpose.
 - **Radar page:** radar then inspector in DOM order; one column with a 32px gap below 1024px, the 7:5 grid with a 48px gap from 1024px. When the window is at least 880px tall the radar column is sticky (16px from the top) while the inspector scrolls, except while the add-risk form is open.
 - **Reading pages:** the decision queue and outliers hold to 880px, the change log to 1000px, the panel table runs full width; gaps pair the list with the expert-finder slot 7:5, the slot sticky from 1024px.
 
-Facts read as a ruled table: a 3px rule on top, 1px ink verticals between cells, key in small weight 500, value in label weight 800.
+On the question page there is no facts table. Under the question sits one line at body size, weight 500, carrying only the clock the expert acts on: "Closes in 3 hours" in 800, then "· Resolves in 6 months" for a forecast or "· Looks ahead 6 months" for a risk link; the exact deadline is the hover title and returns after answering. Once answering closes, the line drops the clock (a fact check then has no line at all) and keeps only the horizon. How the answer is judged ("Checked against…", "Asked by…", the resolution date) sits in small 500 type inside the "What counts as Yes" disclosure. Where a facts table remains (the moderator inspector), it reads as a ruled table: a 3px rule on top, 1px ink verticals between cells, key in small weight 500, value in label weight 800.
 
 ## Elevation & Depth
 
@@ -300,7 +300,7 @@ Flat. There are no elevation shadows anywhere in the product's own chrome. Depth
 
 ## Shapes
 
-Square. Every control, field, tab, badge, plate, notice box, embed card and share card has 0 radius. Borders come in three weights with fixed jobs: 3px ink rules head sections, sit under the shell band and the anonymity strip, and top the facts row; 2px ink borders outline controls, boxes, disclosures and the embed card; 1px ink or hairline rules divide cells within a group. The pending state swaps the solid 2px border for a dashed one, and dashed means not yet counted wherever it appears: proposed radar risks and links, expert proposals in the decision queue, a pending identity check, a tool slot not yet connected. On the 1200x630 share card the same language scales up: an 8px band rule and 4px answer borders.
+Square. Every control, field, tab, badge, plate, notice box, embed card and share card has 0 radius. Borders come in three weights with fixed jobs: 3px ink rules head sections, sit under the shell band and the anonymity strip, and top the inspector's facts table; 2px ink borders outline controls, boxes, disclosures and the embed card; 1px ink or hairline rules divide cells within a group. The pending state swaps the solid 2px border for a dashed one, and dashed means not yet counted wherever it appears: proposed radar risks and links, expert proposals in the decision queue, a pending identity check, a tool slot not yet connected. On the 1200x630 share card the same language scales up: an 8px band rule and 4px answer borders.
 
 Medium-frame previews are the exception: the WhatsApp bubble (8px with a square tail corner) and its link card (6px) keep WhatsApp's own rounding, because they show the question as it will look inside that app.
 
@@ -324,6 +324,7 @@ After sending, the answer is restated as a plate: small label line, then the ans
 - **Pending ACAPS review:** white plate with a 2px dashed ink border, ink text. Hollow because it does not count yet.
 - **Queued offline:** white plate with a solid 2px ink border.
 - **Failed:** a white notice box with 2px ink border and a vermilion warning icon; the answer is not plated.
+- **Closed:** after the deadline the answers give way to the same white notice box with an ink clock icon (closing is not a fault, so no vermilion): "This question closed Sun 8 Nov, 12:00 UTC." in 800, then that ACAPS is working with the answers it has; Next question follows. An expert who already answered keeps their plate, minus Change answer, and the until-line reads "Answering closed …".
 
 ### Inputs / Fields
 - **Style:** white, 2px ink border, square, 48px minimum (textarea 76px, vertical resize), 12px padding, body size. Label above in label weight; optional marker in weight 500.
@@ -343,6 +344,7 @@ Probability and impact are shown as five 8px cells with 3px gaps (filled ink, em
 
 ### Disclosures
 Summary rows between 2px ink rules top and bottom, 48 to 52px tall, title weight, with a chevron that rotates 180 degrees over 200ms. Body appears without animation.
+- **Inline disclosure** ("What counts as Yes" under the question): no rules; the summary is a text button at body size 700, underlined 1px (2px on hover), 44px hit area, with the same 18px chevron and 200ms turn. Closed by default so the question and its answers own the first screen; the body opens at body size, max 58ch. Media that cannot disclose (WhatsApp, email) keep the line in full.
 
 ### Navigation / Shell
 - **Shell band:** signal blue with white type, 60px minimum, wordmark (800, -0.02em) with "by ACAPS" beneath in 500, panel and position right-aligned in small type; 3px ink rule below. The footer repeats the band.
