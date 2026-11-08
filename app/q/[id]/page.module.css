@@ -36,61 +36,68 @@
   text-wrap: balance;
 }
 
-.counts {
-  margin-top: var(--s4);
+/* One line under the question: the clock the expert acts on. */
+.when {
+  margin-top: var(--s3);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
+  font-weight: 500;
+}
+
+.when strong {
+  font-weight: 800;
+}
+
+/* What counts as Yes: disclosed on request, so the question owns the first screen. */
+.counts {
+  margin-top: var(--s1);
   max-width: 58ch;
 }
 
-.facts {
-  margin-top: var(--s5);
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, auto));
-  justify-content: start;
-  border-top: var(--rule) solid var(--ink);
-  max-width: 640px;
+.countsSummary {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: 44px;
+  font-size: var(--fs-body);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
 }
 
-.facts > div {
-  padding: var(--s2) var(--s4) 0 0;
-  min-width: 0;
+.countsSummary::-webkit-details-marker {
+  display: none;
 }
 
-.facts > div + div {
-  padding-left: var(--s4);
-  border-left: 1px solid var(--ink);
-}
-
-.facts dt {
-  font-size: var(--fs-small);
-  font-weight: 500;
-  line-height: var(--lh-small);
-}
-
-.facts dd {
-  font-size: var(--fs-small);
-  font-weight: 800;
-  line-height: var(--lh-small);
-}
-
-/* Time left until answering closes, under the deadline: the clock that matters to the expert. */
-.left {
-  display: block;
-  font-weight: 500;
-}
-
-@media (max-width: 479px) {
-  .facts {
-    grid-template-columns: 1fr 1fr;
+@media (hover: hover) {
+  .countsSummary:hover {
+    text-decoration-thickness: 2px;
   }
-  .facts > div:nth-child(3) {
-    grid-column: 1 / -1;
-    border-left: 0;
-    padding-left: 0;
-    margin-top: var(--s2);
-    border-top: 1px solid var(--ink);
-  }
+}
+
+.countsChev {
+  flex: none;
+  transition: transform 200ms var(--ease-out);
+}
+
+.counts[open] .countsChev {
+  transform: rotate(180deg);
+}
+
+.countsBody {
+  margin-top: var(--s1);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.countsMeta {
+  margin-top: var(--s2);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 500;
 }
 
 .footer {

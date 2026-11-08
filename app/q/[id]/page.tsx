@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 import { getQuestion } from "@/lib/questions";
 import { formatDate, formatDeadline, formatTimeLeft } from "@/lib/dates";
 import { isAnswerValue } from "@/lib/share";
@@ -48,7 +49,8 @@ export default async function QuestionPage({ params, searchParams }: { params: P
   const referred = Boolean(referral);
   const latest = question.risk?.updates[0]?.date;
   const horizon = formatTimeLeft(question.resolvesOn);
-  const closesIn = formatTimeLeft(question.answerBy);
+  // `?demo=closed` previews the page after the deadline without waiting for it.
+  const closesIn = one(sp.demo) === "closed" ? undefined : formatTimeLeft(question.answerBy);
 
   return (
     <>
@@ -59,46 +61,43 @@ export default async function QuestionPage({ params, searchParams }: { params: P
             <h1 id="question" className={s.question}>
               {question.text}
             </h1>
-            <p className={s.counts}>{question.counts}</p>
-            <dl className={s.facts}>
-              <div>
-                <dt>Answer by</dt>
-                <dd>
-                  <time dateTime={question.answerBy}>{formatDeadline(question.answerBy)}</time>
-                  <span className={s.left}>{closesIn ? `Closes in ${closesIn}` : "Closed"}</span>
-                </dd>
-              </div>
-              {question.kind === "verify" ? (
-                <div>
-                  <dt>Checked against</dt>
-                  <dd>{question.checkedAgainst ?? "ACAPS sources"}</dd>
-                </div>
-              ) : question.kind === "map" && question.link ? (
-                <div>
-                  <dt>Looks ahead</dt>
-                  <dd>{question.link.window}</dd>
-                </div>
-              ) : (
-                <div>
-                  <dt>Resolves</dt>
-                  <dd>
-                    <time dateTime={question.resolvesOn} title={formatDate(question.resolvesOn)}>
-                      {horizon ? `In ${horizon}` : "Resolved"}
-                    </time>
-                  </dd>
-                </div>
-              )}
-              <div>
-                <dt>Asked by</dt>
-                <dd>{question.askedBy}</dd>
-              </div>
-            </dl>
+            {/* Only the clock the expert acts on; the exact time is on hover and after answering. */}
+            {/* Once closed, the notice in the answer area says so; the line keeps only the horizon. */}
+            {(closesIn || question.kind !== "verify") && (
+              <p className={s.when}>
+                {closesIn && (
+                  <time dateTime={question.answerBy} title={`Answer by ${formatDeadline(question.answerBy)}`}>
+                    <strong>Closes in {closesIn}</strong>
+                  </time>
+                )}
+                {closesIn && question.kind !== "verify" && <span aria-hidden> · </span>}
+                {question.kind === "predict" && (
+                  <time dateTime={question.resolvesOn} title={formatDate(question.resolvesOn)}>
+                    {horizon ? `Resolves in ${horizon}` : "Resolved"}
+                  </time>
+                )}
+                {question.kind === "map" && question.link && <>Looks ahead {question.link.window}</>}
+              </p>
+            )}
+            <details className={s.counts}>
+              <summary className={s.countsSummary}>
+                What counts as Yes
+                <ChevronDown aria-hidden size={18} strokeWidth={2.5} className={s.countsChev} />
+              </summary>
+              <p className={s.countsBody}>{question.counts}</p>
+              <p className={s.countsMeta}>
+                {question.kind === "verify" && <>Checked against {question.checkedAgainst ?? "ACAPS sources"}. </>}
+                {question.kind === "predict" && <>Resolves on {formatDate(question.resolvesOn)}. </>}
+                Asked by the {question.askedBy}.
+              </p>
+            </details>
             <AnswerForm
               key={`${question.id}-${referred}`}
               question={question}
               initialAnswer={isAnswerValue(a) ? a : undefined}
               incomingReferral={referral}
               failFirst={one(sp.demo) === "fail"}
+              closed={!closesIn}
             />
           </StickyColumn>
           <aside className={s.context}>

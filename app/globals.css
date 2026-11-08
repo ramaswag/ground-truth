@@ -268,3 +268,13 @@ a:hover {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* While the demo bar is up, the page keeps room for it so it never covers the last action. */
+html[data-demo="on"] body {
+  padding-bottom: var(--demo-h, 120px);
+}
+
+/* Focus and in-page jumps stop above the bar too, so a tabbed-to button is never under it. */
+html[data-demo="on"] {
+  scroll-padding-bottom: calc(var(--demo-h, 120px) + var(--s4));
+}

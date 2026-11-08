@@ -40,7 +40,7 @@ npm run build       # production build
 | `/how` | How it works: the weekly loop, the three kinds of question, how answers are combined. |
 
 Demo switches on the question page: `?demo=sparse` shows a risk with the Radar fields most
-risks leave empty; `?demo=fail` makes the first send fail, to show the retry state;
+risks leave empty; `?demo=fail` makes the first send fail, to show the retry state; `?demo=closed` shows the page after its deadline;
 `?r=<token>` opens the page as a forwarded colleague would.
 
 ### ACAPS moderator side

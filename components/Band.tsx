@@ -9,8 +9,8 @@ export function Band({ home, children }: { home: string; children?: React.ReactN
   return (
     <header className={s.band}>
       <div className={s.bandInner}>
-        <Link href={home} className={s.wordmark} aria-label="Ground Truth by ACAPS, home">
-          <span className={s.wmName}>Ground Truth</span>
+        <Link href={home} className={s.wordmark} aria-label="riskwheel by ACAPS, home">
+          <span className={s.wmName}>riskwheel</span>
           <span className={s.wmBy}>by ACAPS</span>
         </Link>
         {children && <p className={s.position}>{children}</p>}
