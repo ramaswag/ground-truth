@@ -28,8 +28,8 @@ export function RadarKey({ lens, sentence }: { lens: Lens; sentence: string }) {
             <path d="M25 22h14m-4-4 4 4-4 4" className={k.out} />
           </svg>
           <span className={k.text}>
-            <b>Centre → out</b>
-            <span>cause → effect</span>
+            <b>Centre: picked risk</b>
+            <span>rings: 1, 2, 3 links away</span>
           </span>
         </li>
 
