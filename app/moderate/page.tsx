@@ -1,8 +1,7 @@
-import type { Metadata } from "next";
-import { RadarView } from "@/components/moderate/RadarView";
+import { redirect } from "next/navigation";
+import { DEMO_ISO } from "@/lib/moderate";
 
-export const metadata: Metadata = { title: "Radar · Moderator · Ground Truth by ACAPS" };
-
-export default function RadarPage() {
-  return <RadarView />;
+/** /moderate opens the context with a panel; the country picker in the strip switches. */
+export default function ModerateIndex() {
+  redirect(`/moderate/${DEMO_ISO}`);
 }

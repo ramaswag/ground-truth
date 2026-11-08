@@ -3,7 +3,7 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Change, Decision, GraphLink, GraphRisk, Lens, Workspace } from "@/lib/moderate";
-import { PROBABILITY } from "@/lib/moderate";
+import { PROBABILITY, freeAngle } from "@/lib/moderate";
 import type { NewRisk } from "./AddRiskForm";
 
 /**
@@ -16,6 +16,8 @@ export type Outcome = "add" | "merge" | "reject" | "approve" | "hold" | "reviewe
 
 type Ctx = {
   data: Workspace;
+  /** "/moderate/TCD": the root of this country's pages. */
+  base: string;
   risks: GraphRisk[];
   links: GraphLink[];
   changes: Change[];
@@ -29,11 +31,18 @@ type Ctx = {
   setLens: (l: Lens) => void;
   selected: GraphRisk;
   select: (id: string) => void;
+  /** The risk at the centre of the wheel. */
+  centreId: string;
+  /** Put a risk at the centre of the wheel and show it in the inspector. */
+  centreOn: (id: string) => void;
   /** Select a risk and go to the radar. */
   showOnRadar: (id: string) => void;
   decide: (d: Decision, o: Outcome) => void;
   addRisk: (n: NewRisk) => string;
   review: (id: string, note: string) => void;
+  /** Draw a link. Saved to the database for real countries, kept in the page for the demo. */
+  addLink: (from: string, to: string, window: string) => void;
+  removeLink: (id: string) => void;
   finderFor?: string;
   findExperts: (space: string) => void;
   announce: string;
@@ -58,28 +67,17 @@ function shortName(title: string): string {
   return title.split(/\s+/).slice(0, 3).join(" ");
 }
 
-/** A free spot on a ring near the parent's angle, keeping labels apart. */
-function freeAngle(risks: GraphRisk[], layer: number, near: number): number {
-  const gap = layer === 1 ? 50 : layer === 2 ? 30 : 24;
-  const taken = risks.filter((r) => r.layer === layer).map((r) => r.angle);
-  const dist = (a: number, b: number) => Math.abs((((a - b) % 360) + 540) % 360 - 180);
-  for (let step = 0; step <= 180; step += 10) {
-    for (const a of step ? [near + step, near - step] : [near]) {
-      if (taken.every((t) => dist(a, t) >= gap)) return a;
-    }
-  }
-  return near + 180;
-}
-
 export function WorkspaceProvider({ data, children }: { data: Workspace; children: React.ReactNode }) {
   const router = useRouter();
+  const base = `/moderate/${data.context.iso}`;
   const [risks, setRisks] = useState<GraphRisk[]>(data.risks);
   const [links, setLinks] = useState<GraphLink[]>(data.links);
   const [changes, setChanges] = useState<Change[]>(data.changes);
   const [outcomes, setOutcomes] = useState<Record<string, string>>({});
   const [reviewed, setReviewed] = useState<Record<string, string>>({});
   const [lens, setLens] = useState<Lens>("priority");
-  const [selectedId, setSelectedId] = useState("R1043");
+  const [selectedId, setSelectedId] = useState(data.context.focusId);
+  const [centreWanted, setCentreWanted] = useState(data.context.focusId);
   const [finderFor, setFinderFor] = useState<string>();
   const [announce, setAnnounce] = useState("");
 
@@ -93,9 +91,18 @@ export function WorkspaceProvider({ data, children }: { data: Workspace; childre
     setAnnounce(`Showing ${id}, ${byId[id]?.short ?? ""}`);
   }
 
+  // A centre that was rejected or merged away falls back to the selected risk.
+  const centreId = byId[centreWanted] ? centreWanted : (selected?.id ?? "");
+
+  function centreOn(id: string) {
+    setCentreWanted(id);
+    setSelectedId(id);
+    setAnnounce(`Wheel centred on ${byId[id]?.short ?? id}.`);
+  }
+
   function showOnRadar(id: string) {
-    select(id);
-    router.push("/moderate");
+    centreOn(id);
+    router.push(base);
   }
 
   function log(kind: Change["kind"], riskIds: string[], text: string) {
@@ -118,7 +125,7 @@ export function WorkspaceProvider({ data, children }: { data: Workspace; childre
         const into = outcome === "merge" ? d.duplicateOf : undefined;
         setRisks((rs) => rs.filter((x) => x.id !== d.riskId));
         setLinks((ls) => ls.filter((l) => l.to !== d.riskId && l.from !== d.riskId));
-        if (selectedId === d.riskId) setSelectedId(into ?? "R1043");
+        if (selectedId === d.riskId) setSelectedId(into ?? data.context.focusId);
         note = into
           ? `Merged into ${into}. ${r.proposedBy} keeps the credit if it proves real.`
           : `Rejected. ${r.proposedBy}'s proposal stays on record.`;
@@ -161,7 +168,7 @@ export function WorkspaceProvider({ data, children }: { data: Workspace; childre
       | 1
       | 2
       | 3;
-    const nextG = Math.max(...risks.filter((r) => r.id.startsWith("G-")).map((r) => Number(r.id.slice(2)))) + 1;
+    const nextG = Math.max(0, ...risks.filter((r) => r.id.startsWith("G-")).map((r) => Number(r.id.slice(2)))) + 1;
     const id = `G-${String(nextG).padStart(4, "0")}`;
     const fresh: GraphRisk = {
       id,
@@ -192,6 +199,57 @@ export function WorkspaceProvider({ data, children }: { data: Workspace; childre
     return id;
   }
 
+  async function addLink(from: string, to: string, window: string) {
+    const a = byId[from]?.short ?? from;
+    const b = byId[to]?.short ?? to;
+    const existing = links.find((l) => l.from === from && l.to === to);
+    const temp: GraphLink = { id: existing?.id ?? `L-you-${Date.now()}`, from, to, status: "mapped", window };
+    setLinks((ls) => (existing ? ls.map((l) => (l.id === existing.id ? { ...l, window } : l)) : [...ls, temp]));
+    log("approved-link", [from, to], `Linked ${a} to ${b}: ${window}.`);
+
+    if (data.context.demo) {
+      setAnnounce(`Linked ${a} to ${b}. Demo: not saved.`);
+      return;
+    }
+    const res = await fetch("/api/links", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ iso: data.context.iso, from, to, horizon: window }),
+    }).catch(() => undefined);
+    const json = res?.ok ? ((await res.json()) as { link: { id: number } }) : undefined;
+    if (json) {
+      const dbId = json.link.id;
+      setLinks((ls) => ls.map((l) => (l.id === temp.id ? { ...l, id: `L-db-${dbId}`, dbId } : l)));
+      setAnnounce(`Saved: ${a} leads to ${b} within ${window}.`);
+    } else {
+      // Put the radar back the way it was so it never shows a link the database does not have.
+      setLinks((ls) => (existing ? ls.map((l) => (l.id === existing.id ? existing : l)) : ls.filter((l) => l.id !== temp.id)));
+      setAnnounce("Could not save the link. Try again.");
+    }
+  }
+
+  async function removeLink(id: string) {
+    const link = links.find((l) => l.id === id);
+    if (!link) return;
+    setLinks((ls) => ls.filter((l) => l.id !== id));
+    const what = `${byId[link.from]?.short ?? link.from} to ${byId[link.to]?.short ?? link.to}`;
+    if (link.dbId === undefined) {
+      setAnnounce(`Removed the link from ${what}.`);
+      return;
+    }
+    const res = await fetch("/api/links", {
+      method: "DELETE",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ id: link.dbId }),
+    }).catch(() => undefined);
+    if (res?.ok) {
+      setAnnounce(`Removed the link from ${what}.`);
+    } else {
+      setLinks((ls) => [...ls, link]);
+      setAnnounce("Could not remove the link. Try again.");
+    }
+  }
+
   function review(id: string, note: string) {
     setReviewed((r) => ({ ...r, [id]: note }));
     setAnnounce(note);
@@ -199,11 +257,12 @@ export function WorkspaceProvider({ data, children }: { data: Workspace; childre
 
   function findExperts(space: string) {
     setFinderFor(space);
-    router.push("/moderate/gaps#finder");
+    router.push(`${base}/gaps#finder`);
   }
 
   const value: Ctx = {
     data,
+    base,
     risks,
     links,
     changes,
@@ -216,10 +275,14 @@ export function WorkspaceProvider({ data, children }: { data: Workspace; childre
     setLens,
     selected,
     select,
+    centreId,
+    centreOn,
     showOnRadar,
     decide,
     addRisk,
     review,
+    addLink,
+    removeLink,
     finderFor,
     findExperts,
     announce,

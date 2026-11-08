@@ -4,18 +4,25 @@ import Link from "next/link";
 import { Check } from "lucide-react";
 import type { Decision } from "@/lib/moderate";
 import { PROBABILITY, formatWhen } from "@/lib/moderate";
-import { PageHead } from "./Chrome";
+import { NotYet, PageHead } from "./Chrome";
 import { useWorkspace } from "./state";
 import s from "./moderate.module.css";
 
 export function DecisionsView() {
-  const { data, open } = useWorkspace();
+  const { data, base, open } = useWorkspace();
   return (
     <section className={s.page} aria-labelledby="page-head">
       <PageHead title="Needs a decision">
         <span className={s.count}>{open.length}</span> open. Risks experts flag land here first; add one yourself from
-        the <Link href="/moderate">radar</Link>.
+        the <Link href={base}>radar</Link>.
       </PageHead>
+      {!data.context.hasPanel && (
+        <NotYet>
+          {data.context.name} has no panel yet. Once experts answer here, three things land on this page: risks they
+          propose (add, merge or reject), panel readings that differ from ACAPS (approve or hold), and answer
+          patterns to review.
+        </NotYet>
+      )}
       <div className={s.queue}>
         {data.decisions.map((d) => (
           <DecisionItem key={d.id} d={d} />
@@ -27,7 +34,7 @@ export function DecisionsView() {
 
 /** One decision. `compact` is the version that sits inside the radar's inspector. */
 export function DecisionItem({ d, compact }: { d: Decision; compact?: boolean }) {
-  const { original, byId, outcomes, decide, showOnRadar } = useWorkspace();
+  const { base, original, byId, outcomes, decide, showOnRadar } = useWorkspace();
   const outcome = outcomes[d.id];
   let title: string;
   let meta: React.ReactNode;
@@ -85,7 +92,7 @@ export function DecisionItem({ d, compact }: { d: Decision; compact?: boolean })
         <button type="button" className="btn" onClick={() => decide(d, "reviewed")}>
           Mark reviewed
         </button>
-        <Link className="btn" href="/moderate/outliers">
+        <Link className="btn" href={`${base}/outliers`}>
           Open profiles
         </Link>
       </>

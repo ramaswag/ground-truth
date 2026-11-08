@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { PageHead } from "./Chrome";
+import { NotYet, PageHead } from "./Chrome";
 import { useWorkspace } from "./state";
 import s from "./moderate.module.css";
 
@@ -29,6 +29,13 @@ export function GapsView() {
           Problem spaces where answers rest on one verified expert or none. Find people for them before the next
           round.
         </PageHead>
+        {data.spaces.length === 0 && (
+          <NotYet>
+            No problem spaces set for {data.context.name} yet. Group its {data.risks.length} risks by the kind of
+            expertise they need (security, health, markets) and each group shows here with how many verified experts
+            cover it. With no panel, every group starts as a gap: use the finder to look for people.
+          </NotYet>
+        )}
         <ul className={s.gapRows}>
           {spaces.map(({ sp, ids, verified }) => (
             <li key={sp.name}>

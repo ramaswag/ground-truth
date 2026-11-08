@@ -1,7 +1,7 @@
 "use client";
 
 import { Check } from "lucide-react";
-import { PageHead } from "./Chrome";
+import { NotYet, PageHead } from "./Chrome";
 import { useWorkspace } from "./state";
 import s from "./moderate.module.css";
 
@@ -13,6 +13,13 @@ export function OutliersView() {
         Experts whose answers run against ACAPS&rsquo;s reading or against the panel. Disagreement is signal: ask
         before you weigh it down.
       </PageHead>
+      {data.outliers.length === 0 && (
+        <NotYet>
+          {data.context.hasPanel
+            ? "No outliers this week."
+            : `No panel for ${data.context.name} yet, so no answers to compare. Experts who answer against ACAPS or against each other will show here, with their reasons.`}
+        </NotYet>
+      )}
       <div className={s.outliers}>
         {data.outliers.map((o) => (
           <article key={o.id} className={s.outlier} aria-labelledby={`${o.id}-head`}>

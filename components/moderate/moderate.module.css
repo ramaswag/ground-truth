@@ -32,6 +32,201 @@
   font-weight: 800;
 }
 
+/* Country picker: ink on white inside the ink strip, square like every other field. */
+.countryPick select {
+  appearance: none;
+  min-height: 32px;
+  max-width: min(100%, 22rem);
+  padding: 2px 28px 2px 8px;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--white);
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%),
+    linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position: calc(100% - 14px) 50%, calc(100% - 9px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.countryPick select:focus-visible {
+  outline: 3px solid var(--accent-bright);
+  outline-offset: 2px;
+}
+
+/* Data page: result notices and the upload form. */
+.notice,
+.noticeError {
+  margin-top: var(--s4);
+  padding: var(--s3) var(--s4);
+  max-width: 62ch;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 800;
+}
+
+.notice {
+  background: var(--accent-soft);
+  border-left: var(--rule) solid var(--accent);
+}
+
+.noticeError {
+  background: var(--white);
+  border: var(--border) solid var(--ink);
+  border-left-width: var(--rule);
+}
+
+.upload {
+  margin-top: var(--s5, 2.5rem);
+  max-width: 62ch;
+  display: grid;
+  gap: var(--s3);
+  justify-items: start;
+}
+
+.uploadField {
+  display: grid;
+  gap: var(--s1);
+  font-size: var(--fs-small);
+  font-weight: 800;
+}
+
+.uploadField input {
+  font: inherit;
+  font-weight: 500;
+  max-width: 100%;
+}
+
+/* Risk tabs: which risk sits in the centre of the wheel. One row that scrolls sideways
+   inside itself, so a country with many risks never widens the page. */
+.riskTabsWrap {
+  margin-bottom: var(--s3);
+  min-width: 0;
+}
+
+.riskTabsLabel {
+  margin-bottom: var(--s1);
+  font-size: var(--fs-small);
+  font-weight: 800;
+}
+
+.riskTabs {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  border: var(--border) solid var(--ink);
+  background: var(--white);
+}
+
+.riskTab {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 40px;
+  padding: 0 var(--s3);
+  background: var(--white);
+  border: 0;
+  border-left: var(--border) solid var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.riskTab:first-child {
+  border-left: 0;
+}
+
+.riskTab[data-status="proposed"] {
+  font-style: italic;
+}
+
+.riskTab[aria-selected="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: inset 0 -4px 0 var(--ink);
+}
+
+.riskTab:focus-visible {
+  outline-offset: -5px;
+}
+
+@media (hover: hover) {
+  .riskTab[aria-selected="false"]:hover {
+    background: var(--accent-soft);
+  }
+}
+
+/* Under an empty wheel: how to put something around it. */
+.wheelHint {
+  margin: 0 var(--s4) var(--s3);
+  padding: var(--s3);
+  border: var(--border) dashed var(--ink);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.centreBtn {
+  margin-top: var(--s3);
+}
+
+/* Drawing a link from the inspector: three selects and a button that wrap on narrow screens. */
+.linkForm {
+  margin-top: var(--s3);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--s2);
+}
+
+.linkForm label {
+  display: grid;
+  gap: 2px;
+  font-size: var(--fs-small);
+  font-weight: 800;
+  min-width: 0;
+}
+
+.linkForm select {
+  font: inherit;
+  font-weight: 500;
+  min-height: 36px;
+  max-width: 100%;
+  padding: 2px 6px;
+  border: var(--border) solid var(--ink);
+  border-radius: 0;
+  background: var(--white);
+  color: var(--ink);
+}
+
+.linkForm .linkTarget {
+  flex: 1 1 14rem;
+}
+
+.linkForm .linkTarget select {
+  width: 100%;
+}
+
+.unlink {
+  margin-left: auto;
+}
+
+/* A page that is empty until this country has a panel. */
+.notYet {
+  margin-top: var(--s4);
+  padding: var(--s4);
+  max-width: 62ch;
+  background: var(--white);
+  border: var(--border) dashed var(--ink);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
 .stripLink {
   margin-left: auto;
   color: var(--white);
