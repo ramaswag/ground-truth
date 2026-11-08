@@ -16,7 +16,13 @@ import { basename, dirname, join } from "node:path";
 import { csvToRecords } from "./csv.ts";
 
 const ROOT = process.cwd();
-const DB_PATH = process.env.GROUND_TRUTH_DB ?? join(ROOT, "data", "ground-truth.db");
+/**
+ * Locally the database sits in data/. On Vercel the project folder is read-only, so it goes
+ * in /tmp instead: rebuilt from the CSV whenever a new server starts, which means links drawn
+ * there do not last. Fine for a demo; a hosted database would fix it.
+ */
+const DB_PATH =
+  process.env.GROUND_TRUTH_DB ?? (process.env.VERCEL ? "/tmp/ground-truth.db" : join(ROOT, "data", "ground-truth.db"));
 /** The export, under either name it tends to arrive with. */
 const CSV_PATHS = ["risk-radar.csv", "risk-radar-export.csv"].map((f) => join(ROOT, "data", f));
 const SAMPLE_PATH = join(ROOT, "data", "risk-radar.sample.json");

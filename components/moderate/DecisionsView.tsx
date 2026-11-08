@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Check } from "lucide-react";
 import type { Decision } from "@/lib/moderate";
 import { PROBABILITY, formatWhen } from "@/lib/moderate";
-import { PageHead } from "./Chrome";
+import { NotYet, PageHead } from "./Chrome";
 import { AskNext } from "./AskNext";
 import { useWorkspace } from "./state";
 import s from "./moderate.module.css";
@@ -35,7 +35,7 @@ export function DecisionsView() {
 
 /** One decision. `compact` is the version that sits inside the radar's inspector. */
 export function DecisionItem({ d, compact }: { d: Decision; compact?: boolean }) {
-  const { original, byId, outcomes, held, decide, showOnRadar } = useWorkspace();
+  const { base, original, byId, outcomes, held, decide, showOnRadar } = useWorkspace();
   const outcome = outcomes[d.id];
   let title: string;
   let meta: React.ReactNode;
