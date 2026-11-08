@@ -5,3 +5,8 @@ next-env.d.ts
 *.tsbuildinfo
 .env*.local
 .impeccable/config.local.json
+
+# Local SQLite database (rebuild with npm run db:seed)
+data/*.db
+data/*.db-wal
+data/*.db-shm
